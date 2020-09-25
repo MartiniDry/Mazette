@@ -1,0 +1,116 @@
+/* Style CSS pour la fenêtre principale */
+
+.main {
+	-fx-pref-width: 700.0;
+	-fx-pref-height: 450.0;
+	-fx-background-image: url(../pictures/background.png);
+}
+
+.main .button {
+	-fx-background-color: #44FB;
+	-fx-background-radius: 10.0;
+	-fx-border-color: white;
+	-fx-border-width: 2.0;
+	-fx-border-radius: 8.0;
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+}
+
+.main .toggle-button {
+	-fx-background-color: #44F8;
+	-fx-background-radius: 10.0;
+	-fx-border-color: white;
+	-fx-border-width: 2.0;
+	-fx-border-radius: 8.0;
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+}
+
+.main .button:hover, .main .toggle-button:selected {
+	-fx-background-color: #44F;
+}
+
+.main .button:pressed {
+	-fx-border-color: darkgray;
+	-fx-text-fill: darkgray;
+}
+
+.main .separator {
+	-fx-background-color: #44F;
+}
+
+.main .label, .main .check-box {
+	-fx-font-size: 12.0;
+	-fx-font-family: roboto;
+	-fx-font-weight: bold;
+}
+
+/* Style CSS pour la barre de menu */
+
+.menu-bar {
+	-fx-alignment: center-left;
+	-fx-padding: 2.5;
+    -fx-background-color: #0000E4;
+    -fx-effect: dropshadow(gaussian, #222, 20.0, 0.0, 0.0, 0.0);
+}
+
+.menu:hover {
+	-fx-background-color: #FFF6;
+	-fx-background-radius: 5.0;
+}
+
+.menu:showing {
+	-fx-background-color: #FFF6;
+	-fx-background-radius: 5.0 5.0 0.0 0.0;
+}
+
+.menu .label {
+	-fx-padding: -2.5 5.0;
+	-fx-font-family: segoe;
+	-fx-font-size: 18.0;
+	-fx-text-fill: white;
+}
+
+.menu .separator {
+	-fx-padding: 3.0 0.0;
+	-fx-background-color: transparent;
+}
+
+.context-menu {
+	-fx-padding: 5.0;
+	-fx-background-color: #714CFE;
+	-fx-background-radius: 0.0 10.0 10.0 10.0;
+}
+
+.menu-item .label {
+	-fx-font-size: 16.0;
+	-fx-font-weight: normal;
+}
+
+.menu-item .arrow {
+	-fx-background-color: white;
+}
+
+.menu .menu-item:focused {
+	-fx-background-color: #FFF6;
+	-fx-background-radius: 5.0;
+}
+
+/* Style CSS pour la barre d'outils à gauche de la fenêtre */
+
+.left-border {
+	-fx-background-color: #B39AFD66;
+    -fx-effect: dropshadow(gaussian, #444, 10.0, 0.0, 0.0, 0.0);
+}
+
+.left-border .text {
+	-fx-font-family: segoe;
+	-fx-font-size: 12.0;
+	-fx-text-fill: white;
+}
+
+/* Style d'affichage des composants FXML pour un éventuel débogage */
+
+.debug {
+	-fx-background-color: #F004;
+}

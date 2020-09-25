@@ -1,0 +1,66 @@
+/* Style CSS des bo�tes de dialogue */
+
+.dialog-pane {
+	-fx-background-radius: 8.0;
+	-fx-border-color: #CCC;
+	-fx-border-width: 2.0;
+	-fx-border-radius: 8.0;
+}
+
+.dialog-pane:header .header-panel {
+	-fx-background-radius: 6.0 6.0 0.0 0.0;
+	-fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, #666, 10.0, 0.0, 0.0, 3.0);
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-text-fill: white;
+}
+
+.dialog-pane > .label {
+	-fx-text-alignment: justify;
+}
+
+.myDialog > *.button-bar > *.container{
+	-fx-background-radius: 10.0;
+}
+
+/* CONFIRMATION (demande de confirmation) */
+
+.dialog-pane.confirmation {
+	-fx-graphic: url(../pictures/question.png);
+}
+
+.dialog-pane.confirmation:header .header-panel {
+    -fx-background-color: #2F9ED6;
+}
+
+/* INFORMATION (information pratique) */
+
+.dialog-pane.information {
+	-fx-graphic: url(../pictures/info.png);
+}
+
+.dialog-pane.information:header .header-panel {
+    -fx-background-color: #32AB32;
+}
+
+/* ERROR (message d'erreur) */
+
+.dialog-pane.error {
+	-fx-graphic: url(../pictures/error.png);
+}
+
+.dialog-pane.error:header .header-panel {
+    -fx-background-color: #DB3535;
+}
+
+/* WARNING (message d'avertissement) */
+
+.dialog-pane.warning {
+	-fx-graphic: url(../pictures/warning.png);
+}
+
+.dialog-pane.warning:header .header-panel {
+    -fx-background-color: #F5A91B;
+}
