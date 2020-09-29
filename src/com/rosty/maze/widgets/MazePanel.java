@@ -409,8 +409,8 @@ public class MazePanel extends Pane {
 		getMaze().clear();
 		update();
 	}
-
-	private void update() {
+	
+	protected void update() {
 		clear();
 
 		if (getMaze() != null) {
