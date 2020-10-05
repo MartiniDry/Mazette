@@ -57,6 +57,8 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
 
+	private boolean vertical = true; // Définit le sens des murs à placer
+
 	/**
 	 * Constructeur de la classe {@link RecursiveDivisionAlgorithm}.
 	 * 
@@ -82,25 +84,53 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 			mazePanel.setWall(nbRow - 1, j, Side.RIGHT, 0);
 
 		// Initialisation de la liste avec la première section
-		sections.add(new Section(0, 0, nbRow, nbCol));
+		sections.add(new Section(0, 0, nbCol, nbRow));
 	}
 
 	@Override
 	public boolean isComplete() {
-		boolean done = true;
-		for (Section sect : sections)
-			done &= isIndivisible(sect);
-
-		return done;
+		return sections.isEmpty();
 	}
 
 	@Override
 	public void step() {
-		placeWallWithDoor(true, 3, 1, 7);
-		placeWallWithDoor(true, 4, 1, 7);
-		placeWallWithDoor(true, 5, 1, 7);
-		placeWallWithDoor(true, 6, 1, 7);
-		placeWallWithDoor(true, 7, 1, 7);
+		int r;
+		// Création d'une liste répertoriant les nouvelles pièces qui seront obtenues à
+		// cette étape
+		List<Section> newSections = new ArrayList<>();
+
+		if (vertical) {
+			for (Section s : sections) {
+				if (s.width() >= 2) { // Si la pièce est assez large pour y placer un mur
+					r = 1 + rand.nextInt(s.width() - 1);
+					// Installation du mur vertical
+					placeWallWithDoor(true, s.leftIndex + r, s.topIndex, s.bottomIndex);
+					// Déclaration des deux nouvelles pièces
+					newSections.add(new Section(s.leftIndex, s.topIndex, s.leftIndex + r, s.bottomIndex));
+					newSections.add(new Section(s.leftIndex + r, s.topIndex, s.rightIndex, s.bottomIndex));
+				}
+			}
+		} else {
+			for (Section s : sections) {
+				if (s.height() >= 2) { // Si la pièce est assez haute pour y placer un mur
+					r = 1 + rand.nextInt(s.height() - 1);
+					// Installation du mur horizontal
+					placeWallWithDoor(false, s.topIndex + r, s.leftIndex, s.rightIndex);
+					// Déclaration des deux nouvelles pièces
+					newSections.add(new Section(s.leftIndex, s.topIndex, s.rightIndex, s.topIndex + r));
+					newSections.add(new Section(s.leftIndex, s.topIndex + r, s.rightIndex, s.bottomIndex));
+				}
+			}
+		}
+
+		// Mise à jour de la liste des pièces pour la prochaine itération
+		sections.clear();
+		sections.addAll(newSections);
+
+		// Pour plus de performances, on retire les pièces indivisibles puisqu'elles ne
+		// seront plus traitées par l'algorithme.
+		sections.removeIf(Section::isIndivisible);
+		vertical = !vertical; // Commutation du sens des murs
 	}
 
 	/**
@@ -112,8 +142,10 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 		placeWall(vertical, lineId, start, end);
 		if (end - start > 1) {
 			int index = start + rand.nextInt(end - start);
-			Side wallSide = vertical ? Side.RIGHT : Side.DOWN;
-			mazePanel.setWall(index, lineId, wallSide, 0);
+			if (vertical)
+				mazePanel.setWall(index, lineId, Side.LEFT, 0);
+			else
+				mazePanel.setWall(lineId, index, Side.UP, 0);
 		}
 	}
 
@@ -136,18 +168,12 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 	 *                 est la même que pour le point de départ.
 	 */
 	private void placeWall(boolean vertical, int lineId, int start, int end) {
-		Side wallSide = vertical ? Side.RIGHT : Side.DOWN;
-		for (int i = start; i < end; i++)
-			mazePanel.setWall(i, lineId, wallSide, 1);
-	}
-
-	/**
-	 * Indique si la section de la grille peut être divisée par un mur.
-	 * 
-	 * @param section Pièce de la grille obtenue par divisio de la grille.
-	 */
-	private boolean isIndivisible(Section sect) {
-		return sect.width == 1 || sect.height == 1;
+		if (vertical)
+			for (int i = start; i < end; i++)
+				mazePanel.setWall(i, lineId, Side.LEFT, 1);
+		else
+			for (int i = start; i < end; i++)
+				mazePanel.setWall(lineId, i, Side.UP, 1);
 	}
 
 	/**
@@ -159,21 +185,48 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 	 */
 	private class Section {
 		int leftIndex, topIndex; // Coordonnées du bord supérieur gauche de la section
-		int width, height; // Largeur et hauteur de la section
+		int rightIndex, bottomIndex; // Coordonnées du bord inférieur droit de la section
 
 		/**
 		 * Constructeur de la classe {@link Section}.
 		 * 
-		 * @param lId Indice du bord gauche de la section.
-		 * @param tId Indice du bord supérieur de la section.
-		 * @param w   Largeur en nombre de cases.
-		 * @param h   Hauteur en nombre de cases.
+		 * @param left   Indice du bord gauche de la section.
+		 * @param top    Indice du bord supérieur de la section.
+		 * @param right  Indice du bord droit de la section.
+		 * @param bottom Indice du bord inférieur de la section.
 		 */
-		Section(int lId, int tId, int w, int h) {
-			this.leftIndex = lId;
-			this.topIndex = tId;
-			this.width = w;
-			this.height = h;
+		Section(int left, int top, int right, int bottom) {
+			this.leftIndex = left;
+			this.topIndex = top;
+			this.rightIndex = right;
+			this.bottomIndex = bottom;
+		}
+
+		/** Fournit la largeur de la section. */
+		int width() {
+			return rightIndex - leftIndex;
+		}
+
+		/** Fournit la hauteur de la section. */
+		int height() {
+			return bottomIndex - topIndex;
+		}
+
+		/**
+		 * Indique si la section peut être divisée par un mur.
+		 * 
+		 * @param section Pièce de la grille obtenue par division de la grille.
+		 * 
+		 * @return <code>true</code> si la section est indivisible, <code>false</code>
+		 *         dans le cas contraire.
+		 */
+		boolean isIndivisible() {
+			return rightIndex - leftIndex == 1 || bottomIndex - topIndex == 1;
+		}
+
+		@Override
+		public String toString() {
+			return "[(" + leftIndex + "," + topIndex + ")--(" + rightIndex + "," + bottomIndex + ")]";
 		}
 	}
 }
