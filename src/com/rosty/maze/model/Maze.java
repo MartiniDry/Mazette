@@ -224,7 +224,7 @@ public class Maze {
 	 * @version 1.0
 	 */
 	public static class WallCoord {
-		public final int x, y; // Coordinnées de la case voisine
+		public final int x, y; // Coordonnées de la case voisine
 		public final Side side; // Position du mur par rapport à la case voisine
 
 		/**

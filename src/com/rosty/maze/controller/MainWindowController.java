@@ -178,7 +178,7 @@ public class MainWindowController implements Observer {
 	 * @param genAlgo Algorithme à exécuter.
 	 */
 	public final void regenerate(Algorithm genAlgo) {
-		mazePanel.clearMaze();
+		mazePanel.clear();
 		generator.setAlgorithm(genAlgo);
 		genAlgo.init();
 	}

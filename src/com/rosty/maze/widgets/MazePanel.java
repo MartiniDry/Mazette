@@ -349,10 +349,6 @@ public class MazePanel extends Pane {
 		}
 	}
 
-	private void clear() {
-		getChildren().clear();
-	}
-
 	public int getCell(int row, int col) {
 		return getMaze().getCell(row, col);
 	}
@@ -405,13 +401,13 @@ public class MazePanel extends Pane {
 		getMaze().display();
 	}
 
-	public void clearMaze() {
+	public void clear() {
 		getMaze().clear();
 		update();
 	}
-	
+
 	protected void update() {
-		clear();
+		getChildren().clear();
 
 		if (getMaze() != null) {
 			int m = getMaze().getNbRows();
