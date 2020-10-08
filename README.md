@@ -2,6 +2,7 @@
 ![Logo for Mazette](src/com/rosty/maze/application/icons/logo_128x128.png)
 
 **Maze generator and solver using different algorithms**
+
 Version: 1.0
 
 ------
