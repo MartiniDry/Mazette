@@ -190,6 +190,7 @@ public class MazePanel extends Pane {
 		heightProperty().addListener(e -> update());
 	}
 
+	/** Définit la taille du labyrinthe à partir de ses propriétés JavaFX. */
 	private void defineSize() {
 		double padX = getPadding().getLeft();
 		double padY = getPadding().getTop();
@@ -263,6 +264,7 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/** Génère les composants FXML représentant les bordures du labyrinthe. */
 	protected void displayBorders() {
 		Line up = new Line(deltaX, deltaY, deltaX + W, deltaY);
 		Line right = new Line(deltaX + W, deltaY, deltaX + W, deltaY + H);
@@ -279,6 +281,10 @@ public class MazePanel extends Pane {
 		getChildren().addAll(borders);
 	}
 
+	/**
+	 * Génère les composants FXML représentant un quadrillage de l'ensemble du
+	 * labyrinthe.
+	 */
 	protected void displayGrid() {
 		int X = 2 * getMaze().getNbRows() + 1;
 		for (int i = 0; i < X; i += 2) {
@@ -294,6 +300,7 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/** Génère les composants FXML représentant les murs du labyrinthe. */
 	protected void displayWalls() {
 		int X = 2 * getMaze().getNbRows() + 1;
 		for (int i = 1; i < X - 1; i += 2) {
@@ -327,6 +334,7 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/** Génère les composants FXML représentant les cases du labyrinthe. */
 	protected void displayBlocks() {
 		int X = 2 * getMaze().getNbRows() + 1;
 		for (int i = 1; i < X - 1; i += 2) {
@@ -349,19 +357,43 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/** Fournit la valeur de la cellule à la ligne et à la colonne indiquée. */
 	public int getCell(int row, int col) {
 		return getMaze().getCell(row, col);
 	}
 
+	/**
+	 * Définit la valeur de la cellule à la ligne et à la colonne indiquée.
+	 * 
+	 * @param row   Numéro de ligne.
+	 * @param col   Numéro de colonne.
+	 * @param value Valeur de la case.
+	 */
 	public void setCell(int row, int col, int value) {
 		getMaze().setCell(row, col, value);
 		blocks[row][col].setFill((value == 1) ? getBlockColor() : Color.TRANSPARENT);
 	}
 
+	/**
+	 * Fournit la valeur d'un mur en se référant à une case adjacente, où <b>-1</b>
+	 * si ce mur n'est pas présent sur le terrain.
+	 * 
+	 * @param row  Numéro de ligne de la case adjacente.
+	 * @param col  Numéro de colonne de la case adjacente.
+	 * @param side Direction du mur par rapport à la case adjacente.
+	 */
 	public int getWall(int row, int col, Side side) {
 		return getMaze().getWall(row, col, side);
 	}
 
+	/**
+	 * Définit la valeur d'un mur du terrain en se référant à une case adjacente.
+	 * 
+	 * @param row   Numéro de ligne de la case adjacente.
+	 * @param col   Numéro de colonne de la case adjacente.
+	 * @param side  Direction du mur par rapport à la case adjacente.
+	 * @param value Valeur associée au mur.
+	 */
 	public void setWall(int row, int col, Side side, int value) {
 		getMaze().setWall(row, col, side, value);
 		switch (side) {
@@ -382,6 +414,12 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/**
+	 * Récupère la valeur d'une case voisine à la case spécifiée.
+	 * 
+	 * @param wall Coordonnées du mur séparant les deux cases.
+	 * @return Valeur de la case voisine.
+	 */
 	public int getNeighbourCell(WallCoord wall) {
 		switch (wall.side) {
 		case LEFT:
@@ -397,10 +435,12 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/** Affiche le labyrinthe sous forme textuelle. */
 	public void display() {
 		getMaze().display();
 	}
 
+	/** Efface les cases et réinitialise le labyrinthe */
 	public void clear() {
 		getMaze().clear();
 		update();

@@ -182,7 +182,7 @@ public class Maze {
 	}
 
 	/**
-	 * Efface les valeurs du labyrinthe en apposant la valeur 0 aux case et la
+	 * Efface les valeurs du labyrinthe en apposant la valeur 0 aux cases et la
 	 * valeur 1 aux murs.
 	 */
 	public void clear() {
