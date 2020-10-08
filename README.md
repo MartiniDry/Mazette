@@ -1,5 +1,4 @@
-
-![Logo for Mazette](src/com/rosty/maze/application/icons/logo_128x128.png)
+# Mazette ![Logo for Mazette](src/com/rosty/maze/application/icons/logo_128x128.png)
 
 **Maze generator and solver using different algorithms**
 
@@ -38,6 +37,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 ## Implemented solving algorithms
 
 The list can be modified, as it simply comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Maze_solving_algorithm).
+
 
 - [ ] A* (or A-star)
 - [ ] Wall following
