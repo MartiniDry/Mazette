@@ -2,7 +2,7 @@
 
 **Maze generator and solver using different algorithms**
 
-Version: 1.0
+###### Version: 1.0
 
 ------
 
@@ -11,11 +11,6 @@ The aim is to display every known algorithm step by step for educational purpose
 The software proposes several functionalities:
  * Running algorithms via a command bar; those algorithms can be run **directly** or **step by step**.
  * Customising maze processing (size, duration between two steps, etc.)
- 
-Other features need to be implemented in the future:
- * Saving mazes as an image in many formats (PNG, JPEG, TIFF, PDF)
- * Color pickers for each maze part
- * Color map for pathfinding algorithms, which clarifies the target from start point to the finish.
 
 ## Implemented generation algorithms
 
@@ -46,3 +41,11 @@ The list can be modified, as it simply comes from the [Wikipedia page](https://e
 - [ ] Trémeaux
 - [ ] Dead-end filling
 - [ ] Maze-routing
+
+------
+
+## Features that need to be implemented in the future
+
+ * Saving mazes as an image in many formats (PNG, JPEG, TIFF, PDF)
+ * Color pickers for each maze part
+ * Color map for pathfinding algorithms, which clarifies the target from start point to the finish.
