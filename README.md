@@ -21,7 +21,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [X] Recursive division
 - [ ] Hunt-and-Kill (or HK)
 - [ ] Eller
-- [ ] Prim
+- [X] Prim
 - [ ] Aldous-Broder
 - [ ] Wilson
 - [ ] Growing tree
@@ -32,7 +32,6 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 ## Implemented solving algorithms
 
 The list can be modified, as it simply comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Maze_solving_algorithm).
-
 
 - [ ] A* (or A-star)
 - [ ] Wall following
