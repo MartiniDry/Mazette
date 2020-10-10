@@ -21,6 +21,7 @@
 
 		<MenuItem text="Algorithme de rembobinage récursif" onAction="#generateRecursiveBacktracker" />
 		<MenuItem text="Algorithme de division récursive" onAction="#generateRecursiveDivision" />
+		<MenuItem text="Algorithme de Prim" onAction="#generatePrim" />
 		<MenuItem text="Algorithme personnel" onAction="#generatePersonal" />
 	</Menu>
 

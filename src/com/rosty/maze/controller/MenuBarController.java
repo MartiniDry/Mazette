@@ -4,6 +4,7 @@ import com.rosty.maze.Mazette;
 import com.rosty.maze.application.AppLauncher;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
@@ -47,6 +48,11 @@ public class MenuBarController {
 	private void generateRecursiveDivision() {
 		AppLauncher.getMainController()
 				.regenerate(new RecursiveDivisionAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
+	private void generatePrim() {
+		AppLauncher.getMainController().regenerate(new PrimAlgorithm(AppLauncher.getMainController().mazePanel));
 	}
 
 	@FXML

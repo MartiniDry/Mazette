@@ -10,6 +10,7 @@ import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
@@ -81,16 +82,17 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme de Kruskal standard", ae -> regenerate(new KruskalAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de Kruskal non-trié",
 				ae -> regenerate(new ShuffledKruskalAlgorithm(mazePanel)));
-		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de rembobinage récursif",
 				ae -> regenerate(new RecursiveBacktrackingAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de division récursive",
 				ae -> regenerate(new RecursiveDivisionAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme de Prim", ae -> regenerate(new PrimAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 
 		delta.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
 			String content = delta.getText();
 			if (e.getCode() == KeyCode.ENTER) {
-				generator.setTimeout(Long.valueOf(content));
+				generator.setTimeout(content.isEmpty() ? 0L : Long.valueOf(content));
 				System.out.println("Nouveau pas de temps : " + generator.getTimeout() + " ms.");
 			}
 		});
