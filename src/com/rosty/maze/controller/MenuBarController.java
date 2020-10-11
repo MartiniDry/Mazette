@@ -1,5 +1,8 @@
 package com.rosty.maze.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.AppLauncher;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
@@ -8,8 +11,12 @@ import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
+import com.rosty.maze.view.box.MessageBox;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class MenuBarController {
 	@FXML
@@ -20,6 +27,25 @@ public class MenuBarController {
 	@FXML
 	private void exportData() {
 		System.out.println("Exportation des données");
+
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Enregistrer le labyrinthe sous...");
+		chooser.getExtensionFilters().addAll(new ExtensionFilter("Images JPEG", "*.jpg *.jpeg"),
+				new ExtensionFilter("Images PNG", "*.png"), new ExtensionFilter("Images gif", "*.gif"));
+		chooser.setSelectedExtensionFilter(chooser.getExtensionFilters().get(1));
+
+		try {
+			File file = chooser.showSaveDialog(AppLauncher.getPrimaryStage().getOwner());
+			AppLauncher.getMainController().mazePanel.save(file);
+		} catch (IOException e) {
+			MessageBox box = new MessageBox(AlertType.ERROR, "Sauvegarde de l'image");
+			box.setContentText(e.getLocalizedMessage());
+			box.show();
+		} catch (IllegalArgumentException e) {
+			MessageBox box = new MessageBox(AlertType.ERROR, "Sauvegarde de l'image");
+			box.setContentText(e.getLocalizedMessage());
+			box.show();
+		}
 	}
 
 	@FXML
