@@ -5,26 +5,21 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.Maze.WallCoord;
+import com.rosty.util.NodeWriter;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.transform.Scale;
 
 /**
  * Composant FXML permettant d'afficher un labyrinthe à l'écran, plus
@@ -481,30 +476,13 @@ public class MazePanel extends Pane {
 
 	/**
 	 * Enregistre le labyrinthe sous la forme d'une image. Les seules extensions
-	 * autorisées sont JPG, JPEG? PDF et GIF.
+	 * autorisées sont JPG, JPEG, PDF et GIF.
 	 * 
 	 * @param file Fichier contenant l'image à enregistrer.
 	 * @throws IOException En cas d'erreur lors de la création du fichier ou de la
 	 *                     génération de l'image.
 	 */
 	public final void save(File file) throws IOException, IllegalArgumentException {
-		// Avant d'enregistrer l'image, il faut gérer la mise à l'échelle pour que le
-		// labyrinthe soit le plus net possible. En cas d'image trop lourde à calculer,
-		// une exception IllegalArgument est lancée.
-		SnapshotParameters param = new SnapshotParameters();
-		param.setTransform(new Scale(8, 8));
-
-		WritableImage snapshot = snapshot(param, null);
-
-		if (file != null && !file.getName().isEmpty()) {
-			String[] words = file.getName().split("\\.");
-			String fileExtension = words[words.length - 1];
-			if (Arrays.asList("jpg", "jpeg", "png", "gif").contains(fileExtension)) {
-				if (!file.exists())
-					file.createNewFile();
-
-				ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), fileExtension, file);
-			}
-		}
+		NodeWriter.writeAsImage(this, file);
 	}
 }
