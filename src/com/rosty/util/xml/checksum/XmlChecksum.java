@@ -67,7 +67,7 @@ public final class XmlChecksum {
 	 * @return Somme de contrôle du document XML.
 	 */
 	public long calculateChecksum() {
-		formatXml();
+		formatXml(mdomDocument.getDocumentElement()); // Formattage de tout le document
 		ChecksumCallBack callback = cs -> setSavedChecksum(Long.parseLong(cs, HEXADECIMAL) & MAX_UNSIGNED_INT);
 
 		return calculateChecksum(mdomDocument.getDocumentElement(), 0, callback);
@@ -132,19 +132,6 @@ public final class XmlChecksum {
 			newChecksum += c & MAX_UNSIGNED_INT;
 
 		return newChecksum;
-	}
-
-	/**
-	 * Formate la totalité du document XML en simplifiant :
-	 * <ul>
-	 * <li>Le nom des noeuds</li>
-	 * <li>Le nom des attributs</li>
-	 * <li>La valeur des attributs</li>
-	 * <li>Le texte des noeuds.</li>
-	 * </ul>
-	 */
-	private void formatXml() {
-		formatXml(mdomDocument.getDocumentElement());
 	}
 
 	/**
