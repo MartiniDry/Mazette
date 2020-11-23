@@ -45,6 +45,6 @@ The list can be modified, as it simply comes from the [Wikipedia page](https://e
 
 ## Features that need to be implemented in the future
 
- * Saving mazes as an image in many formats (PNG, JPEG, TIFF, PDF)
+ * Saving mazes as an image in many formats (PNG, JPEG, TIFF, SVG, PDF)
  * Color pickers for each maze part
  * Color map for pathfinding algorithms, which clarifies the target from start point to the finish.
