@@ -4,13 +4,23 @@ import java.util.Arrays;
 
 import com.rosty.maze.application.AppLauncher;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 /**
  * Classe définissant les boîtes de dialogue du logiciel. Cette classe surcharge
@@ -23,6 +33,17 @@ public class MessageBox extends Alert {
 	/* ATTRIBUTS */
 
 	protected static String styleSheet = "";
+
+	private final GaussianBlur ownerBlurEffect = new GaussianBlur(0);
+	private final ColorAdjust ownerDesaturationEffect = new ColorAdjust(0, 0, 0, 0);
+	
+	FadeTransition boxFadeTransition = new FadeTransition();
+	ScaleTransition boxScaleTransition = new ScaleTransition();
+	
+	/* CONSTANTES */
+	
+	private static Duration APPEARANCE_DURATION = Duration.millis(250);
+	private static Duration DISAPPEARANCE_DURATION = Duration.millis(100);
 
 	/**
 	 * Constructeur de la classe {@link MessageBox}.
@@ -100,6 +121,70 @@ public class MessageBox extends Alert {
 		if (owner != null) {
 			initOwner(owner);
 			initStyle(StageStyle.TRANSPARENT);
+
+			ownerBlurEffect.setRadius(0);
+			ownerDesaturationEffect.setSaturation(0);
+			ownerDesaturationEffect.setBrightness(0);
+
+			ownerBlurEffect.setInput(ownerDesaturationEffect);
+			owner.getScene().getRoot().setEffect(ownerBlurEffect);
+
+			Parent boxRoot = getDialogPane().getScene().getRoot();
+			boxRoot.setOpacity(0);
+			boxRoot.setScaleX(0.9);
+			boxRoot.setScaleY(0.9);
+			
+			boxFadeTransition.setNode(boxRoot);
+			boxScaleTransition.setNode(boxRoot);
+			
+			showingProperty().addListener((bean_p, old_p, new_p) -> {
+				if (new_p != null)
+					if (new_p) {
+						Platform.runLater(() -> {
+							Timeline saturationTimeline = new Timeline();
+							saturationTimeline.getKeyFrames()
+									.add(new KeyFrame(APPEARANCE_DURATION,
+											new KeyValue(ownerBlurEffect.radiusProperty(), 5),
+											new KeyValue(ownerDesaturationEffect.saturationProperty(), -0.4),
+											new KeyValue(ownerDesaturationEffect.brightnessProperty(), -0.4)));
+							saturationTimeline.play();
+
+							boxFadeTransition.setDuration(APPEARANCE_DURATION);
+							boxFadeTransition.setFromValue(boxRoot.getOpacity());
+							boxFadeTransition.setToValue(1);
+							boxFadeTransition.play();
+							
+							boxScaleTransition.setDuration(APPEARANCE_DURATION);
+							boxScaleTransition.setFromX(boxRoot.getScaleX());
+							boxScaleTransition.setFromY(boxRoot.getScaleY());
+							boxScaleTransition.setToX(1);
+							boxScaleTransition.setToY(1);
+							boxScaleTransition.play();
+						});
+					} else {
+						Platform.runLater(() -> {
+							Timeline saturationTimeline = new Timeline();
+							saturationTimeline.getKeyFrames()
+									.add(new KeyFrame(DISAPPEARANCE_DURATION,
+											new KeyValue(ownerBlurEffect.radiusProperty(), 0),
+											new KeyValue(ownerDesaturationEffect.saturationProperty(), 0),
+											new KeyValue(ownerDesaturationEffect.brightnessProperty(), 0)));
+							saturationTimeline.play();
+//
+//							boxFadeTransition.setDuration(DISAPPEARANCE_DURATION);
+//							boxFadeTransition.setFromValue(boxRoot.getOpacity());
+//							boxFadeTransition.setToValue(0);
+//							boxFadeTransition.play();
+//							
+//							boxScaleTransition.setDuration(DISAPPEARANCE_DURATION);
+//							boxScaleTransition.setFromX(boxRoot.getScaleX());
+//							boxScaleTransition.setFromY(boxRoot.getScaleY());
+//							boxScaleTransition.setToX(0.9);
+//							boxScaleTransition.setToY(0.9);
+//							boxScaleTransition.play();
+						});
+					}
+			});
 		}
 
 		switch (alertType) {
@@ -117,8 +202,13 @@ public class MessageBox extends Alert {
 		getDialogPane().getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), this::close);
 	}
 
-	/** Applique une nouvelle feuille de style à la boîte de dialogue. */
+	/** Applique une nouvelle feuille de style aux boîtes de dialogue. */
 	public static void setStyleSheet(String ss) {
 		styleSheet = ss;
+	}
+
+	/** Récupère le nom de la feuille de style des boîtes de dialogue. */
+	public static String getStyleSheet() {
+		return styleSheet;
 	}
 }

@@ -54,6 +54,10 @@
 				RECHARGER
 			</Button>
 
+			<Button onAction="#testMessageBox" GridPane.columnSpan="2" GridPane.rowIndex="3">
+				TESTER MessageBox
+			</Button>
+
 			<Separator />
 
 			<CheckBox fx:id="stepOrRun">Génération étape par étape</CheckBox>
