@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.AppLauncher;
+import com.rosty.maze.dialog.DialogUtility;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
@@ -84,5 +85,21 @@ public class MenuBarController {
 	@FXML
 	private void generatePersonal() {
 		AppLauncher.getMainController().regenerate(new PersonalAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
+	private void preferences() {
+		;
+	}
+
+	@FXML
+	private void about() {
+		try {
+			DialogUtility.openAboutDialog();
+		} catch (IOException e) {
+			MessageBox box = new MessageBox(AlertType.ERROR, "A propos du logiciel");
+			box.setContentText("L'ouverture de la fenêtre a échoué ; veuillez recommencer.");
+			box.showAndWait();
+		}
 	}
 }

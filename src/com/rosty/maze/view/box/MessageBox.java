@@ -37,13 +37,13 @@ public class MessageBox extends Alert {
 	private final GaussianBlur ownerBlurEffect = new GaussianBlur(0);
 	private final ColorAdjust ownerDesaturationEffect = new ColorAdjust(0, 0, 0, 0);
 	
-	FadeTransition boxFadeTransition = new FadeTransition();
-	ScaleTransition boxScaleTransition = new ScaleTransition();
+	private final FadeTransition boxFadeTransition = new FadeTransition();
+	private final ScaleTransition boxScaleTransition = new ScaleTransition();
 	
 	/* CONSTANTES */
 	
-	private static Duration APPEARANCE_DURATION = Duration.millis(250);
-	private static Duration DISAPPEARANCE_DURATION = Duration.millis(100);
+	private static final Duration APPEARANCE_DURATION = Duration.millis(250);
+	private static final Duration DISAPPEARANCE_DURATION = Duration.millis(100);
 
 	/**
 	 * Constructeur de la classe {@link MessageBox}.

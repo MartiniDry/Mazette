@@ -30,6 +30,7 @@
 	</Menu>
 
 	<Menu text="Aide">
-		<MenuItem text="À propos..." onAction="#saveDataAs" />
+		<MenuItem text="Préférences" onAction="#preferences" />
+		<MenuItem text="À propos..." onAction="#about" />
 	</Menu>
 </MenuBar>

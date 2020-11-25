@@ -109,6 +109,47 @@
 	-fx-text-fill: white;
 }
 
+/* Style d'affichage pour la fenêtre "À propos" */
+
+.about-dialog {
+	-fx-background-color: linear-gradient(to right bottom, #E8E8E8 30.0%, white);
+	-fx-background-image: url(../pictures/about_background.png);
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 50.0%;
+	-fx-background-position: bottom right;
+	-fx-padding: 10.0;
+	-fx-spacing: 15.0;
+	-fx-alignment: center;
+	-fx-font-size: 12.0;
+}
+
+.about-dialog .tile {
+	-fx-background-color: linear-gradient(to bottom right, silver, #DDD);
+	-fx-background-radius: 10.0;
+	-fx-effect: dropshadow(gaussian, gray, 10.0, 0.0, 0.0, 0.0);
+}
+
+.about-dialog .app-name {
+	-fx-font-size: 30.0;
+	-fx-font-weight: bold;
+	-fx-text-fill: #009688;
+	-fx-effect: dropshadow(gaussian, #BBB, 10.0, 0.0, 0.0, 0.0);
+}
+
+.about-dialog .version {
+	-fx-font-weight: bold;
+}
+
+.tile {
+	-fx-padding: 5.0;
+	-fx-background-color: #EEE;
+	-fx-background-radius: 5.0;
+	-fx-border-color: #AAA;
+	-fx-border-width: 1.0;
+	-fx-border-radius: 5.0;
+	-fx-effect: dropshadow(gaussian, #888, 10.0, 0.0, 0.0, 0.0);
+}
+
 /* Style d'affichage des composants FXML pour un éventuel débogage */
 
 .debug {
