@@ -20,7 +20,7 @@ public class Mazette {
 	 * @param args Paramètres de lancement du logiciel.
 	 */
 	public static void main(String... args) {
-		AppLauncher.playSound("cymbal.wav");
+		AppLauncher.playSound("beep.wav");
 		Application.launch(AppLauncher.class, args);
 	}
 
