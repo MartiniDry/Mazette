@@ -30,7 +30,8 @@ import com.rosty.maze.widgets.MazePanel;
  * l'opération est répétée pour chacune d'elles, et ainsi de suite. Si un mur
  * vertical a été placé lors de l'itération N, les murs qui seront placés à la
  * N+1<sup>ème</sup> itération seront horizontaux ; inversement si un mur
- * horizontal a été placé.
+ * horizontal a été placé. Pour résumer, l'algorithme met à jour la verticalité
+ * des murs chaque fois que l'on change de niveau de sections.
  * </p>
  * 
  * <p>
@@ -94,43 +95,46 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public void step() {
-		int r;
-		// Création d'une liste répertoriant les nouvelles pièces qui seront obtenues à
-		// cette étape
-		List<Section> newSections = new ArrayList<>();
+		if (!sections.isEmpty()) {
+			// Pour commencer, on retire la section la plus récente de la liste.
+			Section lastSection = sections.get(sections.size() - 1);
+			sections.remove(sections.size() - 1);
 
-		if (vertical) {
-			for (Section s : sections) {
-				if (s.width() >= 2) { // Si la pièce est assez large pour y placer un mur
-					r = 1 + rand.nextInt(s.width() - 1);
-					// Installation du mur vertical
-					placeWallWithDoor(true, s.leftIndex + r, s.topIndex, s.bottomIndex);
-					// Déclaration des deux nouvelles pièces
-					newSections.add(new Section(s.leftIndex, s.topIndex, s.leftIndex + r, s.bottomIndex));
-					newSections.add(new Section(s.leftIndex + r, s.topIndex, s.rightIndex, s.bottomIndex));
+			// Si cette section est indivisible, il n'y a rien de spécial à faire. On passe
+			// à l'étape suivante en mettant à jour la verticalité.
+			if (lastSection.isIndivisible()) {
+				vertical = !vertical;
+				step();
+			} else { // Dans le cas contraire, on subdivise puis on met à jour la verticalité.
+				if (vertical) {
+					if (lastSection.width() >= 2) { // Si la pièce est assez large pour y placer un mur
+						int r = 1 + rand.nextInt(lastSection.width() - 1);
+						// Installation du mur vertical
+						placeWallWithDoor(true, lastSection.leftIndex + r, lastSection.topIndex,
+								lastSection.bottomIndex);
+						// Déclaration des deux nouvelles pièces
+						sections.add(new Section(lastSection.leftIndex, lastSection.topIndex, lastSection.leftIndex + r,
+								lastSection.bottomIndex));
+						sections.add(new Section(lastSection.leftIndex + r, lastSection.topIndex,
+								lastSection.rightIndex, lastSection.bottomIndex));
+					}
+				} else {
+					if (lastSection.height() >= 2) { // Si la pièce est assez haute pour y placer un mur
+						int r = 1 + rand.nextInt(lastSection.height() - 1);
+						// Installation du mur horizontal
+						placeWallWithDoor(false, lastSection.topIndex + r, lastSection.leftIndex,
+								lastSection.rightIndex);
+						// Déclaration des deux nouvelles pièces
+						sections.add(new Section(lastSection.leftIndex, lastSection.topIndex, lastSection.rightIndex,
+								lastSection.topIndex + r));
+						sections.add(new Section(lastSection.leftIndex, lastSection.topIndex + r,
+								lastSection.rightIndex, lastSection.bottomIndex));
+					}
 				}
-			}
-		} else {
-			for (Section s : sections) {
-				if (s.height() >= 2) { // Si la pièce est assez haute pour y placer un mur
-					r = 1 + rand.nextInt(s.height() - 1);
-					// Installation du mur horizontal
-					placeWallWithDoor(false, s.topIndex + r, s.leftIndex, s.rightIndex);
-					// Déclaration des deux nouvelles pièces
-					newSections.add(new Section(s.leftIndex, s.topIndex, s.rightIndex, s.topIndex + r));
-					newSections.add(new Section(s.leftIndex, s.topIndex + r, s.rightIndex, s.bottomIndex));
-				}
+
+				vertical = !vertical;
 			}
 		}
-
-		// Mise à jour de la liste des pièces pour la prochaine itération
-		sections.clear();
-		sections.addAll(newSections);
-
-		// Pour plus de performances, on retire les pièces indivisibles puisqu'elles ne
-		// seront plus traitées par l'algorithme.
-		sections.removeIf(Section::isIndivisible);
-		vertical = !vertical; // Commutation du sens des murs
 	}
 
 	/**
@@ -138,7 +142,7 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 	 * {@link RecursiveDivisionAlgorithm::placeWall}) puis place aléatoirement une
 	 * ouverture de taille 1 dans ce mur.
 	 */
-	private void placeWallWithDoor(boolean vertical, int lineId, int start, int end) {
+	private boolean placeWallWithDoor(boolean vertical, int lineId, int start, int end) {
 		placeWall(vertical, lineId, start, end);
 		if (end - start > 1) {
 			int index = start + rand.nextInt(end - start);
@@ -146,6 +150,10 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 				mazePanel.setWall(index, lineId, Side.LEFT, 0);
 			else
 				mazePanel.setWall(lineId, index, Side.UP, 0);
+
+			return true;
+		} else {
+			return false;
 		}
 	}
 
