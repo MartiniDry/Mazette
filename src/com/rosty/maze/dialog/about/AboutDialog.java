@@ -2,7 +2,13 @@ package com.rosty.maze.dialog.about;
 
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import com.rosty.maze.application.AppLauncher;
+import com.rosty.maze.application.config.ConfigManager;
+import com.rosty.util.xml.checksum.ChecksumException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,12 +69,12 @@ public class AboutDialog extends Stage {
 	}
 
 	@FXML
-	private void initialize() {
-		appName.setText(""/* ConfigManager.getAppName() */);
-		appVersion.setText("Version du logiciel : "/* + ConfigManager.getAppVersion() */);
-		configVersion.setText("Configuration : "/* + ConfigManager.getConfigVersion() */);
-		description.setText(""/* ConfigManager.getAppDescription() */);
-		copyright.setText(""/* ConfigManager.getCopyright() */);
+	private void initialize() throws ParserConfigurationException, SAXException, IOException, ChecksumException {
+		appName.setText(ConfigManager.getInstance().getAppName());
+		appVersion.setText("Version du logiciel : " + ConfigManager.getInstance().getAppVersion());
+		configVersion.setText("Configuration : " + ConfigManager.getInstance().getConfigVersion());
+		description.setText(ConfigManager.getInstance().getAppDescription());
+		copyright.setText(ConfigManager.getInstance().getCopyright());
 
 		license.setText(MIT_LICENSE);
 	}

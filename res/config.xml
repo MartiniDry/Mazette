@@ -2,7 +2,7 @@
 <Element xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="config.xsd">
 	<ConfigAppli nomAppli="Mazette" versionAppli="1.0" versionConfig="1.0" copyright="© 2020 MartiniDry"
 		description="Ce logiciel est un outil pédagogique pour visualiser la génération et la résolution de labyrinthes.">
-		<Checksum>000D1C05</Checksum>
+		<Checksum>00008759</Checksum>
 	</ConfigAppli>
 
 	<Repertoire id="REP_MY_DOCUMENTS">C:\Users\Martin Rostagnat\Documents</Repertoire>

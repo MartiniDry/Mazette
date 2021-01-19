@@ -30,7 +30,7 @@ public class ConfigManager {
 	private static final String XSD_FILENAME = "config.xsd"; // Nom du fichier de validation
 
 	/** Fichier de configuration XML. */
-	private static File xmlFile = new File("../res", XML_FILENAME);
+	private static File xmlFile = new File("res", XML_FILENAME);
 	private static File xsdFile = new File("com/ratp/oam/model/config", XSD_FILENAME);
 	private static Document document; // Document XML issu du fichier
 
@@ -62,7 +62,7 @@ public class ConfigManager {
 			throws ParserConfigurationException, SAXException, IOException, ChecksumException {
 		if (INSTANCE == null)
 			INSTANCE = new ConfigManager();
-
+		
 		return INSTANCE;
 	}
 
@@ -81,27 +81,27 @@ public class ConfigManager {
 	/* Méthodes d'extraction des données */
 
 	/** Récupère le nom de l'application. */
-	public static String getAppName() {
+	public String getAppName() {
 		return getElement("ConfigAppli(nomAppli)").getTextContent();
 	}
 
 	/** Récupère la version de l'application. */
-	public static String getAppVersion() {
+	public String getAppVersion() {
 		return getElement("ConfigAppli(versionAppli)").getNodeValue();
 	}
 
 	/** Récupère la version du fichier de configuration. */
-	public static String getConfigVersion() {
+	public String getConfigVersion() {
 		return getElement("ConfigAppli(versionConfig)").getNodeValue();
 	}
 
 	/** Récupère l'attribut présentant les droits d'auteur du projet. */
-	public static String getCopyright() {
+	public String getCopyright() {
 		return getElement("ConfigAppli(copyright)").getNodeValue();
 	}
 
 	/** Récupère une description succinte de l'application. */
-	public static String getAppDescription() {
+	public String getAppDescription() {
 		return getElement("ConfigAppli(description)").getNodeValue();
 	}
 
@@ -111,7 +111,7 @@ public class ConfigManager {
 	 * @param msgID Identifiant du répertoire dans le fichier de configuration.
 	 * @return Chemin vers le dossier de sauvegarde.
 	 */
-	public static String getDirectory(String msgID) {
+	public String getDirectory(String msgID) {
 		return getElement("Repertoire[" + msgID + "]").getTextContent();
 	}
 

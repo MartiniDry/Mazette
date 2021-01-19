@@ -140,7 +140,7 @@ public class MainWindowController implements Observer {
 			box.showAndWait();
 		}
 	}
-	
+
 	@FXML
 	private void testMessageBox() {
 		MessageBox box = new MessageBox(AlertType.INFORMATION, "Titre", ButtonType.OK);
