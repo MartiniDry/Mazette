@@ -1,6 +1,8 @@
 package com.rosty.maze.application;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -27,6 +29,7 @@ import javafx.stage.Stage;
 public class AppLauncher extends Application {
 	private static final String ICON_PATH = "com/rosty/maze/application/icons/";
 	private static final String CSS_PATH = "com/rosty/maze/view/css/";
+	private static final String BUNDLE_LOCATION = "com.rosty.maze.view.labels.labels";
 
 	private static Stage primaryStage;
 
@@ -50,13 +53,14 @@ public class AppLauncher extends Application {
 	public void start(Stage stage) {
 		AppLauncher.primaryStage = stage;
 
-		FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"),
+				ResourceBundle.getBundle(BUNDLE_LOCATION, Locale.ENGLISH));
 		try {
 			primaryStage.setScene(new Scene(loader.load()));
 
 			AppLauncher.mainController = (MainWindowController) loader.getController();
 
-			primaryStage.setTitle("Générateur de labyrinthes");
+			primaryStage.setTitle(loader.getResources().getString("main.title"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_24x24.png"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
 

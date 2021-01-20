@@ -6,31 +6,31 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 
 <MenuBar xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rosty.maze.controller.MenuBarController">
-	<Menu text="Fichier">
-		<MenuItem text="Sauvegarder sous..." onAction="#saveDataAs" />
-		<MenuItem text="Exporter" onAction="#exportData" />
+	<Menu text="%main.menu.file">
+		<MenuItem text="%main.menu.file.saveAs" onAction="#saveDataAs" />
+		<MenuItem text="%main.menu.file.export" onAction="#exportData" />
 		<SeparatorMenuItem />
-		<MenuItem text="Quitter" onAction="#quitApplication" />
+		<MenuItem text="%main.menu.file.exit" onAction="#quitApplication" />
 	</Menu>
 
-	<Menu text="Génération">
-		<Menu text="Algorithme de Kruskal">
-			<MenuItem text="Standard" onAction="#generateKruskal" />
-			<MenuItem text="Non-trié" onAction="#generateShuffledKruskal" />
+	<Menu text="%main.menu.generation">
+		<Menu text="%main.menu.generation.kruskal">
+			<MenuItem text="%main.menu.generation.kruskal.sorted" onAction="#generateKruskal" />
+			<MenuItem text="%main.menu.generation.kruskal.unsorted" onAction="#generateShuffledKruskal" />
 		</Menu>
 
-		<MenuItem text="Algorithme de rembobinage récursif" onAction="#generateRecursiveBacktracker" />
-		<MenuItem text="Algorithme de division récursive" onAction="#generateRecursiveDivision" />
-		<MenuItem text="Algorithme de Prim" onAction="#generatePrim" />
-		<MenuItem text="Algorithme personnel" onAction="#generatePersonal" />
+		<MenuItem text="%main.menu.generation.recursiveBacktracker" onAction="#generateRecursiveBacktracker" />
+		<MenuItem text="%main.menu.generation.recursiveDivision" onAction="#generateRecursiveDivision" />
+		<MenuItem text="%main.menu.generation.prim" onAction="#generatePrim" />
+		<MenuItem text="%main.menu.generation.personal" onAction="#generatePersonal" />
 	</Menu>
 
-	<Menu text="Résolution">
+	<Menu text="%main.menu.resolution">
 		<SeparatorMenuItem />
 	</Menu>
 
-	<Menu text="Aide">
-		<MenuItem text="Préférences" onAction="#preferences" />
-		<MenuItem text="À propos..." onAction="#about" />
+	<Menu text="%main.menu.help">
+		<MenuItem text="%main.menu.help.preferences" onAction="#preferences" />
+		<MenuItem text="%main.menu.help.about" onAction="#about" />
 	</Menu>
 </MenuBar>

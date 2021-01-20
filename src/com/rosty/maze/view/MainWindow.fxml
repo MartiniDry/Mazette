@@ -37,35 +37,27 @@
 					<ColumnConstraints hgrow="ALWAYS" />
 				</columnConstraints>
 
-				<Label GridPane.columnIndex="0" GridPane.halignment="RIGHT">
-					Nombre de lignes
-				</Label>
+				<Label GridPane.columnIndex="0" GridPane.halignment="RIGHT" text="%main.left.rowNumber" />
 				<GIntegerField fx:id="newMazeRows" prefWidth="45" promptText="0" constraint="HARD"
 					GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
 
-				<Label GridPane.columnIndex="0" GridPane.rowIndex="1">
-					Nombre de colonnes
-				</Label>
+				<Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="%main.left.colNumber" />
 				<GIntegerField fx:id="newMazeColumns" prefWidth="45" promptText="0" constraint="HARD"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
 			</GridPane>
 
-			<Button onAction="#reloadMaze" GridPane.columnSpan="2" GridPane.rowIndex="2">
-				RECHARGER
-			</Button>
-
-			<Button onAction="#testMessageBox" GridPane.columnSpan="2" GridPane.rowIndex="3">
-				TESTER MessageBox
-			</Button>
+			<Button onAction="#reloadMaze" GridPane.columnSpan="2" GridPane.rowIndex="2" text="%main.left.reload" />
+			<Button onAction="#testMessageBox" GridPane.columnSpan="2" GridPane.rowIndex="3"
+				text="%main.left.testMessageBox" />
 
 			<Separator />
 
-			<CheckBox fx:id="stepOrRun">Génération étape par étape</CheckBox>
+			<CheckBox fx:id="stepOrRun" text="%main.left.stepGen" />
 
 			<HBox alignment="CENTER" spacing="5" visible="${!stepOrRun.selected}">
-				<Label>Pas de temps :</Label>
+				<Label text="%main.left.timeStep" />
 				<GLongField fx:id="delta" prefWidth="85" alignment="CENTER_RIGHT" promptText="000" HBox.hgrow="ALWAYS" />
-				<Button onAction="#setTimeout">OK</Button>
+				<Button onAction="#setTimeout" text="%main.left.ok" />
 			</HBox>
 
 			<Separator />
@@ -75,8 +67,8 @@
 			<Separator />
 
 			<StackPane>
-				<ToggleButton fx:id="runButton" onMouseClicked="#runOrWait">LANCER</ToggleButton>
-				<Button fx:id="stepButton" onMouseClicked="#step">ÉTAPE</Button>
+				<ToggleButton fx:id="runButton" text="%main.left.launch" onMouseClicked="#runOrWait" />
+				<Button fx:id="stepButton" text="%main.left.step" onMouseClicked="#step" />
 			</StackPane>
 
 			<Label fx:id="elapsedTime" />
