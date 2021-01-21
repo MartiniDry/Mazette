@@ -47,8 +47,6 @@
 			</GridPane>
 
 			<Button onAction="#reloadMaze" GridPane.columnSpan="2" GridPane.rowIndex="2" text="%main.left.reload" />
-			<Button onAction="#testMessageBox" GridPane.columnSpan="2" GridPane.rowIndex="3"
-				text="%main.left.testMessageBox" />
 
 			<Separator />
 

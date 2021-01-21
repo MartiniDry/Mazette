@@ -142,13 +142,6 @@ public class MainWindowController implements Observer {
 	}
 
 	@FXML
-	private void testMessageBox() {
-		MessageBox box = new MessageBox(AlertType.INFORMATION, "Titre", ButtonType.OK);
-		box.setContentText("Ceci est un exemple de boîte de dialogue.");
-		box.showAndWait();
-	}
-
-	@FXML
 	private void runOrWait() {
 		try {
 			if (runButton.isSelected())
