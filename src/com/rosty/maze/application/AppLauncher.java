@@ -48,7 +48,7 @@ public class AppLauncher extends Application {
 		super.init();
 		MessageBox.setStyleSheet(CSS_PATH + "message-box.css");
 	}
-
+	
 	@Override
 	public void start(Stage stage) {
 		AppLauncher.primaryStage = stage;
@@ -106,5 +106,19 @@ public class AppLauncher extends Application {
 				e.printStackTrace();
 			}
 		}).start();
+	}
+
+	public static void reloadView(Locale locale) {
+		try {
+			ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_LOCATION, locale);
+			FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"), bundle);
+			
+			primaryStage.setScene(new Scene(loader.load()));
+			primaryStage.setTitle(bundle.getString("main.title"));
+			
+			AppLauncher.mainController = (MainWindowController) loader.getController();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }

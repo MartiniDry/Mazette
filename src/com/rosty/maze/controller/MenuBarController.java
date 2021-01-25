@@ -2,6 +2,7 @@ package com.rosty.maze.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.AppLauncher;
@@ -90,6 +91,16 @@ public class MenuBarController {
 	@FXML
 	private void preferences() {
 		;
+	}
+
+	@FXML
+	private void switchToFrench() {
+		AppLauncher.reloadView(Locale.FRENCH);
+	}
+
+	@FXML
+	private void switchToEnglish() {
+		AppLauncher.reloadView(Locale.ENGLISH);
 	}
 
 	@FXML

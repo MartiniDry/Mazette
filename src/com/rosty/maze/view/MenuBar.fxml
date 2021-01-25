@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.rosty.maze.widgets.GMenuItem?>
+
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -30,6 +32,13 @@
 	</Menu>
 
 	<Menu text="%main.menu.help">
+		<Menu text="%main.menu.help.language">
+			<GMenuItem text="%main.menu.help.language.french" icon="@pictures/french.png" onAction="#switchToFrench" />
+			<GMenuItem text="%main.menu.help.language.english" icon="@pictures/english.png" onAction="#switchToEnglish" />
+		</Menu>
+
+		<SeparatorMenuItem />
+
 		<MenuItem text="%main.menu.help.preferences" onAction="#preferences" />
 		<MenuItem text="%main.menu.help.about" onAction="#about" />
 	</Menu>
