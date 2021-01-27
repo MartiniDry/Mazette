@@ -36,9 +36,9 @@
 			<GMenuItem text="%main.menu.help.language.french" icon="@pictures/french.png" onAction="#switchToFrench" />
 			<GMenuItem text="%main.menu.help.language.english" icon="@pictures/english.png" onAction="#switchToEnglish" />
 		</Menu>
-
+		
+		<MenuItem text="%main.menu.help.colors" onAction="#changeColors" />
 		<SeparatorMenuItem />
-
 		<MenuItem text="%main.menu.help.preferences" onAction="#preferences" />
 		<MenuItem text="%main.menu.help.about" onAction="#about" />
 	</Menu>

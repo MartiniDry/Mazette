@@ -89,6 +89,11 @@ public class MenuBarController {
 	}
 
 	@FXML
+	private void changeColors() {
+		;
+	}
+
+	@FXML
 	private void preferences() {
 		;
 	}
