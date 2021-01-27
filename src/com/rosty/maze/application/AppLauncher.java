@@ -2,7 +2,6 @@ package com.rosty.maze.application;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,6 +15,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -29,7 +29,6 @@ import javafx.stage.Stage;
 public class AppLauncher extends Application {
 	private static final String ICON_PATH = "com/rosty/maze/application/icons/";
 	private static final String CSS_PATH = "com/rosty/maze/view/css/";
-	private static final String BUNDLE_LOCATION = "com.rosty.maze.view.labels.labels";
 
 	private static Stage primaryStage;
 
@@ -48,24 +47,28 @@ public class AppLauncher extends Application {
 		super.init();
 		MessageBox.setStyleSheet(CSS_PATH + "message-box.css");
 	}
-	
+
 	@Override
 	public void start(Stage stage) {
 		AppLauncher.primaryStage = stage;
 
 		FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"),
-				ResourceBundle.getBundle(BUNDLE_LOCATION, Locale.ENGLISH));
+				ResourceManager.getBundle());
 		try {
 			primaryStage.setScene(new Scene(loader.load()));
 
 			AppLauncher.mainController = (MainWindowController) loader.getController();
 
-			primaryStage.setTitle(loader.getResources().getString("main.title"));
+			primaryStage.setTitle(ResourceManager.getString("main.title"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_24x24.png"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
 
 			primaryStage.centerOnScreen();
 		} catch (IOException e) {
+			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.main.creation"));
+			box.setContentText(e.getLocalizedMessage());
+			box.showAndWait();
+
 			e.printStackTrace();
 		} finally {
 			primaryStage.show();
@@ -103,22 +106,38 @@ public class AppLauncher extends Application {
 				clip.open(inputStream);
 				clip.start();
 			} catch (Exception e) {
+				MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.main.creation"));
+				box.setContentText(e.getLocalizedMessage());
+				box.showAndWait();
+
 				e.printStackTrace();
 			}
 		}).start();
 	}
 
+	/**
+	 * Recharge la totalité de l'IHM en modifiant la langue d'affichage. Les
+	 * fichiers de ressource sont contenus dans le dossier
+	 * <b>com.rosty.maze.view.labels</b>.
+	 * 
+	 * @param locale Indice de localisation du logiciel.
+	 */
 	public static void reloadView(Locale locale) {
 		try {
-			ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_LOCATION, locale);
-			FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"), bundle);
-			
+			ResourceManager.setLanguage(locale);
+			FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"),
+					ResourceManager.getBundle());
+
 			primaryStage.setScene(new Scene(loader.load()));
-			primaryStage.setTitle(bundle.getString("main.title"));
-			
+			primaryStage.setTitle(ResourceManager.getString("main.title"));
+
 			AppLauncher.mainController = (MainWindowController) loader.getController();
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		} catch (IOException e) {
+			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.main.creation"));
+			box.setContentText(e.getLocalizedMessage());
+			box.showAndWait();
+
+			e.printStackTrace();
 		}
 	}
 }

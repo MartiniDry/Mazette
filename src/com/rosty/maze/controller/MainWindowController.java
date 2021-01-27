@@ -14,6 +14,7 @@ import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
+import com.rosty.maze.view.ResourceManager;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
@@ -89,6 +90,7 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme de Prim", ae -> regenerate(new PrimAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 
+		delta.setValue(generator.getTimeout());
 		delta.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
 			String content = delta.getText();
 			if (e.getCode() == KeyCode.ENTER) {
@@ -111,11 +113,13 @@ public class MainWindowController implements Observer {
 		generator.addObserver(this);
 		group.selectedToggleProperty().addListener(b -> generator.reset());
 
+		newMazeRows.setValue(ApplicationModel.getInstance().getMaze().getNbRows());
 		newMazeRows.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
 			if (ke.getCode() == KeyCode.ENTER)
 				reloadMaze();
 		});
 
+		newMazeColumns.setValue(ApplicationModel.getInstance().getMaze().getNbColumns());
 		newMazeColumns.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
 			if (ke.getCode() == KeyCode.ENTER)
 				reloadMaze();
@@ -134,7 +138,7 @@ public class MainWindowController implements Observer {
 			ApplicationModel.getInstance().reload(newMazeRows.getValue(), newMazeColumns.getValue());
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		} catch (Exception e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, "Création du labyrinthe");
+			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.maze.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
 		}

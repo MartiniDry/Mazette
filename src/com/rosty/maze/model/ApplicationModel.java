@@ -1,6 +1,7 @@
 package com.rosty.maze.model;
 
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
+import com.rosty.maze.view.ResourceManager;
 
 /**
  * Classe définissant le modèle du logiciel.
@@ -54,6 +55,6 @@ public class ApplicationModel {
 		if (nbRow > 0 && nbCol > 0)
 			maze = new Maze(nbRow, nbCol);
 		else
-			throw new Exception("Le nombre de lignes et de colonnes doit être non-nul.");
+			throw new Exception(ResourceManager.getString("error.maze.creation.size"));
 	}
 }
