@@ -55,6 +55,6 @@ public class ApplicationModel {
 		if (nbRow > 0 && nbCol > 0)
 			maze = new Maze(nbRow, nbCol);
 		else
-			throw new Exception(ResourceManager.getString("error.maze.creation.size"));
+			throw new Exception(ResourceManager.getLanguageString("error.maze.creation.size"));
 	}
 }

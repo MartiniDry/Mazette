@@ -4,10 +4,6 @@ import java.time.Duration;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.text.html.CSS;
-
-import org.w3c.dom.css.CSSStyleSheet;
-
 import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
@@ -146,7 +142,7 @@ public class MainWindowController implements Observer {
 			ApplicationModel.getInstance().reload(newMazeRows.getValue(), newMazeColumns.getValue());
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		} catch (Exception e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.maze.creation"));
+			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getLanguageString("error.maze.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
 		}

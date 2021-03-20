@@ -1,12 +1,7 @@
 package com.rosty.maze.application;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
-import java.util.Properties;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -51,6 +46,7 @@ public class AppLauncher extends Application {
 	public void init() throws Exception {
 		super.init();
 		MessageBox.setStyleSheet(CSS_PATH + "message-box.css");
+		ResourceManager.addProperties("hmi.properties");
 	}
 
 	@Override
@@ -60,24 +56,18 @@ public class AppLauncher extends Application {
 		FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"),
 				ResourceManager.getBundle());
 		try {
+			ResourceManager.loadProperties(loader);
 			primaryStage.setScene(new Scene(loader.load()));
 
 			AppLauncher.mainController = (MainWindowController) loader.getController();
 
-			primaryStage.setTitle(ResourceManager.getString("main.title"));
+			primaryStage.setTitle(ResourceManager.getLanguageString("main.title"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_24x24.png"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
 
 			primaryStage.centerOnScreen();
-
-			Properties prop = new Properties();
-			try (BufferedReader hmiReader = Files.newBufferedReader(Paths.get("res/hmi.properties").toAbsolutePath())) {
-				prop.load(hmiReader);
-				System.out.println(prop.getProperty("hmi.test"));
-				System.out.println();
-			}
 		} catch (IOException e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.main.creation"));
+			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getLanguageString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
 
@@ -118,7 +108,8 @@ public class AppLauncher extends Application {
 				clip.open(inputStream);
 				clip.start();
 			} catch (Exception e) {
-				MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.main.creation"));
+				MessageBox box = new MessageBox(AlertType.ERROR,
+						ResourceManager.getLanguageString("error.main.creation"));
 				box.setContentText(e.getLocalizedMessage());
 				box.showAndWait();
 
@@ -139,23 +130,14 @@ public class AppLauncher extends Application {
 			ResourceManager.setLanguage(locale);
 			FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"),
 					ResourceManager.getBundle());
-
-			Properties properties = new Properties();
-			Path propFile = Paths.get("res\\hmi.properties").toAbsolutePath();
-			System.out.println(propFile.toString());
-			properties.load(Files.newBufferedReader(propFile));
-
-			properties.stringPropertyNames()
-					.forEach(key -> loader.getNamespace().put(key, properties.getProperty(key)));
-			
-			System.out.println(properties.getProperty("hmi_test"));
+			ResourceManager.loadProperties(loader);
 
 			primaryStage.setScene(new Scene(loader.load()));
-			primaryStage.setTitle(ResourceManager.getString("main.title"));
+			primaryStage.setTitle(ResourceManager.getLanguageString("main.title"));
 
 			AppLauncher.mainController = (MainWindowController) loader.getController();
 		} catch (IOException e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getString("error.main.creation"));
+			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getLanguageString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
 
