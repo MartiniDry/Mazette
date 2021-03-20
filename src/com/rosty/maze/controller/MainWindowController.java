@@ -4,6 +4,10 @@ import java.time.Duration;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.text.html.CSS;
+
+import org.w3c.dom.css.CSSStyleSheet;
+
 import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
@@ -33,6 +37,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -43,6 +48,9 @@ import javafx.scene.layout.VBox;
  */
 public class MainWindowController implements Observer {
 	/* ATTRIBUTS FXML */
+
+	@FXML
+	private BorderPane mainPane;
 
 	@FXML
 	private GIntegerField newMazeRows, newMazeColumns;
