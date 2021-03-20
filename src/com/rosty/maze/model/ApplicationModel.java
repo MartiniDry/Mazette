@@ -1,7 +1,7 @@
 package com.rosty.maze.model;
 
+import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
-import com.rosty.maze.view.ResourceManager;
 
 /**
  * Classe définissant le modèle du logiciel.
@@ -55,6 +55,6 @@ public class ApplicationModel {
 		if (nbRow > 0 && nbCol > 0)
 			maze = new Maze(nbRow, nbCol);
 		else
-			throw new Exception(ResourceManager.getLanguageString("error.maze.creation.size"));
+			throw new Exception(LocaleManager.getString("error.maze.creation.size"));
 	}
 }

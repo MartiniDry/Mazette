@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
@@ -14,7 +15,6 @@ import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
-import com.rosty.maze.view.ResourceManager;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
@@ -142,7 +142,7 @@ public class MainWindowController implements Observer {
 			ApplicationModel.getInstance().reload(newMazeRows.getValue(), newMazeColumns.getValue());
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		} catch (Exception e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getLanguageString("error.maze.creation"));
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.maze.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
 		}

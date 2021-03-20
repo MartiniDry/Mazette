@@ -1,14 +1,16 @@
 package com.rosty.maze.application;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import com.rosty.maze.application.labels.LocaleManager;
+import com.rosty.maze.application.labels.PropertiesManager;
 import com.rosty.maze.controller.MainWindowController;
-import com.rosty.maze.view.ResourceManager;
 import com.rosty.maze.view.box.MessageBox;
 
 import javafx.application.Application;
@@ -46,28 +48,28 @@ public class AppLauncher extends Application {
 	public void init() throws Exception {
 		super.init();
 		MessageBox.setStyleSheet(CSS_PATH + "message-box.css");
-		ResourceManager.addProperties("hmi.properties");
+		PropertiesManager.insert("hmi.properties");
 	}
 
 	@Override
 	public void start(Stage stage) {
 		AppLauncher.primaryStage = stage;
 
-		FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"),
-				ResourceManager.getBundle());
+		FXMLLoader loader = new FXMLLoader(LocaleManager.class.getResource("../../view/MainWindow.fxml"),
+				LocaleManager.getBundle());
 		try {
-			ResourceManager.loadProperties(loader);
+			PropertiesManager.load(loader);
 			primaryStage.setScene(new Scene(loader.load()));
 
 			AppLauncher.mainController = (MainWindowController) loader.getController();
 
-			primaryStage.setTitle(ResourceManager.getLanguageString("main.title"));
+			primaryStage.setTitle(LocaleManager.getString("main.title"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_24x24.png"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
 
 			primaryStage.centerOnScreen();
 		} catch (IOException e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getLanguageString("error.main.creation"));
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
 
@@ -99,23 +101,22 @@ public class AppLauncher extends Application {
 	 * @param fileName Nom du fichier-son (avec son extension).
 	 */
 	public static synchronized void playSound(final String fileName) {
-		new Thread(() -> {
+//		new Thread(() -> {
 			try {
-				AudioInputStream inputStream = AudioSystem
-						.getAudioInputStream(ResourceManager.class.getResourceAsStream("sounds/" + fileName));
+				InputStream soundStream = LocaleManager.class.getResourceAsStream("../../view/sounds/" + fileName);
+				AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundStream);
 
 				Clip clip = AudioSystem.getClip();
 				clip.open(inputStream);
 				clip.start();
 			} catch (Exception e) {
-				MessageBox box = new MessageBox(AlertType.ERROR,
-						ResourceManager.getLanguageString("error.main.creation"));
-				box.setContentText(e.getLocalizedMessage());
-				box.showAndWait();
+//				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
+//				box.setContentText(e.getLocalizedMessage());
+//				box.showAndWait();
 
 				e.printStackTrace();
 			}
-		}).start();
+//		}).start();
 	}
 
 	/**
@@ -127,17 +128,17 @@ public class AppLauncher extends Application {
 	 */
 	public static void reloadView(Locale locale) {
 		try {
-			ResourceManager.setLanguage(locale);
-			FXMLLoader loader = new FXMLLoader(ResourceManager.class.getResource("MainWindow.fxml"),
-					ResourceManager.getBundle());
-			ResourceManager.loadProperties(loader);
+			LocaleManager.setLanguage(locale);
+			FXMLLoader loader = new FXMLLoader(LocaleManager.class.getResource("MainWindow.fxml"),
+					LocaleManager.getBundle());
+			PropertiesManager.load(loader);
 
 			primaryStage.setScene(new Scene(loader.load()));
-			primaryStage.setTitle(ResourceManager.getLanguageString("main.title"));
+			primaryStage.setTitle(LocaleManager.getString("main.title"));
 
 			AppLauncher.mainController = (MainWindowController) loader.getController();
 		} catch (IOException e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, ResourceManager.getLanguageString("error.main.creation"));
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
 
