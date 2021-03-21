@@ -8,6 +8,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import com.rosty.maze.Mazette;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.application.labels.PropertiesManager;
 import com.rosty.maze.controller.MainWindowController;
@@ -55,7 +56,7 @@ public class AppLauncher extends Application {
 	public void start(Stage stage) {
 		AppLauncher.primaryStage = stage;
 
-		FXMLLoader loader = new FXMLLoader(LocaleManager.class.getResource("../../view/MainWindow.fxml"),
+		FXMLLoader loader = new FXMLLoader(Mazette.class.getResource("view/MainWindow.fxml"),
 				LocaleManager.getBundle());
 		try {
 			PropertiesManager.load(loader);
@@ -101,22 +102,22 @@ public class AppLauncher extends Application {
 	 * @param fileName Nom du fichier-son (avec son extension).
 	 */
 	public static synchronized void playSound(final String fileName) {
-//		new Thread(() -> {
+		new Thread(() -> {
 			try {
-				InputStream soundStream = LocaleManager.class.getResourceAsStream("../../view/sounds/" + fileName);
+				InputStream soundStream = Mazette.class.getResourceAsStream("view/sounds/" + fileName);
 				AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundStream);
 
 				Clip clip = AudioSystem.getClip();
 				clip.open(inputStream);
 				clip.start();
 			} catch (Exception e) {
-//				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
-//				box.setContentText(e.getLocalizedMessage());
-//				box.showAndWait();
+				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
+				box.setContentText(e.getLocalizedMessage());
+				box.showAndWait();
 
 				e.printStackTrace();
 			}
-//		}).start();
+		}).start();
 	}
 
 	/**
