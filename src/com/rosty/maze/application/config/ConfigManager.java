@@ -30,7 +30,7 @@ public class ConfigManager {
 	private static final String XSD_FILENAME = "config.xsd"; // Nom du fichier de validation
 
 	/** Fichier de configuration XML. */
-	private static File xmlFile = new File("res", XML_FILENAME);
+	private static File xmlFile = new File("res/config", XML_FILENAME);
 	private static File xsdFile = new File("com/ratp/oam/model/config", XSD_FILENAME);
 	private static Document document; // Document XML issu du fichier
 
