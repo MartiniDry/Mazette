@@ -33,14 +33,18 @@ public class AppLauncher extends Application {
 	private static final String ICON_PATH = "com/rosty/maze/application/icons/";
 	private static final String CSS_PATH = "com/rosty/maze/view/css/";
 
+	/** Conteneur de l'IHM principale de l'application. */
 	private static Stage primaryStage;
 
+	/** Fournit le conteneur de l'IHM principale de l'application. */
 	public static final Stage getPrimaryStage() {
 		return primaryStage;
 	}
 
+	/** Contrôleur principal de l'application. */
 	private static MainWindowController mainController;
 
+	/** Fournit le contrôleur principal de l'application. */
 	public static final MainWindowController getMainController() {
 		return mainController;
 	}
@@ -90,7 +94,6 @@ public class AppLauncher extends Application {
 	 * Exécute un fichier-son via un <i>thread</i> asynchrone. Cette méthode
 	 * n'exécute que les fichiers de ressource du logiciel ; ceux-ci sont présents
 	 * dans le <i>package</i> <b>com.rosty.maze.view.sounds</b>.
-	 * 
 	 * <p>
 	 * <u>Exemple :</u><br/>
 	 * 
@@ -122,15 +125,15 @@ public class AppLauncher extends Application {
 
 	/**
 	 * Recharge la totalité de l'IHM en modifiant la langue d'affichage. Les
-	 * fichiers de ressource sont contenus dans le dossier
-	 * <b>com.rosty.maze.view.labels</b>.
+	 * fichiers de locale sont contenus dans le dossier
+	 * <b>com.rosty.maze.application.labels</b>.
 	 * 
 	 * @param locale Indice de localisation du logiciel.
 	 */
 	public static void reloadView(Locale locale) {
 		try {
-			LocaleManager.setLanguage(locale);
-			FXMLLoader loader = new FXMLLoader(LocaleManager.class.getResource("MainWindow.fxml"),
+			LocaleManager.set(locale);
+			FXMLLoader loader = new FXMLLoader(Mazette.class.getResource("view/MainWindow.fxml"),
 					LocaleManager.getBundle());
 			PropertiesManager.load(loader);
 
