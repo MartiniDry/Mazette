@@ -4,8 +4,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Classe de gestion de la locale pour le logiciel. Cette classe permet au
- * logiciel d'afficher du texte multilingue en fonction du paramètre choisi mais
+ * Gestionnaire de la locale du logiciel. Cette classe permet au logiciel
+ * d'afficher du texte multilingue en fonction du paramètre choisi mais
  * également de définir des styles et des formats propres aux différents
  * langages, par exemple la lecture des caractères chinois de haut en bas. Ces
  * données sont catégorisées dans un groupe de fichiers nommés un <i>bundle</i>
