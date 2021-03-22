@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.AppLauncher;
+import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.dialog.DialogUtility;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
@@ -100,12 +101,14 @@ public class MenuBarController {
 
 	@FXML
 	private void switchToFrench() {
-		AppLauncher.reloadView(Locale.FRENCH);
+		LocaleManager.set(Locale.FRENCH);
+		AppLauncher.reloadView();
 	}
 
 	@FXML
 	private void switchToEnglish() {
-		AppLauncher.reloadView(Locale.ENGLISH);
+		LocaleManager.set(Locale.ENGLISH);
+		AppLauncher.reloadView();
 	}
 
 	@FXML

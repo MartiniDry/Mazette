@@ -2,7 +2,6 @@ package com.rosty.maze.application;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -124,15 +123,16 @@ public class AppLauncher extends Application {
 	}
 
 	/**
-	 * Recharge la totalité de l'IHM en modifiant la langue d'affichage. Les
-	 * fichiers de locale sont contenus dans le dossier
-	 * <b>com.rosty.maze.application.labels</b>.
-	 * 
-	 * @param locale Indice de localisation du logiciel.
+	 * Recharge l'IHM principale de l'application. Cette action :
+	 * <ul>
+	 * <li>Définit la langue utilisée via le gestionnaire de locale (instance
+	 * {@link LocaleManager})</li>
+	 * <li>Charge l'ensemble des propriétés incluses dans le gestionnaire de
+	 * propriétés (instance {@link PropertiesManager}).</li>
+	 * </ul>
 	 */
-	public static void reloadView(Locale locale) {
+	public static void reloadView() {
 		try {
-			LocaleManager.set(locale);
 			FXMLLoader loader = new FXMLLoader(Mazette.class.getResource("view/MainWindow.fxml"),
 					LocaleManager.getBundle());
 			PropertiesManager.load(loader);
