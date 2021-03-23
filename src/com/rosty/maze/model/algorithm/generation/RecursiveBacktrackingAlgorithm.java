@@ -91,19 +91,7 @@ public class RecursiveBacktrackingAlgorithm extends MazeGenerationAlgorithm {
 		int[] pos = directPath.get(directPath.size() - 1); // Position courante
 		int x = pos[0], y = pos[1];
 
-		List<WallCoord> sides = new ArrayList<>();
-		if (x > 0)
-			sides.add(new WallCoord(x, y, Side.UP));
-
-		if (y > 0)
-			sides.add(new WallCoord(x, y, Side.LEFT));
-
-		if (x < nbRow - 1)
-			sides.add(new WallCoord(x, y, Side.DOWN));
-
-		if (y < nbCol - 1)
-			sides.add(new WallCoord(x, y, Side.RIGHT));
-
+		List<WallCoord> sides = getSides(x, y);
 		for (WallCoord side : sides) {
 			int sideValue = mazePanel.getNeighbourCell(side);
 			if (sideValue != -1 /* hors-grille, c'est une simple sécurité */
@@ -114,8 +102,7 @@ public class RecursiveBacktrackingAlgorithm extends MazeGenerationAlgorithm {
 
 		// Phase d'exploration (ou de rembobinage)
 		if (!unexplored.isEmpty()) {
-			int r = rand.nextInt(unexplored.size());
-			WallCoord selectedSide = unexplored.get(r);
+			WallCoord selectedSide = unexplored.get(rand.nextInt(unexplored.size()));
 			switch (selectedSide.side) {
 			case UP:
 				x--;
@@ -142,5 +129,31 @@ public class RecursiveBacktrackingAlgorithm extends MazeGenerationAlgorithm {
 			if (!directPath.isEmpty())
 				directPath.remove(directPath.size() - 1);
 		}
+	}
+
+	/**
+	 * Fournit la direction vers l'ensemble des cellules voisines à la cellule
+	 * spécifiée. Chaque direction est indiquée par un mur adjacent i.e. une
+	 * instance {@link WallCoord}.
+	 * 
+	 * @param i Ligne de la cellule courante.
+	 * @param j Colonne de la cellule courante.
+	 * @return Liste des murs voisins à la cellule courante.
+	 */
+	private ArrayList<WallCoord> getSides(int i, int j) {
+		ArrayList<WallCoord> sides = new ArrayList<>();
+		if (i > 0)
+			sides.add(new WallCoord(i, j, Side.UP));
+
+		if (j > 0)
+			sides.add(new WallCoord(i, j, Side.LEFT));
+
+		if (i < nbRow - 1)
+			sides.add(new WallCoord(i, j, Side.DOWN));
+
+		if (j < nbCol - 1)
+			sides.add(new WallCoord(i, j, Side.RIGHT));
+
+		return sides;
 	}
 }

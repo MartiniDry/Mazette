@@ -90,7 +90,6 @@ public class HuntAndKillAlgorithm extends MazeGenerationAlgorithm {
 				mazePanel.setCell(x, y, 1);
 				if (visitedSides != null) { // Simple precaution.
 					WallCoord wall = visitedSides.get(rand.nextInt(visitedSides.size()));
-					System.out.println("Visited side: " + wall.x + " " + wall.y + " " + wall.side);
 					mazePanel.setWall(wall.x, wall.y, wall.side, 0);
 				}
 
