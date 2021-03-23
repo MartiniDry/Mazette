@@ -19,7 +19,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [X] Kruskal (basic algorithm + alternative version with array sort)
 - [X] Recursive backtracking
 - [X] Recursive division
-- [ ] Hunt-and-Kill (or HK)
+- [X] Hunt-and-Kill (or HK)
 - [ ] Eller
 - [X] Prim
 - [ ] Aldous-Broder
