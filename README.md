@@ -13,6 +13,8 @@ The software proposes several functionalities:
  * Running algorithms via a command bar; those algorithms can be run **directly** or **step by step**.
  * Customising maze processing (size, duration between two steps, etc.)
 
+![Application main page](res/main_page.png)
+
 ## Implemented generation algorithms
 
 All those algorithms are based on the [excellent site from Jamis Buck](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap), doing a very complete state-of-the-art of the mathematical problem, except for the last algorithm which goes around in my head since 2019 (some little ideas went in my head in 2009 when I began studying mazes but I began working seriously on it in 2020).
