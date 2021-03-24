@@ -1,8 +1,9 @@
-# Mazette ![Logo for Mazette](src/com/rosty/maze/application/icons/logo_128x128.png)
+# Mazette
 
 **Maze generator and solver using different algorithms**
 
-###### Version: 1.0
+![Version](https://img.shields.io/badge/Version-1.0-blue)
+![Language](https://img.shields.io/badge/Language-Java/JavaFX-green)
 
 ------
 
