@@ -26,6 +26,7 @@
 		<MenuItem text="%main.menu.generation.prim" onAction="#generatePrim" />
 		<MenuItem text="%main.menu.generation.huntAndKill" onAction="#generateHuntAndKill" />
 		<MenuItem text="%main.menu.generation.aldousBroder" onAction="#generateAldousBroder" />
+		<MenuItem text="%main.menu.generation.wilson" onAction="#generateWilson" />
 		<MenuItem text="%main.menu.generation.personal" onAction="#generatePersonal" />
 	</Menu>
 

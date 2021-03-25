@@ -16,6 +16,7 @@ import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 
 import javafx.fxml.FXML;
@@ -93,7 +94,13 @@ public class MenuBarController {
 
 	@FXML
 	private void generateAldousBroder() {
-		AppLauncher.getMainController().regenerate(new AldousBroderAlgorithm(AppLauncher.getMainController().mazePanel));
+		AppLauncher.getMainController()
+				.regenerate(new AldousBroderAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
+	private void generateWilson() {
+		AppLauncher.getMainController().regenerate(new WilsonAlgorithm(AppLauncher.getMainController().mazePanel));
 	}
 
 	@FXML

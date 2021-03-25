@@ -17,6 +17,7 @@ import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
@@ -96,6 +97,7 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme de Prim", ae -> regenerate(new PrimAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme \"Hunt-and-Kill\"", ae -> regenerate(new HuntAndKillAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme d'Aldous-Broder", ae -> regenerate(new AldousBroderAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme de Wilson", ae -> regenerate(new WilsonAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 
 		delta.setValue(generator.getTimeout());
@@ -222,8 +224,10 @@ public class MainWindowController implements Observer {
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(5));
 				else if (algo instanceof AldousBroderAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(6));
-				else if (algo instanceof PersonalAlgorithm)
+				else if (algo instanceof WilsonAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(7));
+				else if (algo instanceof PersonalAlgorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(8));
 			}
 		});
 	}
