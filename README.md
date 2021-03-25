@@ -25,7 +25,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [X] Hunt-and-Kill (or HK)
 - [ ] Eller
 - [X] Prim
-- [ ] Aldous-Broder
+- [X] Aldous-Broder
 - [ ] Wilson
 - [ ] Growing tree
 - [ ] Binary tree
