@@ -24,7 +24,8 @@
 		<MenuItem text="%main.menu.generation.recursiveBacktracker" onAction="#generateRecursiveBacktracker" />
 		<MenuItem text="%main.menu.generation.recursiveDivision" onAction="#generateRecursiveDivision" />
 		<MenuItem text="%main.menu.generation.prim" onAction="#generatePrim" />
-		<MenuItem text="%main.menu.generation.huntandkill" onAction="#generateHuntAndKill" />
+		<MenuItem text="%main.menu.generation.huntAndKill" onAction="#generateHuntAndKill" />
+		<MenuItem text="%main.menu.generation.aldousBroder" onAction="#generateAldousBroder" />
 		<MenuItem text="%main.menu.generation.personal" onAction="#generatePersonal" />
 	</Menu>
 

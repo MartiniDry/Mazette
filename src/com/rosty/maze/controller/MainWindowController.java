@@ -9,6 +9,7 @@ import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
+import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
@@ -94,6 +95,7 @@ public class MainWindowController implements Observer {
 				ae -> regenerate(new RecursiveDivisionAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de Prim", ae -> regenerate(new PrimAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme \"Hunt-and-Kill\"", ae -> regenerate(new HuntAndKillAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme d'Aldous-Broder", ae -> regenerate(new AldousBroderAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 
 		delta.setValue(generator.getTimeout());

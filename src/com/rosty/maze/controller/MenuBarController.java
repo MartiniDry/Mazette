@@ -8,6 +8,7 @@ import com.rosty.maze.Mazette;
 import com.rosty.maze.application.AppLauncher;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.dialog.DialogUtility;
+import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
@@ -88,6 +89,11 @@ public class MenuBarController {
 	@FXML
 	private void generateHuntAndKill() {
 		AppLauncher.getMainController().regenerate(new HuntAndKillAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
+	private void generateAldousBroder() {
+		AppLauncher.getMainController().regenerate(new AldousBroderAlgorithm(AppLauncher.getMainController().mazePanel));
 	}
 
 	@FXML
