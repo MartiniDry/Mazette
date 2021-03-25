@@ -218,8 +218,12 @@ public class MainWindowController implements Observer {
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(3));
 				else if (algo instanceof PrimAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(4));
-				else if (algo instanceof PersonalAlgorithm)
+				else if (algo instanceof HuntAndKillAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(5));
+				else if (algo instanceof AldousBroderAlgorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(6));
+				else if (algo instanceof PersonalAlgorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(7));
 			}
 		});
 	}
