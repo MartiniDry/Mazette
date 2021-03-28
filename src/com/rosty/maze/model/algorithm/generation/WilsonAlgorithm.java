@@ -9,12 +9,60 @@ import com.rosty.maze.model.Maze.WallCoord;
 import com.rosty.maze.model.algorithm.MazeGenerationAlgorithm;
 import com.rosty.maze.widgets.MazePanel;
 
+/**
+ * <h1>Algorithme de Wilson</h1>
+ * 
+ * <p>
+ * <h2>Principe</h2> L'algorithme explore la grille de façon incrémentale en
+ * traçant des chemins de la zone vierge vers la zone explorée. L'algorithme
+ * s'arrête lorsqu'il n'est plus possible de tracer de chemin, ce qui implique
+ * qu'il n'y a plus de case à explorer.
+ * </p>
+ * 
+ * <p>
+ * <h2>Dans le détail :</h2>
+ * <ul>
+ * <li>On choisit un point d'ancrage <b>P0(x0,y0)</b> et un point <b>P != P0</b>
+ * où est placé l'explorateur. Ce dernier va se promener pas à pas dans la
+ * grille de façon aléatoire, jusqu'à rencontrer <b>P0</b>. Une fois le chemin
+ * trouvé, l'algorithme brise les murs de <b>P</b> à <b>P0</b> et marque les
+ * cases comme explorées.</li>
+ * <li>L'algorithme répète la procédure mais cette fois-ci, le point <b>P</b>
+ * correspond à la cellule vierge située le plus en haut à gauche de la grille.
+ * Le chemin ne vise plus un point d'ancrage <b>P0</b> mais l'ensemble des cases
+ * visitées. Si l'explorateur atteint une cellule explorée au cours de sa
+ * promenade, alors l'étape est terminée ; les murs sont brisés et les cases
+ * sont marquées comme visitées.</li>
+ * <li>Lors de la phase d'exploration, si le chemin passe deux fois par la même
+ * cellule dans la grille (création d'une boucle), l'algorithme rembobine le
+ * chemin pas à pas jusqu'a atteindre la cellule en question ; il reprend alors
+ * son exploration en partant de ce point.</li>
+ * <li>L'algorithme se temrine lorsque l'explorateur s'est promené sur
+ * l'ensemble des cases de la grille.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * <h2>Complexité</h2> Les performances de l'algorithme dépendent du parcours
+ * totalement aléatoire dans la grille ; on ne peut donc pas déterminer la
+ * complexité temporelle de cet algorithme. Cependant, on peut affirmer que
+ * l'algorithme est statistiquement plus court qu'Aldous-Broder car celui-ci
+ * prend en compte la présence de cellules déjà explorées ; ce n'est pas une
+ * exploration "à l'aveugle".
+ * </p>
+ * 
+ * @author Martin Rostagnat
+ * @version 1.0
+ */
 public class WilsonAlgorithm extends MazeGenerationAlgorithm {
-	/** Portion de chemin parcourue par l'explorateur. */
+	/** Portion de chemin explorée. */
 	private List<WallCoord> partialPath = new ArrayList<>();
 	/** Position courante de l'explorateur dans la grille. */
 	private int x = -1 /* ligne */, y = -1 /* colonne */;
-	/** Point d'arrivée de l'explorateur qui définit un chemin du labyrinthe. */
+	/**
+	 * Point d'ancrage initial ; au démarrage de l'algorithme, l'explorateur doit
+	 * arriver à ce point.
+	 */
 	private int x0 /* ligne */, y0 /* colonne */;
 
 	/** Générateur de nombres aléatoires. */
@@ -47,9 +95,13 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public boolean isComplete() {
+		// Si un chemin est en cours d'exploration, alors l'algorithme n'est pas
+		// terminé.
 		if (!partialPath.isEmpty())
 			return false;
 
+		// S'il reste encore des cases à explorer (valeur 0), alors l'algorithme n'est
+		// pas terminé.
 		for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)
 				if (mazePanel.getCell(i, j) == 0)
@@ -60,6 +112,8 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public void step() {
+		// Au départ de l'algorithme, aucun chemin n'est lancé et les coordonnées (x,y)
+		// sont à définir pour débuter l'exploration.
 		if (partialPath.isEmpty()) {
 			if (x == -1 && y == -1) { // Si l'on est au tout début de l'algorithme, ...
 				// ...alors le point de départ est choisi au hasard (mais différent de (x0,y0)).
@@ -68,11 +122,11 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 					y = rand.nextInt(nbCol - 1);
 				} while (x == x0 && y == y0);
 			} else {
-				// Sinon on choisit la cellule vierge la plus en haut à gauche de la grille.
+				// Cette étape est atteinte lorsque l'algorithme a validé la portion de chemin
+				// et qu'une nouvelle exploration de la grille est lancée.
 				boolean found = false;
-				
-				rowLoop:
-				for (int i = 0; i < nbRow; i++)
+				// Recherche de la cellule vierge la plus en haut à gauche de la grille.
+				rowLoop: for (int i = 0; i < nbRow; i++)
 					for (int j = 0; j < nbCol; j++)
 						if (mazePanel.getCell(i, j) == 0) {
 							x = i;
@@ -82,42 +136,63 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 						}
 
 				if (!found) // Si aucune case inexplorée n'est présente, ...
-					return; // ...alors l'algorithme de Wilson est terminé.
+					return; // ...alors l'algorithme est terminé.
 			}
 
-			// A ce stade, on a défini une nouvelle coordonnée (x,y).
+			// A ce stade, on a défini une nouvelle coordonnée (x,y) ; la case est marquée
+			// comme explorée.
+			mazePanel.setCell(x, y, 1);
+
+			// Choix du prochain pas à réaliser, qui sera inséré dans le chemin partiel.
 			ArrayList<WallCoord> sides = getSides(x, y);
 			WallCoord direction = sides.get(rand.nextInt(sides.size()));
 			partialPath.add(direction);
-			mazePanel.setCell(x, y, 1);
 		} else {
+			// Cette étape est atteinte lorsqu'une exploration est en cours. Le dernier
+			// élément du chemin partiel indique le dernier pas choisi par l'algorithme ;
+			// nous le faisons ici.
 			WallCoord lastDirection = partialPath.get(partialPath.size() - 1);
 			move(lastDirection.side);
 
-			if (mazePanel.getCell(x, y) == 0) {
+			switch (mazePanel.getCell(x, y)) { // Nouvelle position de l'explorateur
+			case 0: // Si la case n'est pas visitée, ...
+				// ...alors on la marque comme explorée et on détermine le prochain pas à
+				// réaliser.
 				mazePanel.setCell(x, y, 1);
 				ArrayList<WallCoord> sides = getSides(x, y);
 				WallCoord newDirection = sides.get(rand.nextInt(sides.size()));
 				partialPath.add(newDirection);
-			} else if (mazePanel.getCell(x, y) == 1) {
+
+				break;
+			case 1: // Si la case est marquée comme visitée, ...
+				// ...alors elle fait partie du chemin courant, ce qui indique que l'explorateur
+				// tourne en rond ! Il doit faire demi-tour pour que la boucle disparaisse.
 				int index = partialPath.size() - 1;
 				WallCoord dir = lastDirection;
-				do {
+				do { // Faire un pas en arrière, ...
 					partialPath.remove(index--);
 					mazePanel.setCell(dir.x, dir.y, 0);
-					if (index >= 0) {
+					if (index >= 0) // Simple sécurité
 						dir = partialPath.get(index);
-					}
-				} while (dir.x != x || dir.y != y);
+					else
+						break;
+				} while (dir.x != x || dir.y != y); // ...tant que l'on n'est pas revenu à (x,y).
 
-				mazePanel.setCell(x, y, 1);
-			} else if (mazePanel.getCell(x, y) == 2) {
-				for (WallCoord wall : partialPath) {
+				mazePanel.setCell(x, y, 1); // Le chemin est relancé en (x,y).
+
+				break;
+			case 2: // Si la case est déjà explorée, ...
+				// ...alors on valide le chemin partiel en brisant les murs et en marquant les
+				// cases comme valides (valeur 2).
+				partialPath.forEach(wall -> {
 					mazePanel.setWall(wall.x, wall.y, wall.side, 0);
 					mazePanel.setCell(wall.x, wall.y, 2);
-				}
+				});
+				partialPath.clear(); // Le chemin est effacé pour débuter une nouvelle exploration.
 
-				partialPath.clear();
+				break;
+			default:
+				break;
 			}
 		}
 	}
