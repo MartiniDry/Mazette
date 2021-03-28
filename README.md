@@ -26,7 +26,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [ ] Eller
 - [X] Prim
 - [X] Aldous-Broder
-- [ ] Wilson
+- [X] Wilson
 - [ ] Growing tree
 - [ ] Binary tree
 - [ ] Sidewinder
