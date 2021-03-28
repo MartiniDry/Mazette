@@ -28,17 +28,19 @@ import com.rosty.maze.widgets.MazePanel;
  * trouvé, l'algorithme brise les murs de <b>P</b> à <b>P0</b> et marque les
  * cases comme explorées.</li>
  * <li>L'algorithme répète la procédure mais cette fois-ci, le point <b>P</b>
- * correspond à la cellule vierge située le plus en haut à gauche de la grille.
- * Le chemin ne vise plus un point d'ancrage <b>P0</b> mais l'ensemble des cases
- * visitées. Si l'explorateur atteint une cellule explorée au cours de sa
- * promenade, alors l'étape est terminée ; les murs sont brisés et les cases
- * sont marquées comme visitées.</li>
+ * correspond à la cellule vierge située le plus au coin de la grille ; soit le
+ * coin en haut à gauche (<code>reversed=false</code>), soit le coin en bas à
+ * droite (<code>reversed=true</code>). Le chemin ne vise plus un point
+ * d'ancrage <b>P0</b> mais l'ensemble des cases visitées. En d'autres termes,
+ * si l'explorateur atteint une cellule explorée au cours de sa promenade, alors
+ * l'étape est terminée ; les murs sont brisés et les cases sont marquées comme
+ * visitées.</li>
  * <li>Lors de la phase d'exploration, si le chemin passe deux fois par la même
  * cellule dans la grille (création d'une boucle), l'algorithme rembobine le
  * chemin pas à pas jusqu'a atteindre la cellule en question ; il reprend alors
  * son exploration en partant de ce point.</li>
- * <li>L'algorithme se temrine lorsque l'explorateur s'est promené sur
- * l'ensemble des cases de la grille.</li>
+ * <li>L'algorithme se temrine lorsque l'explorateur s'est promené sur toutes
+ * les cases de la grille.</li>
  * </ul>
  * </p>
  * 
@@ -64,6 +66,12 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 	 * arriver à ce point.
 	 */
 	private int x0 /* ligne */, y0 /* colonne */;
+
+	/**
+	 * Booléen indiquant si l'explorateur débute ses promenades en partant du haut
+	 * ou du bas de la grille.
+	 */
+	private boolean reversed = false;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -125,15 +133,27 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 				// Cette étape est atteinte lorsque l'algorithme a validé la portion de chemin
 				// et qu'une nouvelle exploration de la grille est lancée.
 				boolean found = false;
-				// Recherche de la cellule vierge la plus en haut à gauche de la grille.
-				rowLoop: for (int i = 0; i < nbRow; i++)
-					for (int j = 0; j < nbCol; j++)
-						if (mazePanel.getCell(i, j) == 0) {
-							x = i;
-							y = j;
-							found = true;
-							break rowLoop;
-						}
+				if (!reversed) {
+					// Recherche de la cellule vierge la plus en haut à gauche de la grille.
+					rowLoop: for (int i = 0; i < nbRow; i++)
+						for (int j = 0; j < nbCol; j++)
+							if (mazePanel.getCell(i, j) == 0) {
+								x = i;
+								y = j;
+								found = true;
+								break rowLoop;
+							}
+				} else {
+					// Recherche de la cellule vierge la plus en bas à droite de la grille.
+					rowLoop: for (int i = nbRow - 1; i >= 0; i--)
+						for (int j = nbCol - 1; j >= 0; j--)
+							if (mazePanel.getCell(i, j) == 0) {
+								x = i;
+								y = j;
+								found = true;
+								break rowLoop;
+							}
+				}
 
 				if (!found) // Si aucune case inexplorée n'est présente, ...
 					return; // ...alors l'algorithme est terminé.
