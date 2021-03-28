@@ -1,5 +1,6 @@
 package com.rosty.maze.widgets;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -170,6 +172,7 @@ public class MazePanel extends Pane {
 	/* VARIABLES */
 
 	private Rectangle[][] blocks; // Cases du labyrinthe
+	private Label[][] labels; // Valeurs des cases du labyrinthe
 	private Line[][] vLines; // Murs verticaux du labyrinthe
 	private Line[][] hLines; // Murs horizontaux du labyrinthe
 	private Circle[][] corners; // Points placés dans les intersections des murs
@@ -189,7 +192,7 @@ public class MazePanel extends Pane {
 	}
 
 	@FXML
-	private void initialize() {
+	public void initialize() {
 		mazeProperty.addListener(e -> update());
 		widthProperty().addListener(e -> update());
 		heightProperty().addListener(e -> update());
@@ -362,6 +365,21 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	protected void displayLabels() {
+		int X = 2 * getMaze().getNbRows() + 1;
+		for (int i = 1; i < X - 1; i += 2) {
+			int Y = 2 * getMaze().getNbColumns() + 1;
+			for (int j = 1; j < Y - 1; j += 2) {
+				Label lbl = new Label("" + getMaze().getCell((i - 1) / 2, (j - 1) / 2));
+				lbl.setStyle("-fx-font-weight: bold");
+				lbl.setLayoutX(deltaX + (H * (j - 1)) / (X - 1) + 3);
+				lbl.setLayoutY(deltaY + (W * (i - 1)) / (Y - 1) + 3);
+				labels[(i - 1) / 2][(j - 1) / 2] = lbl;
+				getChildren().add(lbl);
+			}
+		}
+	}
+
 	/** Fournit la valeur de la cellule à la ligne et à la colonne indiquée. */
 	public int getCell(int row, int col) {
 		return getMaze().getCell(row, col);
@@ -377,6 +395,7 @@ public class MazePanel extends Pane {
 	public void setCell(int row, int col, int value) {
 		getMaze().setCell(row, col, value);
 		blocks[row][col].setFill((value == 1) ? getBlockColor() : Color.TRANSPARENT);
+//		labels[row][col].setText("" + value);
 	}
 
 	/**
@@ -464,12 +483,14 @@ public class MazePanel extends Pane {
 				hLines = new Line[m + 1][n];
 				corners = new Circle[m + 1][n + 1];
 				blocks = new Rectangle[m][n];
+//				labels = new Label[m][n];
 
 				defineSize();
 //				displayBorders();
 				displayBlocks();
 				displayWalls();
 //				displayGrid();
+//				displayLabels();
 			}
 		}
 	}
