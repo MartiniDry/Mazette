@@ -11,9 +11,9 @@ import com.rosty.maze.widgets.MazePanel;
 
 public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 	/** Portion de chemin parcourue par l'explorateur. */
-	private List<int[]> partialPath = new ArrayList<>();
+	private List<WallCoord> partialPath = new ArrayList<>();
 	/** Position courante de l'explorateur dans la grille. */
-	private int x /* ligne */, y /* colonne */;
+	private int x = -1 /* ligne */, y = -1 /* colonne */;
 	/** Point d'arrivée de l'explorateur qui définit un chemin du labyrinthe. */
 	private int x0 /* ligne */, y0 /* colonne */;
 
@@ -40,24 +40,85 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 		// Définition (aléatoire) du point de départ
 		x0 = rand.nextInt(nbRow - 1);
 		y0 = rand.nextInt(nbCol - 1);
+
+		// Le point de départ est exploré.
+		mazePanel.setCell(x0, y0, 2);
 	}
 
 	@Override
 	public boolean isComplete() {
+		if (!partialPath.isEmpty())
+			return false;
+
 		for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)
-				if (mazePanel.getMaze().get(i, j) != 2)
+				if (mazePanel.getCell(i, j) == 0)
 					return false;
-		
+
 		return true;
 	}
 
 	@Override
 	public void step() {
 		if (partialPath.isEmpty()) {
-			;
+			if (x == -1 && y == -1) { // Si l'on est au tout début de l'algorithme, ...
+				// ...alors le point de départ est choisi au hasard (mais différent de (x0,y0)).
+				do {
+					x = rand.nextInt(nbRow - 1);
+					y = rand.nextInt(nbCol - 1);
+				} while (x == x0 && y == y0);
+			} else {
+				// Sinon on choisit la cellule vierge la plus en haut à gauche de la grille.
+				boolean found = false;
+				
+				rowLoop:
+				for (int i = 0; i < nbRow; i++)
+					for (int j = 0; j < nbCol; j++)
+						if (mazePanel.getCell(i, j) == 0) {
+							x = i;
+							y = j;
+							found = true;
+							break rowLoop;
+						}
+
+				if (!found) // Si aucune case inexplorée n'est présente, ...
+					return; // ...alors l'algorithme de Wilson est terminé.
+			}
+
+			// A ce stade, on a défini une nouvelle coordonnée (x,y).
+			ArrayList<WallCoord> sides = getSides(x, y);
+			WallCoord direction = sides.get(rand.nextInt(sides.size()));
+			partialPath.add(direction);
+			mazePanel.setCell(x, y, 1);
 		} else {
-			;
+			WallCoord lastDirection = partialPath.get(partialPath.size() - 1);
+			move(lastDirection.side);
+
+			if (mazePanel.getCell(x, y) == 0) {
+				mazePanel.setCell(x, y, 1);
+				ArrayList<WallCoord> sides = getSides(x, y);
+				WallCoord newDirection = sides.get(rand.nextInt(sides.size()));
+				partialPath.add(newDirection);
+			} else if (mazePanel.getCell(x, y) == 1) {
+				int index = partialPath.size() - 1;
+				WallCoord dir = lastDirection;
+				do {
+					partialPath.remove(index--);
+					mazePanel.setCell(dir.x, dir.y, 0);
+					if (index >= 0) {
+						dir = partialPath.get(index);
+					}
+				} while (dir.x != x || dir.y != y);
+
+				mazePanel.setCell(x, y, 1);
+			} else if (mazePanel.getCell(x, y) == 2) {
+				for (WallCoord wall : partialPath) {
+					mazePanel.setWall(wall.x, wall.y, wall.side, 0);
+					mazePanel.setCell(wall.x, wall.y, 2);
+				}
+
+				partialPath.clear();
+			}
 		}
 	}
 
