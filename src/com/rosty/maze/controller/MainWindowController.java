@@ -10,6 +10,7 @@ import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
+import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
@@ -22,6 +23,7 @@ import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
 import com.rosty.maze.widgets.MazePanel;
+import com.rosty.maze.widgets.Spacing;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -98,6 +100,7 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme \"Hunt-and-Kill\"", ae -> regenerate(new HuntAndKillAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme d'Aldous-Broder", ae -> regenerate(new AldousBroderAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de Wilson", ae -> regenerate(new WilsonAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme de l'arbre binaire", ae -> regenerate(new BinaryTreeAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 
 		delta.setValue(generator.getTimeout());
@@ -180,6 +183,7 @@ public class MainWindowController implements Observer {
 	private void addGenerationButton(String label, EventHandler<ActionEvent> actionner) {
 		ToggleButton genButton = new ToggleButton(label);
 		genButton.setToggleGroup(group);
+		genButton.setPadding(new Spacing(1, 5));
 		genButton.setOnAction(ae -> {
 			if (genButton.isSelected())
 				actionner.handle(ae);
@@ -226,8 +230,10 @@ public class MainWindowController implements Observer {
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(6));
 				else if (algo instanceof WilsonAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(7));
-				else if (algo instanceof PersonalAlgorithm)
+				else if (algo instanceof BinaryTreeAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(8));
+				else if (algo instanceof PersonalAlgorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(9));
 			}
 		});
 	}
