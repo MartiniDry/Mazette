@@ -17,7 +17,7 @@ The software proposes several functionalities:
 
 ## Implemented generation algorithms
 
-All those algorithms are based on the [excellent site from Jamis Buck](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap), doing a very complete state-of-the-art of the mathematical problem, except for the last algorithm which goes around in my head since 2019 (some little ideas went in my head in 2009 when I began studying mazes but I began working seriously on it in 2020).
+All those algorithms are based on the [excellent site from Jamis Buck](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap), doing a very complete state-of-the-art of the mathematical problem, except for the last two algorithms. The former goes around in my head since 2019 (some little ideas went in my head in 2009 when I began studying mazes but I began working seriously on it in 2020) and the latter came to my head in 2021 while studying line rasterization.
 
 - [X] Kruskal (basic algorithm + alternative version with array sort)
 - [X] Recursive backtracking
@@ -31,6 +31,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [ ] Binary tree
 - [ ] Sidewinder
 - [X] Personal algorithm (name still to define 😊)
+- [ ] Personal algorithm #2 (will probably be called the "Mikado algorithm")
 
 ## Implemented solving algorithms
 
