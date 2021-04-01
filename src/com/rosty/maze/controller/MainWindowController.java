@@ -13,6 +13,7 @@ import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
 import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
@@ -102,6 +103,7 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme de Wilson", ae -> regenerate(new WilsonAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de l'arbre binaire", ae -> regenerate(new BinaryTreeAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme personnel #2", ae -> regenerate(new Personal2Algorithm(mazePanel)));
 
 		delta.setValue(generator.getTimeout());
 		delta.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
@@ -234,6 +236,8 @@ public class MainWindowController implements Observer {
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(8));
 				else if (algo instanceof PersonalAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(9));
+				else if (algo instanceof Personal2Algorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(10));
 			}
 		});
 	}

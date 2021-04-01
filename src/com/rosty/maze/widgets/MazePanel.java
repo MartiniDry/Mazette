@@ -1,6 +1,5 @@
 package com.rosty.maze.widgets;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
