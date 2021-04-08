@@ -1,3 +1,5 @@
+<img src="src/com/rosty/maze/application/icons/logo_128x128.png" align="right" />
+
 # Mazette
 
 **Maze generator and solver using different algorithms**
