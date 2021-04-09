@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.rosty.maze.Mazette;
 import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.Maze.WallCoord;
@@ -364,6 +365,7 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/** Génère les labels affichant la valeur des cases du labyrinthe. */
 	protected void displayLabels() {
 		int X = 2 * getMaze().getNbRows() + 1;
 		for (int i = 1; i < X - 1; i += 2) {
@@ -394,7 +396,9 @@ public class MazePanel extends Pane {
 	public void setCell(int row, int col, int value) {
 		getMaze().setCell(row, col, value);
 		blocks[row][col].setFill((value == 1) ? getBlockColor() : Color.TRANSPARENT);
-//		labels[row][col].setText("" + value);
+
+		if (Mazette.arg_fxDebug())
+			labels[row][col].setText("" + value);
 	}
 
 	/**
@@ -482,14 +486,17 @@ public class MazePanel extends Pane {
 				hLines = new Line[m + 1][n];
 				corners = new Circle[m + 1][n + 1];
 				blocks = new Rectangle[m][n];
-//				labels = new Label[m][n];
 
 				defineSize();
 //				displayBorders();
 				displayBlocks();
 				displayWalls();
 //				displayGrid();
-//				displayLabels();
+				
+				if (Mazette.arg_fxDebug()) {
+					labels = new Label[m][n];
+					displayLabels();
+				}
 			}
 		}
 	}

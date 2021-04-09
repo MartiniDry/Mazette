@@ -10,9 +10,15 @@ import javafx.application.Platform;
  * entrée au lancement du logiciel.
  * 
  * @author Martin Rostagnat
- * @version 1.0
+ * @version 1.1
  */
 public class Mazette {
+	/**
+	 * Booléen indiquant si les données de débogage graphique sont affichées sur
+	 * l'IHM.
+	 */
+	private static boolean fxDebug = false;
+
 	/**
 	 * Méthode principale de l'application <b>Mazette</b> (anciennement <b>Maze
 	 * Generator</b>).
@@ -21,7 +27,36 @@ public class Mazette {
 	 */
 	public static void main(String... args) {
 		AppLauncher.playSound("beep.wav");
+
+		for (int id = 0, len = args.length; id < len; id++) {
+			String[] kv = args[id].split("=");
+			if (kv[0].equals("-fxdebug")) {
+				switch (kv[1]) {
+				case "0":
+				case "false":
+					fxDebug = false;
+					break;
+				case "1":
+				case "true":
+					fxDebug = true;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
 		Application.launch(AppLauncher.class, args);
+	}
+
+	/**
+	 * Fournit le paramètre de débogage <b>fxDebug</b>. Celui-ci indique si les
+	 * informations de débogage sont affichés sur l'IHM de l'application.
+	 * 
+	 * @return Booléen (<code>false</code> par défaut).
+	 */
+	public static final boolean arg_fxDebug() {
+		return fxDebug;
 	}
 
 	/**
