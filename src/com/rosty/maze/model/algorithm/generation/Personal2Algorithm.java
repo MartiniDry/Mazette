@@ -264,14 +264,14 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 			// direction donnée. Voyons si l'on peut trouver mieux...
 			int dirIndex = fromBtoA.size() - 1;
 			_M = move(_M, fromBtoA.get(dirIndex));
-			dist = Math.abs(b * (_M[1] - A[1]) - a * (_M[0] - A[0])) / len;
+			dist = Math.abs(b * (_M[0] - A[0]) - a * (_M[1] - A[1])) / len;
 			for (int id = dirIndex - 1; id >= 0; id--) {
 				// On repère les coordonnées du point situé dans la direction donnée
 				_M = Arrays.copyOf(M, M.length);
 				_M = move(_M, fromBtoA.get(id));
 				// Si ce point est plus proche que le point choisi, alors on doit mettre à jour
 				// "nextDirection".
-				double newDist = Math.abs(b * (_M[1] - A[1]) - a * (_M[0] - A[0])) / len;
+				double newDist = Math.abs(b * (_M[0] - A[0]) - a * (_M[1] - A[1])) / len;
 				if (newDist < dist) {
 					dist = newDist;
 					dirIndex = id;
