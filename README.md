@@ -33,7 +33,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [X] Binary tree
 - [ ] Sidewinder
 - [X] Personal algorithm (name still to define 😊)
-- [ ] Personal algorithm #2 (will probably be called the "Mikado algorithm")
+- [X] Personal algorithm #2 (will probably be called the "Mikado algorithm")
 
 ## Implemented solving algorithms
 
