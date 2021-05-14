@@ -55,7 +55,7 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 						unexploredCells.add(new int[] { i, j });
 
 			if (unexploredCells.isEmpty()) {
-				gatherCells();
+				identifyGroups();
 				mode = Mode.GATHERING;
 			} else if (unexploredCells.size() == 1) {
 				int[] lastCell = unexploredCells.get(0);
@@ -97,17 +97,25 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 			mode = Mode.GATHERING;
 			break;
 		case GATHERING:
-			gatherCells();
+			gatherGroups();
+			identifyGroups();
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void gatherCells() {
-		int groupValue = 3;
+	private void identifyGroups() {
+		// Applatissement des cellules avant analyse (toutes les cellules sont définies
+		// à une valeur de 2)
+		for (int i = 0; i < nbRow; i++)
+			for (int j = 0; j < nbCol; j++)
+				mazePanel.setCell(i, j, 2);
+
+		int groupValue = 3; // Identifiant du groupe actuellement étudié
 
 		int[] point = null;
+		// Repérage du premier point à explorer pour identifier les groupes.
 		rowLoop: for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)
 				if (mazePanel.getCell(i, j) == 2) {
@@ -116,10 +124,9 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 				}
 
 		while (point != null) {
-			System.out.println("# NEW GROUP #");
 			visit(point, groupValue);
 			groupValue++;
-			
+
 			point = null;
 			rowLoop: for (int i = 0; i < nbRow; i++)
 				for (int j = 0; j < nbCol; j++)
@@ -130,18 +137,40 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 		}
 	}
 
-	private void visit(int[] cell, int value) {
-		mazePanel.setCell(cell[0], cell[1], value);
-		System.out.println(" - TICK " + Arrays.toString(cell));
+	private void gatherGroups() {
+		// Listage des murs qui peuvent être enlevés
+		ArrayList<WallCoord> walls = new ArrayList<>();
+		for (int i = 0, lenI = nbRow - 1; i < lenI; i++) {
+			for (int j = 0, lenJ = nbCol - 1; j < lenJ; j++) {
+				WallCoord w = new WallCoord(i, j, Side.RIGHT);
+				if (mazePanel.getCell(i, j) != mazePanel.getNeighbourCell(w))
+					walls.add(w);
+			}
 
-		ArrayList<WallCoord> sides1 = getSides(cell[0], cell[1]);
-		mazePanel.display();
-		for (WallCoord w : sides1) {
-			System.out.println(w);
-			System.out.println(" --> " + mazePanel.getWall(w.x, w.y, w.side));
-			System.out.println(" --> " + mazePanel.getNeighbourCell(w));
+			for (int j = 0; j < nbCol; j++) {
+				WallCoord w = new WallCoord(i, j, Side.DOWN);
+				if (mazePanel.getCell(i, j) != mazePanel.getNeighbourCell(w))
+					walls.add(w);
+			}
 		}
 
+		for (int j = 0, lenJ = nbCol - 1; j < lenJ; j++) {
+			WallCoord w = new WallCoord(nbRow - 1, j, Side.RIGHT);
+			if (mazePanel.getCell(nbRow - 1, j) != mazePanel.getNeighbourCell(w))
+				walls.add(w);
+		}
+
+		// Retrait aléatoire de l'un des murs
+		if (!walls.isEmpty()) {
+			WallCoord selectedWall = walls.get(rand.nextInt(walls.size()));
+			mazePanel.setWall(selectedWall.x, selectedWall.y, selectedWall.side, 0);
+		}
+	}
+
+	private void visit(int[] cell, int value) {
+		mazePanel.setCell(cell[0], cell[1], value);
+
+		ArrayList<WallCoord> sides1 = getSides(cell[0], cell[1]);
 		List<WallCoord> sides = new ArrayList<WallCoord>();
 		for (WallCoord wall : sides1) {
 			if (mazePanel.getWall(wall.x, wall.y, wall.side) == 0) {
@@ -150,12 +179,11 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 				}
 			}
 		}
-		
+
 		if (!sides.isEmpty()) {
 			for (WallCoord w : sides) {
 				int[] C = Arrays.copyOf(cell, cell.length);
 				C = move(C, w.side);
-				System.out.println(w.side);
 				visit(C, value);
 			}
 		}
