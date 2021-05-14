@@ -105,13 +105,13 @@ public class Maze {
 		if (col >= 0 && col < nbCol && row >= 0 && row < nbRow)
 			switch (side) {
 			case UP:
-				return table[2 * row + 1][2 * col];
-			case DOWN:
-				return table[2 * row + 1][2 * col + 2];
-			case LEFT:
 				return table[2 * row][2 * col + 1];
-			case RIGHT:
+			case DOWN:
 				return table[2 * row + 2][2 * col + 1];
+			case LEFT:
+				return table[2 * row + 1][2 * col];
+			case RIGHT:
+				return table[2 * row + 1][2 * col + 2];
 			default:
 				return -1;
 			}
