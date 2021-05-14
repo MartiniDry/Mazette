@@ -77,7 +77,19 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 			break;
 		case DRAWING:
 			drawLine();
-			mode = Mode.DRAFT;
+			// Listage de toutes les cellules non encore explorées
+			ArrayList<int[]> unexploredCellsList = new ArrayList<>();
+			for (int i = 0; i < nbRow; i++)
+				for (int j = 0; j < nbCol; j++)
+					if (mazePanel.getCell(i, j) == 0)
+						unexploredCellsList.add(new int[] { i, j });
+
+			if (unexploredCellsList.isEmpty()) {
+				identifyGroups();
+				mode = Mode.GATHERING;
+			} else {
+				mode = Mode.DRAFT;
+			}
 			break;
 		case LAST_ONE_OUT:
 			int[] L = null;
@@ -94,6 +106,7 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 			mazePanel.setWall(chosenWall.x, chosenWall.y, chosenWall.side, 0);
 			mazePanel.setCell(chosenWall.x, chosenWall.y, 2);
 
+			identifyGroups();
 			mode = Mode.GATHERING;
 			break;
 		case GATHERING:
