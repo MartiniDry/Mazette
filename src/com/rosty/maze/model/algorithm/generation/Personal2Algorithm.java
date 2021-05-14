@@ -135,15 +135,16 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 		System.out.println(" - TICK " + Arrays.toString(cell));
 
 		ArrayList<WallCoord> sides1 = getSides(cell[0], cell[1]);
+		mazePanel.display();
 		for (WallCoord w : sides1) {
 			System.out.println(w);
-			System.out.println(" --> " + mazePanel.getWall(w.y, w.x, w.side));
+			System.out.println(" --> " + mazePanel.getWall(w.x, w.y, w.side));
 			System.out.println(" --> " + mazePanel.getNeighbourCell(w));
 		}
 
 		List<WallCoord> sides = new ArrayList<WallCoord>();
 		for (WallCoord wall : sides1) {
-			if (mazePanel.getWall(wall.y, wall.x, wall.side) == 0) {
+			if (mazePanel.getWall(wall.x, wall.y, wall.side) == 0) {
 				if (mazePanel.getNeighbourCell(wall) == 2) {
 					sides.add(wall);
 				}
