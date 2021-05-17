@@ -10,6 +10,50 @@ import com.rosty.maze.model.Maze.WallCoord;
 import com.rosty.maze.model.algorithm.MazeGenerationAlgorithm;
 import com.rosty.maze.widgets.MazePanel;
 
+/**
+ * <h1>Algorithme personnel n°2</h1>
+ * 
+ * <p>
+ * <h2>Principe</h2> L'algorithme consiste à tracer des chemins linéaires à
+ * travers la zone non-visitée de la grille (la ligne est découpée lorsque
+ * celle-ci franchit une zone déjà visitée). Une fois toutes les cases visitées,
+ * les cases ne sont pas toutes nécessairement reliées entre eux ; un algorithme
+ * de Kruskal est lancé pour finaliser le regroupement des labyrinthes.
+ * </p>
+ * 
+ * <p>
+ * <h2>Dans le détail :</h2> Tous les murs sont présents dans la grille de
+ * départ et les cases sont marquées à 0 (inexplorées). L'algorithme se scinde
+ * en deux grandes étapes : le tracé de chemins et le regroupement.<br/>
+ * <ul>
+ * <li><u>Tracé de chemins :</u> l'algorithme sélectionne deux cases
+ * non-explorées de la grille et trace la ligne droite entre elles-deux jusqu'à
+ * passer par une zone visitée de la grille (mode <b>DRAFT</b>). Une fois la
+ * ligne identifiée, les murs sont brisés pour ouvrir le chemin et les cellules
+ * sont marquées comme explorées (mode <b>DRAWING</b>). Le processus est réitéré
+ * jusqu'à ce que toutes les cases de la grille soient explorées.<br/>
+ * Dans le cas où il ne reste qu'une seule case à explorer à la fin,
+ * l'algorithme brise l'un de ses murs au hasard (mode
+ * <b>LAST_ONE_OUT</b>).</li>
+ * <li><u>Regroupement :</u> à la fin du tracé des chemins, les cellules ne sont
+ * pas nécessairement toutes reliées entre elles. Un exemple trivial est le cas
+ * où l'algorithme ne trace que des chemins horizontaux dans la grille. Pour
+ * contrer ce problème et finaliser le labyrinthe, le programme exécute un
+ * algorithme de Kruskal.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * <h2>Complexité</h2> Il est difficile d'estimer la complexité de cet
+ * algorithme puisque celle-ci est liée aux points sélectionnés lors de l'étape
+ * 1 et à la distance qui les sépare. Le fait que la ligne puisse être coupée
+ * par une zone déjà visitée ajoute un biais important qui rend l'estimation de
+ * la complexité très difficile.
+ * </p>
+ * 
+ * @author Martin Rostagnat
+ * @version 1.0
+ */
 public class Personal2Algorithm extends MazeGenerationAlgorithm {
 	private int[] A = null, B = null;
 	private ArrayList<WallCoord> pathFromAtoB, pathFromBtoA;
@@ -118,6 +162,10 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 		}
 	}
 
+	/**
+	 * Identifie l'ensemble des groupes de cellules reliés entre eux. L'algorithme
+	 * lit les cellules inexplorées de gauche à droite et de haut en bas.
+	 */
 	private void identifyGroups() {
 		// Applatissement des cellules avant analyse (toutes les cellules sont définies
 		// à une valeur de 2)
@@ -137,9 +185,13 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 				}
 
 		while (point != null) {
+			// Exploration du groupe en partant de "point" ; toutes les cellules ont pour
+			// valeur "groupValue".
 			visit(point, groupValue);
-			groupValue++;
+			groupValue++; // Pour le groupe suivant, la valeur de groupe est incrémentée.
 
+			// Repérage du prochain point inexploré ; si on en trouve un, celui-ci sera le
+			// point de départ pour explorer un nouveau groupe.
 			point = null;
 			rowLoop: for (int i = 0; i < nbRow; i++)
 				for (int j = 0; j < nbCol; j++)
@@ -150,6 +202,10 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 		}
 	}
 
+	/**
+	 * Utilise l'algorithme de Kruskal pour fusionner deux groupes de cellules dans
+	 * la grille.
+	 */
 	private void gatherGroups() {
 		// Listage des murs qui peuvent être enlevés
 		ArrayList<WallCoord> walls = new ArrayList<>();
@@ -180,32 +236,34 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 		}
 	}
 
+	/**
+	 * Visite pas-à-pas les cellules adjacentes à une cellule spécifique ; celles-ci
+	 * sont marquées d'un numéro identifiant le groupe que la fonction decouvre.
+	 * 
+	 * @param cell  Point de départ pour analyser le groupe.
+	 * @param value Numéro de groupe.
+	 */
 	private void visit(int[] cell, int value) {
 		mazePanel.setCell(cell[0], cell[1], value);
 
 		ArrayList<WallCoord> sides1 = getSides(cell[0], cell[1]);
 		List<WallCoord> sides = new ArrayList<WallCoord>();
-		for (WallCoord wall : sides1) {
-			if (mazePanel.getWall(wall.x, wall.y, wall.side) == 0) {
-				if (mazePanel.getNeighbourCell(wall) == 2) {
-					sides.add(wall);
-				}
-			}
-		}
+		for (WallCoord wall : sides1)
+			if (mazePanel.getWall(wall.x, wall.y, wall.side) == 0 && mazePanel.getNeighbourCell(wall) == 2)
+				sides.add(wall);
 
-		if (!sides.isEmpty()) {
+		if (!sides.isEmpty())
 			for (WallCoord w : sides) {
 				int[] C = Arrays.copyOf(cell, cell.length);
 				C = move(C, w.side);
 				visit(C, value);
 			}
-		}
 	}
 
 	/**
-	 * RAPPEL : les coordon- nées d'une cellule de la grille ne repèrent pas le
-	 * centre mais le bord supé- rieur gauche. Cela ne changera rien au calcul mais
-	 * il est important de le noter.
+	 * RAPPEL : les coordonnées d'une cellule de la grille ne repèrent pas le centre
+	 * mais le bord supérieur gauche. Cela ne changera rien au calcul mais il est
+	 * important de le noter.
 	 */
 	private void draftLine() {
 		pathFromAtoB.clear();
@@ -330,6 +388,10 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 		}
 	}
 
+	/**
+	 * Trace la ligne esquissée entre A et B. Plus précisément, les murs enregistrés
+	 * dans les listes "pathFromAtoB" et "pathFromBtoA" sont retirés.
+	 */
 	private void drawLine() {
 		if (!pathFromAtoB.isEmpty()) {
 			int index = 0;
@@ -344,9 +406,11 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 
 				index++;
 			}
+		}
 
-			index = 0;
-			explored = false;
+		if (!pathFromBtoA.isEmpty()) {
+			int index = 0;
+			boolean explored = false;
 			while (index < pathFromBtoA.size() && !explored) {
 				WallCoord wall = pathFromBtoA.get(index);
 				if (mazePanel.getCell(wall.x, wall.y) != 2) {
@@ -409,6 +473,12 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 			return null;
 	}
 
+	/**
+	 * Enumération des différents modes d'action de l'algorithme.
+	 * 
+	 * @author Martin Rostagnat
+	 * @version 1.0
+	 */
 	enum Mode {
 		DRAFT, DRAWING, LAST_ONE_OUT, GATHERING
 	}
