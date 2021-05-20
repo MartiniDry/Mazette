@@ -27,19 +27,119 @@ import com.rosty.maze.widgets.MazePanel;
  * en deux grandes étapes : le tracé de chemins et le regroupement.<br/>
  * <ul>
  * <li><u>Tracé de chemins :</u> l'algorithme sélectionne deux cases
- * non-explorées de la grille et trace la ligne droite entre elles-deux jusqu'à
- * passer par une zone visitée de la grille (mode <b>DRAFT</b>). Une fois la
- * ligne identifiée, les murs sont brisés pour ouvrir le chemin et les cellules
- * sont marquées comme explorées (mode <b>DRAWING</b>). Le processus est réitéré
- * jusqu'à ce que toutes les cases de la grille soient explorées.<br/>
- * Dans le cas où il ne reste qu'une seule case à explorer à la fin,
- * l'algorithme brise l'un de ses murs au hasard (mode
- * <b>LAST_ONE_OUT</b>).</li>
+ * non-explorées de la grille et trace la ligne droite entre elles-deux (mode
+ * <b>DRAFT</b>). Une fois la ligne identifiée, les murs sont brisés pour ouvrir
+ * le chemin et les cellules sont marquées comme explorées (mode
+ * <b>DRAWING</b>).<br/>
+ * <table border="0">
+ * <th>
+ * <table border="1">
+ * <tr>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>1</th>
+ * <th>1</th>
+ * <th>0</th>
+ * </tr>
+ * <tr>
+ * <th>0</th>
+ * <th>1</th>
+ * <th>1</th>
+ * <th>0</th>
+ * <th>0</th>
+ * </tr>
+ * <tr>
+ * <th>1</th>
+ * <th>1</th>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>0</th>
+ * </tr>
+ * </table>
+ * </th>
+ * <th>
+ * <table border="1">
+ * <tr>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>2</th>
+ * <th>0</th>
+ * </tr>
+ * <tr>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>0</th>
+ * </tr>
+ * <tr>
+ * <th>2</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>0</th>
+ * </tr>
+ * </table>
+ * </th>
+ * </table>
+ * Dans le cas où la ligne traverse des lignes déjà visitées, la ligne s'arrête
+ * à la toute première ligne traversée et reprend à la dernière ligne
+ * traversée.<br/>
+ * <table border="1">
+ * <tr>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>1</th>
+ * <th>1</th>
+ * <th>1</th>
+ * </tr>
+ * <tr>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>1</th>
+ * <th>0</th>
+ * <th>0</th>
+ * </tr>
+ * <tr>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>1</th>
+ * <th>1</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>0</th>
+ * </tr>
+ * <tr>
+ * <th>1</th>
+ * <th>1</th>
+ * <th>1</th>
+ * <th>0</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>0</th>
+ * <th>2</th>
+ * <th>0</th>
+ * </tr>
+ * </table>
+ * Le processus est réitéré jusqu'à ce que toutes les cases de la grille soient
+ * explorées.<br/>
+ * Dans 50% des cas, il ne reste qu'une case à explorer à la fin ; l'algorithme
+ * brise alors l'un de ses murs au hasard (mode <b>LAST_ONE_OUT</b>).</li>
  * <li><u>Regroupement :</u> à la fin du tracé des chemins, les cellules ne sont
  * pas nécessairement toutes reliées entre elles. Un exemple trivial est le cas
- * où l'algorithme ne trace que des chemins horizontaux dans la grille. Pour
- * contrer ce problème et finaliser le labyrinthe, le programme exécute un
- * algorithme de Kruskal.</li>
+ * où l'algorithme ne trace que des chemins horizontaux dans la grille. Un
+ * algorithme de Kruskal est adéquat pour finaliser le labyrinthe.</li>
  * </ul>
  * </p>
  * 
@@ -55,14 +155,25 @@ import com.rosty.maze.widgets.MazePanel;
  * @version 1.0
  */
 public class Personal2Algorithm extends MazeGenerationAlgorithm {
+	/** Points identifiant le trait courant pendant la phase de tracé. */
 	private int[] A = null, B = null;
+	/**
+	 * Liste des murs reliant A à B (resp. B à A) en s'arrêtant à la première case
+	 * visitée.
+	 */
 	private ArrayList<WallCoord> pathFromAtoB, pathFromBtoA;
 
+	/** Mode de fonctionnement de l'algorithme. */
 	private Mode mode = Mode.DRAFT;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
 
+	/**
+	 * Constructeur de la classe {@link Personal2Algorithm}.
+	 * 
+	 * @param panel Composant graphique du labyrinthe.
+	 */
 	public Personal2Algorithm(MazePanel panel) {
 		super(panel);
 	}
