@@ -28,9 +28,10 @@
 		<MenuItem text="%main.menu.generation.aldousBroder" onAction="#generateAldousBroder" />
 		<MenuItem text="%main.menu.generation.wilson" onAction="#generateWilson" />
 		<MenuItem text="%main.menu.generation.binaryTree" onAction="#generateBinaryTree" />
+		<MenuItem text="%main.menu.generation.sidewinder" onAction="#generateSidewinder" />
 		<Menu text="%main.menu.generation.personal">
-		<MenuItem text="%main.menu.generation.personal._1" onAction="#generatePersonal" />
-		<MenuItem text="%main.menu.generation.personal._2" onAction="#generatePersonal2" />
+			<MenuItem text="%main.menu.generation.personal._1" onAction="#generatePersonal" />
+			<MenuItem text="%main.menu.generation.personal._2" onAction="#generatePersonal2" />
 		</Menu>
 	</Menu>
 
@@ -43,7 +44,7 @@
 			<GMenuItem text="%main.menu.help.language.french" icon="@pictures/french.png" onAction="#switchToFrench" />
 			<GMenuItem text="%main.menu.help.language.english" icon="@pictures/english.png" onAction="#switchToEnglish" />
 		</Menu>
-		
+
 		<MenuItem text="%main.menu.help.colors" onAction="#changeColors" />
 		<SeparatorMenuItem />
 		<MenuItem text="%main.menu.help.preferences" onAction="#preferences" />

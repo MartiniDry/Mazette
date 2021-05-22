@@ -19,6 +19,7 @@ import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
@@ -102,6 +103,7 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme d'Aldous-Broder", ae -> regenerate(new AldousBroderAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de Wilson", ae -> regenerate(new WilsonAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de l'arbre binaire", ae -> regenerate(new BinaryTreeAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme de l'accordéon", ae -> regenerate(new SidewinderAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel #2", ae -> regenerate(new Personal2Algorithm(mazePanel)));
 
@@ -234,10 +236,12 @@ public class MainWindowController implements Observer {
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(7));
 				else if (algo instanceof BinaryTreeAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(8));
-				else if (algo instanceof PersonalAlgorithm)
+				else if (algo instanceof SidewinderAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(9));
-				else if (algo instanceof Personal2Algorithm)
+				else if (algo instanceof PersonalAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(10));
+				else if (algo instanceof Personal2Algorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(11));
 			}
 		});
 	}

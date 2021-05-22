@@ -18,6 +18,7 @@ import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 
@@ -108,6 +109,11 @@ public class MenuBarController {
 	@FXML
 	private void generateBinaryTree() {
 		AppLauncher.getMainController().regenerate(new BinaryTreeAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
+	private void generateSidewinder() {
+		AppLauncher.getMainController().regenerate(new SidewinderAlgorithm(AppLauncher.getMainController().mazePanel));
 	}
 
 	@FXML
