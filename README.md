@@ -31,7 +31,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [X] Wilson
 - [ ] Growing tree
 - [X] Binary tree
-- [ ] Sidewinder
+- [X] Sidewinder
 - [X] Personal algorithm (name still to define 😊)
 - [X] Personal algorithm #2 (will probably be called the "Mikado algorithm")
 
