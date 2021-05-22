@@ -126,11 +126,11 @@ import com.rosty.maze.widgets.MazePanel;
  * <p>
  * <h2>Complexité</h2> L'algorithme a une complexité temporelle en O(M.N) car il
  * balaie la grille de gauche à droite et de haut en bas. Il a une complexité
- * temporelle en O(M) ; à chaque étape, seule la ligne courante et celle du
- * dessus sont nécessaires pour fonctionner. La sélection et la suppression du
- * mur est très proche de celle de l'algorithme d'Eller mais évite le phénomène
- * de "couloir latéral" nécessaire au Eller ; de fait, la solution proposée par
- * cet algorithme est plus performante car moins contraignante.
+ * mémoire en O(M) ; à chaque étape, seule la ligne courante et celle du dessus
+ * sont nécessaires pour fonctionner. La sélection et la suppression du mur est
+ * très proche de celle de l'algorithme d'Eller mais évite le phénomène de
+ * "couloir latéral" nécessaire au Eller ; de fait, la solution proposée par cet
+ * algorithme est plus performante car moins contraignante.
  * </p>
  * 
  * @author Martin Rostagnat
