@@ -16,7 +16,9 @@ import com.rosty.maze.widgets.MazePanel;
  * droite et de haut en bas. A chaque étape, l'algorithme choisit soit de
  * retirer le mur de droite pour créer un couloir horizontal, soit de retirer un
  * mur au hasard au-dessus de ce couloir. Le résultat est un labyrinthe dont les
- * chemins "ruissèlent" à partir du haut de la grille.
+ * chemins "ruissèlent" à partir du haut de la grille, à la manière du mouvement
+ * latéral d'un serpent (<i>side winding</i> en anglais) ; ce mouvement a pour
+ * nom "mouvement en accordéon" en français.
  * </p>
  * 
  * <p>
