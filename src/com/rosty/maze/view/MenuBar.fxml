@@ -29,6 +29,7 @@
 		<MenuItem text="%main.menu.generation.wilson" onAction="#generateWilson" />
 		<MenuItem text="%main.menu.generation.binaryTree" onAction="#generateBinaryTree" />
 		<MenuItem text="%main.menu.generation.sidewinder" onAction="#generateSidewinder" />
+		<MenuItem text="%main.menu.generation.eller" onAction="#generateEller" />
 		<Menu text="%main.menu.generation.personal">
 			<MenuItem text="%main.menu.generation.personal._1" onAction="#generatePersonal" />
 			<MenuItem text="%main.menu.generation.personal._2" onAction="#generatePersonal2" />

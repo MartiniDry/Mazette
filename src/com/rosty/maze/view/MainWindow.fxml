@@ -60,7 +60,7 @@
 
 			<Separator />
 
-			<VBox fx:id="generationButtons" alignment="CENTER" spacing="5" />
+			<VBox fx:id="generationButtons" alignment="CENTER" spacing="3" />
 
 			<Separator />
 

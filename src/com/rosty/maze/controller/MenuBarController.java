@@ -10,6 +10,7 @@ import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.dialog.DialogUtility;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
+import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
@@ -114,6 +115,11 @@ public class MenuBarController {
 	@FXML
 	private void generateSidewinder() {
 		AppLauncher.getMainController().regenerate(new SidewinderAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
+	private void generateEller() {
+		AppLauncher.getMainController().regenerate(new EllerAlgorithm(AppLauncher.getMainController().mazePanel));
 	}
 
 	@FXML

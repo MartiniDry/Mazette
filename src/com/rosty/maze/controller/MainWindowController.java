@@ -11,6 +11,7 @@ import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
+import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
@@ -104,6 +105,7 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme de Wilson", ae -> regenerate(new WilsonAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de l'arbre binaire", ae -> regenerate(new BinaryTreeAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de l'accordéon", ae -> regenerate(new SidewinderAlgorithm(mazePanel)));
+		addGenerationButton("Algorithme d'Eller", ae -> regenerate(new EllerAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel #2", ae -> regenerate(new Personal2Algorithm(mazePanel)));
 
@@ -187,7 +189,7 @@ public class MainWindowController implements Observer {
 	private void addGenerationButton(String label, EventHandler<ActionEvent> actionner) {
 		ToggleButton genButton = new ToggleButton(label);
 		genButton.setToggleGroup(group);
-		genButton.setPadding(new Spacing(1, 5));
+		genButton.setPadding(new Spacing(0, 5));
 		genButton.setOnAction(ae -> {
 			if (genButton.isSelected())
 				actionner.handle(ae);
@@ -238,10 +240,12 @@ public class MainWindowController implements Observer {
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(8));
 				else if (algo instanceof SidewinderAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(9));
-				else if (algo instanceof PersonalAlgorithm)
+				else if (algo instanceof EllerAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(10));
-				else if (algo instanceof Personal2Algorithm)
+				else if (algo instanceof PersonalAlgorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(11));
+				else if (algo instanceof Personal2Algorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(12));
 			}
 		});
 	}
