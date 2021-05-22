@@ -46,7 +46,7 @@ import com.rosty.maze.widgets.MazePanel;
  * largeur du labyrinthe. Cependant, ce couloir horizontal est utilisé pour
  * déterminer le mur à retirer dans le cas d'une excavation nord. la pire
  * situation est atteinte lorsque sur chaque ligne, l'algorithme réalise autant
- * d'excavations "est" que nord. Dans ce cas, la complexité temporelle est en
+ * d'excavations "est" que "nord". Dans ce cas, la complexité temporelle est en
  * O(M².N).
  * </p>
  * 
