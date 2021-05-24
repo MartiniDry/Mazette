@@ -1,26 +1,159 @@
 package com.rosty.maze.model.algorithm.generation;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.algorithm.MazeGenerationAlgorithm;
 import com.rosty.maze.widgets.MazePanel;
 
+/**
+ * <h1>Algorithme d'Eller</h1>
+ * 
+ * @author Martin Rostagnat
+ * @version 1.0
+ */
 public class EllerAlgorithm extends MazeGenerationAlgorithm {
+	/** Indicateur de position dans la grille. */
+	private int cellId = 0;
+
+	/** Mode de construction du labyirnthe sur la ligne courante. */
+	private Mode mode = Mode.EAST_PROCESS;
+
+	/** Générateur de nombres aléatoires. */
+	private final Random rand = new Random();
+
+	/**
+	 * Constructeur de la classe {@link EllerAlgorithm}.
+	 * 
+	 * @param panel Composant graphique du labyrinthe.
+	 */
 	public EllerAlgorithm(MazePanel panel) {
 		super(panel);
 	}
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		for (int i = 0; i < nbRow - 1; i++) {
+			for (int j = 0; j < nbCol - 1; j++) {
+				mazePanel.setWall(i, j, Side.DOWN, 0);
+				mazePanel.setWall(i, j, Side.RIGHT, 0);
+			}
+
+			mazePanel.setWall(i, nbCol - 1, Side.DOWN, 0);
+		}
+
+		for (int j = 0; j < nbCol - 1; j++)
+			mazePanel.setWall(nbRow - 1, j, Side.RIGHT, 0);
 	}
 
 	@Override
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
-		return false;
+		return cellId == nbRow * nbCol - 1;
 	}
 
 	@Override
 	public void step() {
-		// TODO Auto-generated method stub
+		int i = cellId / nbCol;
+		int j = cellId % nbCol;
+
+		if (j == 0) {
+			for (int k = 0; k < nbCol; k++)
+				if (mazePanel.getCell(i, k) == 0)
+					mazePanel.setCell(i, k, k + 2);
+		}
+
+		if (mode == Mode.EAST_PROCESS) {
+			if (j + 1 < nbCol) {
+				if (i == 0) {
+					int placeWall = rand.nextInt(2);
+					rightWall(i, j, placeWall);
+				} else {
+					if (mazePanel.getCell(i, j) == mazePanel.getCell(i, j + 1)) {
+						mazePanel.setWall(i, j, Side.RIGHT, 1);
+					} else {
+						int placeWall = rand.nextInt(2);
+						rightWall(i, j, placeWall);
+					}
+				}
+			}
+		} else if (mode == Mode.SOUTH_PROCESS) {
+			if (i + 1 < nbRow) {
+				decideForDownWall(i, j);
+			}
+		}
+
+		System.out.println("(" + i + ", " + j + ") -> " + mode.name());
+
+		// If the current cell reaches the right side of the grid without reaching the
+		// bottom, two actions can be performed:
+		// - if EAST_PROCESS is active, the current cell goes to the next line.
+		// - if SOUTH_PROCESS is active, the current cell goes back to the beginning of
+		// the line.
+		if (j + 1 == nbCol && i + 1 < nbRow) {
+			if (mode == Mode.SOUTH_PROCESS)
+				cellId += 1;
+			else if (mode == Mode.EAST_PROCESS)
+				cellId -= (nbCol - 1);
+
+			// Mode reversing
+			mode = (mode == Mode.EAST_PROCESS ? Mode.SOUTH_PROCESS : Mode.EAST_PROCESS);
+		} else
+			cellId++;
+	}
+
+	private void rightWall(int i, int j, int value) {
+		mazePanel.setWall(i, j, Side.RIGHT, value);
+		if (value == 0)
+			mazePanel.setCell(i, j + 1, mazePanel.getCell(i, j));
+	}
+
+	private void decideForDownWall(int i, int j) {
+		int val = mazePanel.getCell(i, j);
+
+		boolean openedDoor = false;
+//		for (int k = 0; k < j; k++) {
+//			if (mazePanel.getCell(i, k) == val && mazePanel.getWall(i, k, Side.DOWN) == 0)
+//				openedDoor = true;
+//		}
+
+		int k1 = j;
+		while (k1 >= 0 && mazePanel.getWall(i, k1, Side.LEFT) == 0) {
+			if (/* mazePanel.getCell(i, k1) == val && */mazePanel.getWall(i, k1, Side.DOWN) == 0)
+				openedDoor = true;
+
+			k1--;
+		}
+
+		ArrayList<Integer> array = new ArrayList<>();
+//		for (int k = j + 1; k < nbCol; k++) {
+//			if (mazePanel.getCell(i, k) == val)
+//				array.add(k);
+//		}
+
+		int k2 = j;
+		while (k2 < nbCol && mazePanel.getWall(i, k2, Side.RIGHT) == 0) {
+			if (mazePanel.getCell(i, k2) == val)
+				array.add(k2);
+
+			k2++;
+		}
+
+		if (array.isEmpty() && !openedDoor) {
+			downWall(i, j, 0);
+		} else {
+			int placeWall = rand.nextInt(2);
+			downWall(i, j, placeWall);
+		}
+	}
+
+	private void downWall(int i, int j, int value) {
+		mazePanel.setWall(i, j, Side.DOWN, value);
+		if (value == 0)
+			mazePanel.setCell(i + 1, j, mazePanel.getCell(i, j));
+	}
+
+	private enum Mode {
+		SOUTH_PROCESS, EAST_PROCESS;
 	}
 }
