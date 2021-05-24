@@ -486,17 +486,16 @@ public class MazePanel extends Pane {
 				hLines = new Line[m + 1][n];
 				corners = new Circle[m + 1][n + 1];
 				blocks = new Rectangle[m][n];
+				if (Mazette.arg_fxDebug())
+					labels = new Label[m][n];
 
 				defineSize();
 //				displayBorders();
 				displayBlocks();
 				displayWalls();
 //				displayGrid();
-				
-				if (Mazette.arg_fxDebug()) {
-					labels = new Label[m][n];
+				if (Mazette.arg_fxDebug())
 					displayLabels();
-				}
 			}
 		}
 	}
