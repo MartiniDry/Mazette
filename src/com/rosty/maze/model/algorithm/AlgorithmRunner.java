@@ -36,7 +36,7 @@ public class AlgorithmRunner extends Observable implements Observer {
 	/** Chronomètre utilisé lors de l'exécution directe d'un algorithme. */
 	private Chrono timer;
 
-	/** Durée entre deux itérations de l'algorithme. */
+	/** Durée entre deux itérations de l'algorithme (en microsecondes). */
 	private long timeout = 0L;
 
 	/** Fonction réalisant une exécution directe de l'algorithme. */
@@ -181,7 +181,10 @@ public class AlgorithmRunner extends Observable implements Observer {
 			return;
 		else {
 			algorithm.step();
-			Thread.sleep(timeout);
+			
+			int timeoutMs = (int) timeout / 1000;
+			int timeoutNs = ((int) timeout % 1000) * 1000;
+			Thread.sleep(timeoutMs, timeoutNs); // Pause du thread à la microseconde près
 		}
 	}
 

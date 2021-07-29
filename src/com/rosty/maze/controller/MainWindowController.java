@@ -114,7 +114,7 @@ public class MainWindowController implements Observer {
 			String content = delta.getText();
 			if (e.getCode() == KeyCode.ENTER) {
 				generator.setTimeout(content.isEmpty() ? 0L : Long.valueOf(content));
-				System.out.println("Nouveau pas de temps : " + generator.getTimeout() + " ms.");
+				System.out.println("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
 			}
 		});
 
