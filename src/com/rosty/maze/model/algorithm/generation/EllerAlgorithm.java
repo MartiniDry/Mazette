@@ -17,8 +17,11 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 	/** Indicateur de position dans la grille. */
 	private int cellId = 0;
 
-	/** Mode de construction du labyirnthe sur la ligne courante. */
-	private Mode mode = Mode.EAST_PROCESS;
+	/** Mode de construction du labyrinthe sur la ligne courante. */
+	private Mode mode = Mode.SOUTH_PROCESS;
+
+	/** Incrémenteur de la valeur de la cellule. */
+	private int inc = 2;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -59,25 +62,72 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 
 		// Assignation d'un nombre pour toutes les cases de la grille
 		if (j == 0) {
-			for (int k = 0; k < nbCol; k++)
-				if (mazePanel.getCell(i, k) == 0)
-					mazePanel.setCell(i, k, k + 2);
+			// Le mode est "renversé" à chaque début de ligne.
+			mode = ((mode == Mode.EAST_PROCESS) ? Mode.SOUTH_PROCESS : Mode.EAST_PROCESS);
+			
+			if (mode == Mode.EAST_PROCESS) {
+				if (i == 0) {
+					for (int k = 0; k < nbCol; k++)
+						mazePanel.setCell(i, k, inc++);
+				} else {
+					for (int k = 0; k < nbCol; k++)
+						if (mazePanel.getWall(i, k, Side.UP) == 0)
+							mazePanel.setCell(i, k, mazePanel.getCell(i - 1, k));
+						else
+							mazePanel.setCell(i, k, inc++);
+				}
+			}
 		}
 
-		if (mode == Mode.EAST_PROCESS) {
-			if (j + 1 < nbCol)
-				if (i == 0) {
-					rightWall(i, j, rand.nextInt(2));
-				} else {
-					if (mazePanel.getCell(i, j) == mazePanel.getCell(i, j + 1))
-						rightWall(i, j, 1);
-					else
-						rightWall(i, j, rand.nextInt(2));
-				}
-		} else if (mode == Mode.SOUTH_PROCESS) {
-			if (i + 1 < nbRow)
-				decideForDownWall(i, j);
+		// Placement des murs à chaque nouvelle ligne visitée
+		if (j == 0) {
+			for (int k = 0; k < nbCol - 1; k++)
+				mazePanel.setWall(i, k, Side.RIGHT, 1);
+
+			if (i < nbRow - 1)
+				for (int k = 0; k < nbCol; k++)
+					mazePanel.setWall(i, k, Side.DOWN, 1);
 		}
+
+		switch (mode) {
+		case EAST_PROCESS:
+			if (j < nbCol - 1)
+				if (i == nbRow - 1) {
+					if (mazePanel.getCell(i, j) != mazePanel.getCell(i, j + 1))
+						mazePanel.setWall(i, j, Side.RIGHT, 1);
+				} else {
+					if (mazePanel.getCell(i, j) != mazePanel.getCell(i, j + 1))
+						mazePanel.setWall(i, j, Side.RIGHT, rand.nextInt(2));
+				}
+
+			break;
+		case SOUTH_PROCESS:
+			int val = rand.nextInt(2);
+			if (val == 0)
+				downWall(i, j, 0);
+
+			break;
+		default:
+			break;
+		}
+
+//		if (mode == Mode.EAST_PROCESS) {
+//			if (j + 1 < nbCol)
+//				if (i == 0) {
+//					rightWall(i, j, rand.nextInt(2));
+//				} else if (i == nbRow - 1) {
+//					if (mazePanel.getCell(i, j) != mazePanel.getCell(i, j + 1))
+//						rightWall(i, j, 0);
+//				} else {
+//					if (mazePanel.getCell(i, j) == mazePanel.getCell(i, j + 1))
+//						rightWall(i, j, 1);
+//					else
+//						rightWall(i, j, rand.nextInt(2));
+//				}
+//		} else if (mode == Mode.SOUTH_PROCESS) {
+//			if (i + 1 < nbRow)
+//				decideForDownWall(i, j);
+//		}
 
 		System.out.println("(" + i + ", " + j + ") -> " + mode.name());
 
@@ -86,14 +136,13 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 		// - if EAST_PROCESS is active, the current cell goes to the next line.
 		// - if SOUTH_PROCESS is active, the current cell goes back to the beginning of
 		// the line.
-		if (j + 1 == nbCol && i + 1 < nbRow) {
-			if (mode == Mode.SOUTH_PROCESS)
+		// A mode reversing is made too.
+		if (j == nbCol - 1 && i < nbRow - 1) {
+			if (mode == Mode.SOUTH_PROCESS) {
 				cellId += 1;
-			else if (mode == Mode.EAST_PROCESS)
+			} else if (mode == Mode.EAST_PROCESS) {
 				cellId -= (nbCol - 1);
-
-			// Mode reversing
-			mode = (mode == Mode.EAST_PROCESS ? Mode.SOUTH_PROCESS : Mode.EAST_PROCESS);
+			}
 		} else
 			cellId++;
 	}
