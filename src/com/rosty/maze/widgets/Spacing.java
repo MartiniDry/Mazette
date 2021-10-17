@@ -29,18 +29,18 @@ public class Spacing extends Insets {
 			}
 
 		switch (sides.length) {
-		case 0:
-			return new Spacing(0);
-		case 1:
-			return new Spacing(sides[0]);
-		case 2:
-			return new Spacing(sides[0], sides[1]);
-		case 3:
-			return new Spacing(sides[0], sides[1], sides[2], sides[1]);
-		case 4:
-			return new Spacing(sides[0], sides[1], sides[2], sides[3]);
-		default:
-			return null;
+			case 0:
+				return new Spacing(0);
+			case 1:
+				return new Spacing(sides[0]);
+			case 2:
+				return new Spacing(sides[0], sides[1]);
+			case 3:
+				return new Spacing(sides[0], sides[1], sides[2], sides[1]);
+			case 4:
+				return new Spacing(sides[0], sides[1], sides[2], sides[3]);
+			default:
+				return null;
 		}
 	}
 

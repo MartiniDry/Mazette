@@ -73,22 +73,22 @@ public class Maze {
 	public void setWall(int row, int col, Side side, int value) {
 		if (col >= 0 && col < nbCol && row >= 0 && row < nbRow) {
 			switch (side) {
-			case UP:
-				if (row > 0)
-					table[2 * row][2 * col + 1] = value;
-				break;
-			case DOWN:
-				if (row < nbRow - 1)
-					table[2 * row + 2][2 * col + 1] = value;
-				break;
-			case LEFT:
-				if (col > 0)
-					table[2 * row + 1][2 * col] = value;
-				break;
-			case RIGHT:
-				if (col < nbCol - 1)
-					table[2 * row + 1][2 * col + 2] = value;
-				break;
+				case UP:
+					if (row > 0)
+						table[2 * row][2 * col + 1] = value;
+					break;
+				case DOWN:
+					if (row < nbRow - 1)
+						table[2 * row + 2][2 * col + 1] = value;
+					break;
+				case LEFT:
+					if (col > 0)
+						table[2 * row + 1][2 * col] = value;
+					break;
+				case RIGHT:
+					if (col < nbCol - 1)
+						table[2 * row + 1][2 * col + 2] = value;
+					break;
 			}
 		}
 	}
@@ -104,16 +104,16 @@ public class Maze {
 	public int getWall(int row, int col, Side side) {
 		if (col >= 0 && col < nbCol && row >= 0 && row < nbRow)
 			switch (side) {
-			case UP:
-				return table[2 * row][2 * col + 1];
-			case DOWN:
-				return table[2 * row + 2][2 * col + 1];
-			case LEFT:
-				return table[2 * row + 1][2 * col];
-			case RIGHT:
-				return table[2 * row + 1][2 * col + 2];
-			default:
-				return -1;
+				case UP:
+					return table[2 * row][2 * col + 1];
+				case DOWN:
+					return table[2 * row + 2][2 * col + 1];
+				case LEFT:
+					return table[2 * row + 1][2 * col];
+				case RIGHT:
+					return table[2 * row + 1][2 * col + 2];
+				default:
+					return -1;
 			}
 		else
 			return -1;
@@ -153,16 +153,16 @@ public class Maze {
 	 */
 	public int getNeighbourCell(WallCoord wall) {
 		switch (wall.side) {
-		case LEFT:
-			return getCell(wall.x, wall.y - 1);
-		case RIGHT:
-			return getCell(wall.x, wall.y + 1);
-		case UP:
-			return getCell(wall.x - 1, wall.y);
-		case DOWN:
-			return getCell(wall.x + 1, wall.y);
-		default:
-			return -1;
+			case LEFT:
+				return getCell(wall.x, wall.y - 1);
+			case RIGHT:
+				return getCell(wall.x, wall.y + 1);
+			case UP:
+				return getCell(wall.x - 1, wall.y);
+			case DOWN:
+				return getCell(wall.x + 1, wall.y);
+			default:
+				return -1;
 		}
 	}
 
@@ -239,7 +239,7 @@ public class Maze {
 			this.y = y;
 			this.side = side;
 		}
-		
+
 		@Override
 		public String toString() {
 			return "[" + x + ", " + y + ", " + side.name() + "]";

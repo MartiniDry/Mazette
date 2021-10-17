@@ -32,16 +32,16 @@ public class Mazette {
 			String[] kv = args[id].split("=");
 			if (kv[0].equals("-fxdebug")) {
 				switch (kv[1]) {
-				case "0":
-				case "false":
-					fxDebug = false;
-					break;
-				case "1":
-				case "true":
-					fxDebug = true;
-					break;
-				default:
-					break;
+					case "0":
+					case "false":
+						fxDebug = false;
+						break;
+					case "1":
+					case "true":
+						fxDebug = true;
+						break;
+					default:
+						break;
 				}
 			}
 		}

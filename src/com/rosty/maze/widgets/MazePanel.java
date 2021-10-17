@@ -226,49 +226,49 @@ public class MazePanel extends Pane {
 		}
 
 		switch (getAlignment()) {
-		case TOP_LEFT:
-			deltaX = padX;
-			deltaY = padY;
-			break;
-		case TOP_CENTER:
-			deltaX = padX + 0.5 * dX;
-			deltaY = padY;
-			break;
-		case TOP_RIGHT:
-			deltaX = padX + dX;
-			deltaY = padY;
-			break;
-		case CENTER_LEFT:
-			deltaX = padX;
-			deltaY = padY + 0.5 * dY;
-			break;
-		case CENTER:
-			deltaX = padX + 0.5 * dX;
-			deltaY = padY + 0.5 * dY;
-			break;
-		case CENTER_RIGHT:
-			deltaX = padX + dX;
-			deltaY = padY + 0.5 * dY;
-			break;
-		case BOTTOM_LEFT:
-		case BASELINE_LEFT:
-			deltaX = padX;
-			deltaY = padY + dY;
-			break;
-		case BOTTOM_CENTER:
-		case BASELINE_CENTER:
-			deltaX = padX + 0.5 * dX;
-			deltaY = padY + dY;
-			break;
-		case BOTTOM_RIGHT:
-		case BASELINE_RIGHT:
-			deltaX = padX + dX;
-			deltaY = padY + dY;
-			break;
-		default:
-			deltaX = 0;
-			deltaY = 0;
-			break;
+			case TOP_LEFT:
+				deltaX = padX;
+				deltaY = padY;
+				break;
+			case TOP_CENTER:
+				deltaX = padX + 0.5 * dX;
+				deltaY = padY;
+				break;
+			case TOP_RIGHT:
+				deltaX = padX + dX;
+				deltaY = padY;
+				break;
+			case CENTER_LEFT:
+				deltaX = padX;
+				deltaY = padY + 0.5 * dY;
+				break;
+			case CENTER:
+				deltaX = padX + 0.5 * dX;
+				deltaY = padY + 0.5 * dY;
+				break;
+			case CENTER_RIGHT:
+				deltaX = padX + dX;
+				deltaY = padY + 0.5 * dY;
+				break;
+			case BOTTOM_LEFT:
+			case BASELINE_LEFT:
+				deltaX = padX;
+				deltaY = padY + dY;
+				break;
+			case BOTTOM_CENTER:
+			case BASELINE_CENTER:
+				deltaX = padX + 0.5 * dX;
+				deltaY = padY + dY;
+				break;
+			case BOTTOM_RIGHT:
+			case BASELINE_RIGHT:
+				deltaX = padX + dX;
+				deltaY = padY + dY;
+				break;
+			default:
+				deltaX = 0;
+				deltaY = 0;
+				break;
 		}
 	}
 
@@ -424,20 +424,20 @@ public class MazePanel extends Pane {
 	public void setWall(int row, int col, Side side, int value) {
 		getMaze().setWall(row, col, side, value);
 		switch (side) {
-		case UP:
-			hLines[row][col].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
-			break;
-		case DOWN:
-			hLines[row + 1][col].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
-			break;
-		case LEFT:
-			vLines[row][col].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
-			break;
-		case RIGHT:
-			vLines[row][col + 1].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
-			break;
-		default:
-			break;
+			case UP:
+				hLines[row][col].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
+				break;
+			case DOWN:
+				hLines[row + 1][col].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
+				break;
+			case LEFT:
+				vLines[row][col].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
+				break;
+			case RIGHT:
+				vLines[row][col + 1].setStroke((value == 1) ? getWallColor() : Color.TRANSPARENT);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -449,16 +449,16 @@ public class MazePanel extends Pane {
 	 */
 	public int getNeighbourCell(WallCoord wall) {
 		switch (wall.side) {
-		case LEFT:
-			return getMaze().getCell(wall.x, wall.y - 1);
-		case RIGHT:
-			return getMaze().getCell(wall.x, wall.y + 1);
-		case UP:
-			return getMaze().getCell(wall.x - 1, wall.y);
-		case DOWN:
-			return getMaze().getCell(wall.x + 1, wall.y);
-		default:
-			return -1;
+			case LEFT:
+				return getMaze().getCell(wall.x, wall.y - 1);
+			case RIGHT:
+				return getMaze().getCell(wall.x, wall.y + 1);
+			case UP:
+				return getMaze().getCell(wall.x - 1, wall.y);
+			case DOWN:
+				return getMaze().getCell(wall.x + 1, wall.y);
+			default:
+				return -1;
 		}
 	}
 

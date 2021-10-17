@@ -62,7 +62,7 @@ public class ConfigManager {
 			throws ParserConfigurationException, SAXException, IOException, ChecksumException {
 		if (INSTANCE == null)
 			INSTANCE = new ConfigManager();
-		
+
 		return INSTANCE;
 	}
 

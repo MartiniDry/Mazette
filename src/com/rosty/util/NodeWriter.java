@@ -65,17 +65,17 @@ public class NodeWriter {
 			String[] words = file.getName().split("\\.");
 			String fileExtension = words[words.length - 1].toLowerCase();
 			switch (fileExtension) {
-			case "jpg":
-			case "jpeg":
-			case "png":
-			case "gif":
-				if (!file.exists())
-					file.createNewFile();
+				case "jpg":
+				case "jpeg":
+				case "png":
+				case "gif":
+					if (!file.exists())
+						file.createNewFile();
 
-				ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), fileExtension, file);
-				break;
-			default:
-				break;
+					ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), fileExtension, file);
+					break;
+				default:
+					break;
 			}
 		}
 	}
