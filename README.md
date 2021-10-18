@@ -25,7 +25,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [X] Recursive backtracking
 - [X] Recursive division
 - [X] Hunt-and-Kill (or HK)
-- [ ] Eller
+- [X] Eller
 - [X] Prim
 - [X] Aldous-Broder
 - [X] Wilson
