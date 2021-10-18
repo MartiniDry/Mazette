@@ -1,5 +1,6 @@
 package com.rosty.maze.model.algorithm.generation;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.rosty.maze.model.Maze.Side;
@@ -36,6 +37,7 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public void init() {
+		// Tous les murs intérieurs de la grille osnt retirés.
 		for (int i = 0; i < nbRow - 1; i++) {
 			for (int j = 0; j < nbCol - 1; j++) {
 				mazePanel.setWall(i, j, Side.DOWN, 0);
@@ -80,8 +82,6 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 				break;
 		}
 
-		System.out.println("(" + i + ", " + j + ") -> " + mode.name());
-
 		// If the current cell reaches the right side of the grid without reaching the
 		// bottom, two actions can be performed:
 		// - if EAST_PROCESS is active, the current cell goes to the next line.
@@ -121,38 +121,83 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 
 	private void eastAction(int row, int col) {
 		if (col < nbCol - 1) {
+			boolean rightWallToRemove = false;
+
 			int val = mazePanel.getCell(row, col);
 			int nextVal = mazePanel.getCell(row, col + 1);
 
-			if (row == nbRow - 1) { // If this is the last grid line, placing walls is completely determined.
-				if (val != nextVal) {
-					mazePanel.setWall(row, col, Side.RIGHT, 0);
-					mazePanel.setCell(row, col + 1, val);
+			if (val != nextVal)
+				if (row == nbRow - 1) {
+					// S'il s'agit de la dernière ligne de la grille, le placement des murs est
+					// complètement déterminé.
+					rightWallToRemove = true;
+				} else if (rand.nextBoolean() == false) {
+					// Dans le cas contraire, les murs sont retirés aléatoirement.
+					rightWallToRemove = true;
 				}
-			} else {
-				if (rand.nextBoolean() == false) { // If it is decided to break the right wall, ...
-					// ...then remove it and update the current cell value.
-					mazePanel.setWall(row, col, Side.RIGHT, 0);
-					mazePanel.setCell(row, col + 1, val);
-				}
+
+			if (rightWallToRemove) {
+				// ...then remove it and update the concerned line cells.
+				mazePanel.setWall(row, col, Side.RIGHT, 0);
+
+				ArrayList<Integer> family = findCellsByValue(row, nextVal);
+				for (int c : family)
+					mazePanel.setCell(row, c, val);
 			}
 		}
 	}
 
 	private void southAction(int row, int col) {
 		if (row < nbRow - 1) {
-			// First case to study is when there is a wall to the right side. Each group of
-			// adjacent cells must be connected to the lower row, so we must be sure at
-			// least one adjacent cell is connected to it.
-			if (mazePanel.getWall(row, col, Side.RIGHT) == 1) {
-				;
+			boolean downWallToRemove = false;
+
+			int val = mazePanel.getCell(row, col);
+			ArrayList<Integer> family = findCellsByValue(row, val);
+
+			if (family.size() == 1) {
+				// Un premier cas discriminant est celui où la case courante est la seule de la
+				// ligne à posséder sa valeur. Cela signifie deux choses :
+				// * La case est isolée des autres cases de la ligne par la droite et par la
+				// gauche.
+				// * Le chemin du dessus auquel est reliée la case est isolé du reste du
+				// labyrinthe.
+				// Dans cette situation, il faut obligatoirement briser le mur en dessous de la
+				// case.
+				downWallToRemove = true;
+			} else if (col == family.get(family.size() - 1)) {
+				// Le deuxième cas à distinguer est celui où la case courante correspond à la
+				// dernière case du groupe. Si aucune cellule du groupe n'a été percée par le
+				// bas, alors il faut obligatoirement briser le mur en bas de la cellule
+				// courante pour éviter de créer un ilôt.
+				boolean isIslet = true;
+				for (int c : family)
+					if (mazePanel.getWall(row, c, Side.DOWN) == 0) {
+						isIslet = false;
+						break;
+					}
+
+				if (isIslet)
+					downWallToRemove = true;
+			} else if (rand.nextBoolean() == false) {
+				// Ces deux cas mis à part, l'algorithme choisit de retirer le mur du bas de
+				// façon purement aléatoire.
+				downWallToRemove = true;
 			}
 
-			if (rand.nextBoolean() == false) { // If it is decided to break the down wall, ...
+			if (downWallToRemove) {
 				mazePanel.setWall(row, col, Side.DOWN, 0);
-				mazePanel.setCell(row + 1, col, mazePanel.getCell(row, col));
+				mazePanel.setCell(row + 1, col, val);
 			}
 		}
+	}
+
+	protected ArrayList<Integer> findCellsByValue(int row, int value) {
+		ArrayList<Integer> group = new ArrayList<Integer>();
+		for (int c = 0; c < nbCol; c++)
+			if (mazePanel.getCell(row, c) == value)
+				group.add(c);
+
+		return group;
 	}
 
 	private enum Mode {
