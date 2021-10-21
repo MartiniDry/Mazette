@@ -11,6 +11,7 @@ import com.rosty.maze.dialog.DialogUtility;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
+import com.rosty.maze.model.algorithm.generation.GrowingTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
@@ -132,6 +133,11 @@ public class MenuBarController {
 		AppLauncher.getMainController().regenerate(new Personal2Algorithm(AppLauncher.getMainController().mazePanel));
 	}
 
+	@FXML
+	private void generateGrowingTree() {
+		AppLauncher.getMainController().regenerate(new GrowingTreeAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+	
 	@FXML
 	private void changeColors() {
 		;

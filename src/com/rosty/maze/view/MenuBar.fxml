@@ -34,6 +34,7 @@
 			<MenuItem text="%main.menu.generation.personal._1" onAction="#generatePersonal" />
 			<MenuItem text="%main.menu.generation.personal._2" onAction="#generatePersonal2" />
 		</Menu>
+		<MenuItem text="%main.menu.generation.growingTree" onAction="#generateGrowingTree" />
 	</Menu>
 
 	<Menu text="%main.menu.resolution">

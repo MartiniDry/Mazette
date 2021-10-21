@@ -12,6 +12,7 @@ import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
+import com.rosty.maze.model.algorithm.generation.GrowingTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
 import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
@@ -108,6 +109,7 @@ public class MainWindowController implements Observer {
 		addGenerationButton("Algorithme d'Eller", ae -> regenerate(new EllerAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel", ae -> regenerate(new PersonalAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme personnel #2", ae -> regenerate(new Personal2Algorithm(mazePanel)));
+		addGenerationButton("Algorithme du blob", ae -> regenerate(new GrowingTreeAlgorithm(mazePanel)));
 
 		delta.setValue(generator.getTimeout());
 		delta.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
@@ -246,6 +248,8 @@ public class MainWindowController implements Observer {
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(11));
 				else if (algo instanceof Personal2Algorithm)
 					group.selectToggle((ToggleButton) generationButtons.getChildren().get(12));
+				else if (algo instanceof GrowingTreeAlgorithm)
+					group.selectToggle((ToggleButton) generationButtons.getChildren().get(13));
 			}
 		});
 	}
