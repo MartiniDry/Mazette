@@ -6,6 +6,8 @@
 
 ![Version](https://img.shields.io/badge/Version-1.0-blue)
 ![Language](https://img.shields.io/badge/Language-Java/JavaFX-green)
+![Java version](https://img.shields.io/badge/Java%20version-1.8-slategray)
+![JavaFX version](https://img.shields.io/badge/JavaFX%20version-8.0-slategray)
 
 ------
 
