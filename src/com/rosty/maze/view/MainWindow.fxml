@@ -37,11 +37,11 @@
 					<ColumnConstraints hgrow="ALWAYS" />
 				</columnConstraints>
 
-				<Label GridPane.columnIndex="0" GridPane.halignment="RIGHT" text="%main.left.rowNumber" />
+				<Label GridPane.columnIndex="0" GridPane.halignment="RIGHT" text="%main.left.row_number" />
 				<GIntegerField fx:id="newMazeRows" prefWidth="45" promptText="0" constraint="HARD"
 					GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
 
-				<Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="%main.left.colNumber" />
+				<Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="%main.left.col_number" />
 				<GIntegerField fx:id="newMazeColumns" prefWidth="45" promptText="0" constraint="HARD"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
 			</GridPane>
@@ -50,10 +50,10 @@
 
 			<Separator />
 
-			<CheckBox fx:id="stepOrRun" text="%main.left.stepGen" />
+			<CheckBox fx:id="stepOrRun" text="%main.left.step_gen" />
 
 			<HBox alignment="CENTER" spacing="5" visible="${!stepOrRun.selected}">
-				<Label text="%main.left.timeStep" />
+				<Label text="%main.left.time_step" />
 				<GLongField fx:id="delta" prefWidth="85" alignment="CENTER_RIGHT" promptText="000" HBox.hgrow="ALWAYS" />
 				<Button onAction="#setTimeout" text="%main.left.ok" />
 			</HBox>

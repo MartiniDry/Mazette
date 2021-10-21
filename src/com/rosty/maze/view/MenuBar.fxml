@@ -9,7 +9,7 @@
 
 <MenuBar xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rosty.maze.controller.MenuBarController">
 	<Menu text="%main.menu.file">
-		<MenuItem text="%main.menu.file.saveAs" onAction="#saveDataAs" />
+		<MenuItem text="%main.menu.file.save_as" onAction="#saveDataAs" />
 		<MenuItem text="%main.menu.file.export" onAction="#exportData" />
 		<SeparatorMenuItem />
 		<MenuItem text="%main.menu.file.exit" onAction="#quitApplication" />
@@ -21,20 +21,20 @@
 			<MenuItem text="%main.menu.generation.kruskal.unsorted" onAction="#generateShuffledKruskal" />
 		</Menu>
 
-		<MenuItem text="%main.menu.generation.recursiveBacktracker" onAction="#generateRecursiveBacktracker" />
-		<MenuItem text="%main.menu.generation.recursiveDivision" onAction="#generateRecursiveDivision" />
+		<MenuItem text="%main.menu.generation.recursive_backtracker" onAction="#generateRecursiveBacktracker" />
+		<MenuItem text="%main.menu.generation.recursive_division" onAction="#generateRecursiveDivision" />
 		<MenuItem text="%main.menu.generation.prim" onAction="#generatePrim" />
-		<MenuItem text="%main.menu.generation.huntAndKill" onAction="#generateHuntAndKill" />
-		<MenuItem text="%main.menu.generation.aldousBroder" onAction="#generateAldousBroder" />
+		<MenuItem text="%main.menu.generation.hunt_and_kill" onAction="#generateHuntAndKill" />
+		<MenuItem text="%main.menu.generation.aldous_broder" onAction="#generateAldousBroder" />
 		<MenuItem text="%main.menu.generation.wilson" onAction="#generateWilson" />
-		<MenuItem text="%main.menu.generation.binaryTree" onAction="#generateBinaryTree" />
+		<MenuItem text="%main.menu.generation.binary_tree" onAction="#generateBinaryTree" />
 		<MenuItem text="%main.menu.generation.sidewinder" onAction="#generateSidewinder" />
 		<MenuItem text="%main.menu.generation.eller" onAction="#generateEller" />
 		<Menu text="%main.menu.generation.personal">
 			<MenuItem text="%main.menu.generation.personal._1" onAction="#generatePersonal" />
 			<MenuItem text="%main.menu.generation.personal._2" onAction="#generatePersonal2" />
 		</Menu>
-		<MenuItem text="%main.menu.generation.growingTree" onAction="#generateGrowingTree" />
+		<MenuItem text="%main.menu.generation.growing_tree" onAction="#generateGrowingTree" />
 	</Menu>
 
 	<Menu text="%main.menu.resolution">
