@@ -1,9 +1,8 @@
 package com.rosty.maze;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import com.rosty.maze.application.AppLauncher;
 
@@ -19,7 +18,7 @@ import javafx.application.Platform;
  */
 public class Mazette {
 	/** Journal du logiciel, utilisé pour l'écriture d'événements système. */
-	public static final Logger LOGGER = Logger.getLogger(Mazette.class.getName());
+	public static final Logger LOGGER = Logger.getLogger(Mazette.class);
 
 	/** Booléen indiquant si les données de débogage graphique sont affichées. */
 	private static boolean fxDebug = false;
@@ -44,18 +43,14 @@ public class Mazette {
 			if (kv[0].equals("-loglevel")) {
 				switch (kv[1].toLowerCase()) {
 					case "off":
-					case "severe":
-					case "warning":
+					case "fatal":
+					case "error":
+					case "warn":
 					case "info":
-					case "config":
-					case "fine":
-					case "finer":
-					case "finest":
-					case "all":
-						LOGGER.setLevel(Level.parse(kv[1].toUpperCase()));
-						break;
+					case "trace":
 					case "debug":
-						LOGGER.setLevel(Level.CONFIG);
+					case "all":
+						LOGGER.setLevel(Level.toLevel(kv[1].toUpperCase()));
 						break;
 					default:
 						LOGGER.setLevel(Level.ALL);
@@ -99,11 +94,7 @@ public class Mazette {
 	}
 
 	public static void createLogger() {
-		try {
-			LOGGER.addHandler(new FileHandler("D:/mazette.log"));
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-		}
+		PropertyConfigurator.configure("res/log4j.properties");
 	}
 
 	/**
