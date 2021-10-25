@@ -33,7 +33,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 - [X] Prim
 - [X] Aldous-Broder
 - [X] Wilson
-- [ ] Growing tree
+- [X] Growing tree
 - [X] Binary tree
 - [X] Sidewinder
 - [X] Personal algorithm (name still to define 😊)
