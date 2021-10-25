@@ -14,7 +14,6 @@ import com.rosty.maze.controller.MainWindowController;
 import com.rosty.maze.view.box.MessageBox;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
@@ -72,6 +71,8 @@ public class AppLauncher extends Application {
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
 
 			primaryStage.centerOnScreen();
+
+			primaryStage.setOnCloseRequest(event -> Mazette.shutDown());
 		} catch (IOException e) {
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
@@ -85,8 +86,7 @@ public class AppLauncher extends Application {
 
 	@Override
 	public void stop() {
-		Platform.exit();
-		System.exit(0);
+		Mazette.shutDown();
 	}
 
 	/**

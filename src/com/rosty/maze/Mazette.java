@@ -103,6 +103,10 @@ public class Mazette {
 		return LOGGER.getLevel();
 	}
 
+	/**
+	 * Prépare le journal des événements du logiciel ; c'est la toute première
+	 * action à réaliser lorsque l'on exécute une application.
+	 */
 	public static void createLogger() {
 		PropertyConfigurator.configure("res/log4j.properties");
 	}
