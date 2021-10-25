@@ -17,14 +17,11 @@ import javafx.application.Platform;
  * @version 1.1
  */
 public class Mazette {
-	/** Journal du logiciel, utilisé pour l'écriture d'événements système. */
+	/** Journal du logiciel, utilisé pour l'écriture des événements système. */
 	public static final Logger LOGGER = Logger.getLogger(Mazette.class);
 
 	/** Booléen indiquant si les données de débogage graphique sont affichées. */
 	private static boolean fxDebug = false;
-
-	/** Niveau d'écriture des événements dans le journal de <i>log</i>. */
-	private static Level logLevel = Level.ALL;
 
 	/**
 	 * Méthode principale de l'application <b>Mazette</b> (anciennement <b>Maze
@@ -35,9 +32,18 @@ public class Mazette {
 	public static void main(String... args) {
 		createLogger();
 
+		LOGGER.info("╔═════════════════╗");
+		LOGGER.info("║     MAZETTE     ║");
+		LOGGER.info("╚═════════════════╝ ©MartiniDry");
+		LOGGER.info(null);
+		LOGGER.info(" BEGIN            |");
+		LOGGER.info("──────────────────┘");
+		LOGGER.info(null);
+
 		LOGGER.info("Playing beep.wav");
 		AppLauncher.playSound("beep.wav");
 
+		LOGGER.info("Reading arguments:");
 		for (int id = 0, len = args.length; id < len; id++) {
 			String[] kv = args[id].split("=");
 			if (kv[0].equals("-loglevel")) {
@@ -57,7 +63,7 @@ public class Mazette {
 						break;
 				}
 
-				LOGGER.info("Argument -loglevel: " + logLevel);
+				LOGGER.info(" * loglevel: " + LOGGER.getLevel());
 			} else if (kv[0].equals("-fxdebug")) {
 				switch (kv[1]) {
 					case "0":
@@ -72,7 +78,7 @@ public class Mazette {
 						break;
 				}
 
-				LOGGER.info("Argument -fxdebug: " + fxDebug);
+				LOGGER.info(" * fxdebug: " + fxDebug);
 			}
 		}
 
@@ -89,6 +95,10 @@ public class Mazette {
 		return fxDebug;
 	}
 
+	/**
+	 * Fournit le niveau de traçage des événements système dans le journal
+	 * (<i>log</i>).
+	 */
 	public static final Level arg_logLevel() {
 		return LOGGER.getLevel();
 	}
@@ -103,7 +113,14 @@ public class Mazette {
 	 * la JVM.
 	 */
 	public static void shutDown() {
+		LOGGER.info(null);
+		LOGGER.info(" END              |");
+		LOGGER.info("──────────────────┘");
+		LOGGER.info(null);
+		LOGGER.info("Shutting down the JavaFX application...");
 		Platform.exit();
+
+		LOGGER.info("Shutting down the JVM...");
 		System.exit(0);
 	}
 }
