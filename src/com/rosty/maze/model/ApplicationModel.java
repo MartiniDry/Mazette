@@ -1,5 +1,6 @@
 package com.rosty.maze.model;
 
+import com.rosty.maze.Mazette;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
 
@@ -52,9 +53,10 @@ public class ApplicationModel {
 	 * @param nbCol Nombre de colonnes.
 	 */
 	public void reload(int nbRow, int nbCol) throws Exception {
-		if (nbRow > 0 && nbCol > 0)
+		if (nbRow > 0 && nbCol > 0) {
 			maze = new Maze(nbRow, nbCol);
-		else
+			Mazette.LOGGER.info("New maze created: " + nbRow + " rows, " + nbCol + " columns");
+		} else
 			throw new Exception(LocaleManager.getString("error.maze.creation.size"));
 	}
 }

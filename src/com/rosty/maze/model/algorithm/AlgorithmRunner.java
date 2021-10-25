@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.rosty.maze.Mazette;
 import com.rosty.maze.widgets.Chrono;
 import com.rosty.maze.widgets.Chrono.ObsChronoState;
 
@@ -49,7 +50,7 @@ public class AlgorithmRunner extends Observable implements Observer {
 
 			timer.stop();
 			double elapsedTime = timer.getTime().getSeconds() + timer.getTime().getNano() / 1e9D;
-			System.out.println("Fini ! Temps écoulé : " + elapsedTime + " secondes");
+			Mazette.LOGGER.fatal("Fini ! Temps écoulé : " + elapsedTime + " secondes");
 		} catch (InterruptedException e) {
 			// Ne rien faire
 		}
@@ -128,9 +129,9 @@ public class AlgorithmRunner extends Observable implements Observer {
 				if (algorithm != null)
 					thread.start();
 			} else
-				System.out.println("Veuillez sélectionner un algorithme.");
+				Mazette.LOGGER.error("Veuillez sélectionner un algorithme.");
 		} else
-			System.out.println("Le thread courant n'est pas défini.");
+			Mazette.LOGGER.error("Le thread courant n'est pas défini.");
 	}
 
 	/**
@@ -144,7 +145,7 @@ public class AlgorithmRunner extends Observable implements Observer {
 			timer.stop();
 			thread.interrupt();
 		} else
-			System.out.println("Le thread courant n'est pas défini.");
+			Mazette.LOGGER.error("Le thread courant n'est pas défini.");
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class AlgorithmRunner extends Observable implements Observer {
 		if (algorithm != null) {
 			nextStep();
 			if (algorithm.isComplete())
-				System.out.println("Fini !");
+				Mazette.LOGGER.error("Fini !");
 		}
 	}
 

@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import com.rosty.maze.Mazette;
 import com.rosty.util.xml.XmlUtil;
 import com.rosty.util.xml.checksum.ChecksumException;
 import com.rosty.util.xml.checksum.XmlChecksum;
@@ -48,7 +49,7 @@ public class ConfigManager {
 
 		try {
 			XmlChecksum checker = new XmlChecksum(document);
-			System.out.println("Calcul : " + String.format("0x%08X", checker.calculateChecksum()) + ", sauvegardé : "
+			Mazette.LOGGER.info("Calcul : " + String.format("0x%08X", checker.calculateChecksum()) + ", sauvegardé : "
 					+ String.format("0x%08X", checker.getSavedChecksum()));
 
 			if (checker.calculateChecksum() != checker.getSavedChecksum())

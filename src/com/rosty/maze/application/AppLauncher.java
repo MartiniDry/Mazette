@@ -49,6 +49,8 @@ public class AppLauncher extends Application {
 
 	@Override
 	public void init() throws Exception {
+		Mazette.LOGGER.info("Initialization of the application");
+
 		super.init();
 		MessageBox.setStyleSheet(CSS_PATH + "message-box.css");
 		PropertiesManager.insert("hmi.properties");
@@ -58,9 +60,11 @@ public class AppLauncher extends Application {
 	public void start(Stage stage) {
 		AppLauncher.primaryStage = stage;
 
+		Mazette.LOGGER.info("Preparing 'MainWindow.fxml'...");
 		FXMLLoader loader = new FXMLLoader(Mazette.class.getResource("view/MainWindow.fxml"),
 				LocaleManager.getBundle());
 		try {
+			Mazette.LOGGER.info("Loading 'MainWindow.fxml' and its properties...");
 			PropertiesManager.load(loader);
 			primaryStage.setScene(new Scene(loader.load()));
 
@@ -70,17 +74,16 @@ public class AppLauncher extends Application {
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_24x24.png"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
 
-			primaryStage.centerOnScreen();
-
 			primaryStage.setOnCloseRequest(event -> Mazette.shutDown());
-		} catch (IOException e) {
+
+			primaryStage.centerOnScreen();
+			primaryStage.show();
+		} catch (IOException | RuntimeException e) {
+			Mazette.LOGGER.fatal(e.getMessage(), e);
+
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
-
-			e.printStackTrace();
-		} finally {
-			primaryStage.show();
 		}
 	}
 
@@ -113,11 +116,11 @@ public class AppLauncher extends Application {
 				clip.open(inputStream);
 				clip.start();
 			} catch (Exception e) {
+				Mazette.LOGGER.error(e.getMessage(), e);
+				
 				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 				box.setContentText(e.getLocalizedMessage());
 				box.showAndWait();
-
-				e.printStackTrace();
 			}
 		}).start();
 	}
@@ -132,6 +135,7 @@ public class AppLauncher extends Application {
 	 * </ul>
 	 */
 	public static void reloadView() {
+		Mazette.LOGGER.info("Reloading the FXML view");
 		try {
 			FXMLLoader loader = new FXMLLoader(Mazette.class.getResource("view/MainWindow.fxml"),
 					LocaleManager.getBundle());
@@ -141,12 +145,12 @@ public class AppLauncher extends Application {
 			primaryStage.setTitle(LocaleManager.getString("main.title"));
 
 			AppLauncher.mainController = (MainWindowController) loader.getController();
-		} catch (IOException e) {
+		} catch (IOException | RuntimeException e) {
+			Mazette.LOGGER.fatal(e.getMessage(), e);
+			
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
-
-			e.printStackTrace();
 		}
 	}
 }

@@ -30,7 +30,8 @@ public class Mazette {
 	 * @param args Paramètres de lancement du logiciel.
 	 */
 	public static void main(String... args) {
-		createLogger();
+		// En premier lieu, préparer le journal des événements du logiciel.
+		PropertyConfigurator.configure("res/log4j.properties");
 
 		LOGGER.info("╔═════════════════╗");
 		LOGGER.info("║     MAZETTE     ║");
@@ -101,14 +102,6 @@ public class Mazette {
 	 */
 	public static final Level arg_logLevel() {
 		return LOGGER.getLevel();
-	}
-
-	/**
-	 * Prépare le journal des événements du logiciel ; c'est la toute première
-	 * action à réaliser lorsque l'on exécute une application.
-	 */
-	public static void createLogger() {
-		PropertyConfigurator.configure("res/log4j.properties");
 	}
 
 	/**

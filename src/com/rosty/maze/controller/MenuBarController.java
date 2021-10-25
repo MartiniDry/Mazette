@@ -32,12 +32,12 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class MenuBarController {
 	@FXML
 	private void saveDataAs() {
-		System.out.println("Sauvegarde des données");
+		Mazette.LOGGER.info("Sauvegarde des données");
 	}
 
 	@FXML
 	private void exportData() {
-		System.out.println("Exportation des données");
+		Mazette.LOGGER.info("Exportation des données");
 
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle("Enregistrer le labyrinthe sous...");
@@ -165,10 +165,11 @@ public class MenuBarController {
 		try {
 			DialogUtility.openAboutDialog();
 		} catch (IOException e) {
+			Mazette.LOGGER.error(e.getMessage(), e);
+			
 			MessageBox box = new MessageBox(AlertType.ERROR, "A propos du logiciel");
 			box.setContentText("L'ouverture de la fenêtre a échoué ; veuillez recommencer.");
 			box.showAndWait();
-			e.printStackTrace();
 		}
 	}
 }

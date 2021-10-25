@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.rosty.maze.Mazette;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
@@ -116,7 +117,7 @@ public class MainWindowController implements Observer {
 			String content = delta.getText();
 			if (e.getCode() == KeyCode.ENTER) {
 				generator.setTimeout(content.isEmpty() ? 0L : Long.valueOf(content));
-				System.out.println("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
+				Mazette.LOGGER.info("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
 			}
 		});
 
@@ -150,7 +151,7 @@ public class MainWindowController implements Observer {
 	@FXML
 	private void setTimeout() {
 		generator.setTimeout(delta.getValue());
-		System.out.println("Nouveau pas de temps : " + generator.getTimeout() + " ms.");
+		Mazette.LOGGER.info("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
 	}
 
 	@FXML
@@ -159,6 +160,8 @@ public class MainWindowController implements Observer {
 			ApplicationModel.getInstance().reload(newMazeRows.getValue(), newMazeColumns.getValue());
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		} catch (Exception e) {
+			Mazette.LOGGER.error(e.getMessage(), e);
+			
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.maze.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
@@ -173,7 +176,7 @@ public class MainWindowController implements Observer {
 			else
 				generator.stop();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Mazette.LOGGER.error(e.getMessage(), e);
 		}
 	}
 
