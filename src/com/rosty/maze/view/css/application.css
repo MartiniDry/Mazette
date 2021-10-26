@@ -47,6 +47,12 @@
 	-fx-font-weight: bold;
 }
 
+/*.main .slider .thumb {
+	-fx-padding: 0 3;
+	-fx-font-size: 6.0;
+	-fx-font-family: cocogoose pro;
+}*/
+
 /* Style CSS pour la barre de menu */
 
 .menu-bar {

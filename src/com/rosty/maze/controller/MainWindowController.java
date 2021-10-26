@@ -38,13 +38,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 /**
  * Contrôleur de la fenêtre principale de l'application.
@@ -66,6 +69,8 @@ public class MainWindowController implements Observer {
 
 	@FXML
 	private GLongField delta;
+	@FXML
+	private Slider deltaSlider;
 
 	@FXML
 	private VBox generationButtons;
@@ -121,6 +126,33 @@ public class MainWindowController implements Observer {
 			}
 		});
 
+		deltaSlider.setValue((long) Math.pow(10, 6 - generator.getTimeout()));
+		deltaSlider.setLabelFormatter(new StringConverter<Double>() {
+			@Override
+			public String toString(Double object) {
+				if (object == 0)
+					return "1s";
+				else if (object == 3)
+					return "1ms";
+				else if (object == 6)
+					return "1µs";
+				else
+					return "";
+			}
+
+			@Override
+			public Double fromString(String string) {
+				return null;
+			}
+		});
+		
+		deltaSlider.valueProperty().addListener((bean_p, old_p, new_p) -> {
+			long timeValue = (long) Math.pow(10, 6 - new_p.doubleValue());
+			generator.setTimeout(timeValue);
+			delta.setValue(timeValue);
+			Mazette.LOGGER.info("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
+		});
+
 		stepOrRun.selectedProperty().addListener((bean_p, old_p, new_p) -> {
 			runButton.setVisible(!new_p.booleanValue());
 			stepButton.setVisible(new_p.booleanValue());
@@ -152,6 +184,22 @@ public class MainWindowController implements Observer {
 	private void setTimeout() {
 		generator.setTimeout(delta.getValue());
 		Mazette.LOGGER.info("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
+		
+		double timeValue = 6 - Math.log10(delta.getValue());
+		deltaSlider.setValue(timeValue);
+	}
+
+	@FXML
+	private void selectTime() {
+		/*String val = Double.toString(((int) (deltaSlider.getValue() * 10)) / 10.0);
+		Pane thumb = (Pane) deltaSlider.lookup(".thumb");
+		thumb.getChildren().clear();
+		thumb.getChildren().add(new Label(val));*/
+	}
+
+	@FXML
+	private void setTime() {
+		;
 	}
 
 	@FXML
@@ -161,7 +209,7 @@ public class MainWindowController implements Observer {
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
-			
+
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.maze.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
