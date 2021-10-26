@@ -69,14 +69,19 @@
 
 			<Separator />
 
-			<HBox alignment="CENTER" spacing="5">
-				<StackPane>
+			<GridPane alignment="CENTER" vgap="5">
+				<columnConstraints>
+					<ColumnConstraints percentWidth="50" />
+					<ColumnConstraints percentWidth="50" halignment="CENTER" />
+				</columnConstraints>
+				
+				<StackPane GridPane.columnIndex="0">
 					<ToggleButton fx:id="runButton" text="%main.left.launch" onMouseClicked="#runOrWait" />
 					<Button fx:id="stepButton" text="%main.left.step" onMouseClicked="#step" />
 				</StackPane>
 
-				<Label fx:id="elapsedTime" />
-			</HBox>
+				<Label fx:id="elapsedTime" GridPane.columnIndex="1" />
+			</GridPane>
 		</VBox>
 	</left>
 
