@@ -8,20 +8,20 @@
 
 .main .button {
 	-fx-background-color: #44FB;
-	-fx-background-radius: 10.0;
+	-fx-background-radius: 8.0;
 	-fx-border-color: white;
-	-fx-border-width: 2.0;
-	-fx-border-radius: 8.0;
+	-fx-border-width: 1.5;
+	-fx-border-radius: 6.0;
 	-fx-font-weight: bold;
 	-fx-text-fill: white;
 }
 
 .main .toggle-button {
 	-fx-background-color: #44F8;
-	-fx-background-radius: 10.0;
+	-fx-background-radius: 8.0;
 	-fx-border-color: white;
-	-fx-border-width: 2.0;
-	-fx-border-radius: 8.0;
+	-fx-border-width: 1.5;
+	-fx-border-radius: 6.0;
 	-fx-font-weight: bold;
 	-fx-text-fill: white;
 }
@@ -35,13 +35,15 @@
 	-fx-text-fill: darkgray;
 }
 
-.main .separator {
-	-fx-background-color: #44F;
+.main .separator *.line {
+	-fx-background-color: #DDF;
+	-fx-border-style: solid;
+	-fx-border-width: 0px;
 }
 
 .main .label, .main .check-box {
 	-fx-font-size: 12.0;
-	-fx-font-family: roboto;
+	-fx-font-family: cocogoose pro;
 	-fx-font-weight: bold;
 }
 
@@ -66,8 +68,8 @@
 
 .menu .label {
 	-fx-padding: -2.5 5.0;
-	-fx-font-family: segoe;
-	-fx-font-size: 18.0;
+	-fx-font-family: cocogoose pro;
+	-fx-font-size: 16.0;
 	-fx-text-fill: white;
 }
 
@@ -83,7 +85,7 @@
 }
 
 .menu-item .label {
-	-fx-font-size: 16.0;
+	-fx-font-size: 14.0;
 	-fx-font-weight: normal;
 }
 
@@ -104,7 +106,7 @@
 }
 
 .left-border .text {
-	-fx-font-family: segoe;
+	-fx-font-family: cocogoose pro;
 	-fx-font-size: 12.0;
 	-fx-text-fill: white;
 }
