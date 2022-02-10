@@ -50,23 +50,19 @@ public class DiscreteColorMap {
 	public static final DiscreteColorMap fromString(String str) {
 		DiscreteColorMap map = new DiscreteColorMap();
 
-		String regex = "^\\[-?\\d+\\;\\s*.+\\]$";
-		Pattern pat = Pattern.compile(regex);
-		if (Pattern.matches(regex, str)) {
-			Matcher match = pat.matcher(str);
-			while (match.find()) {
-				String item = match.group();
-				String inside = item.substring(1, item.length() - 1);
-				String[] keyAndValue = inside.split("\\,\\s*");
+		String regex = "\\[-?\\d+;\\s*(\\w+|#[a-fA-F0-9]+)\\]";
+		Matcher match = Pattern.compile(regex).matcher(str);
+		while (match.find()) {
+			String item = match.group();
+			String inside = item.substring(1, item.length() - 1);
+			String[] keyAndValue = inside.split(";\\s*");
 
-				int key = Integer.parseInt(keyAndValue[0]);
-				Color value = Color.web(keyAndValue[1]);
-				map.put(key, value);
-			}
+			int key = Integer.parseInt(keyAndValue[0]);
+			Color value = Color.web(keyAndValue[1]);
+			map.put(key, value);
+		}
 
-			return map;
-		} else
-			return null;
+		return map;
 	}
 
 	@Override
@@ -77,7 +73,7 @@ public class DiscreteColorMap {
 			sb.append("[");
 			sb.append(k.intValue());
 			sb.append("; ");
-			sb.append(map.get(k));
+			sb.append(map.get(k).toString());
 			sb.append("]");
 
 			items.add(sb.toString());

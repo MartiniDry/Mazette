@@ -104,6 +104,8 @@ public class MainWindowController implements Observer {
 		colorMap.put(0, Color.TRANSPARENT);
 		colorMap.put(1, Color.web("#0F06"));
 		colorMap.put(2, Color.web("#00F6"));
+//		DiscreteColorMap colorMap = DiscreteColorMap.fromString("[0; transparent] [1; #0F06] [2; #00F6]");
+		
 		mazePanel.setBlockColorMap(colorMap);
 
 		addGenerationButton("Algorithme de Kruskal standard", ae -> regenerate(new KruskalAlgorithm(mazePanel)));
