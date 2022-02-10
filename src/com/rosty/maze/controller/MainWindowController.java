@@ -29,6 +29,7 @@ import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
 import com.rosty.maze.widgets.MazePanel;
 import com.rosty.maze.widgets.Spacing;
+import com.rosty.util.colormap.DiscreteColorMap;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -45,8 +46,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 
 /**
@@ -99,6 +100,12 @@ public class MainWindowController implements Observer {
 	public void initialize() {
 		mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 
+		DiscreteColorMap colorMap = new DiscreteColorMap();
+		colorMap.put(0, Color.TRANSPARENT);
+		colorMap.put(1, Color.web("#0F06"));
+		colorMap.put(2, Color.web("#00F6"));
+		mazePanel.setBlockColorMap(colorMap);
+
 		addGenerationButton("Algorithme de Kruskal standard", ae -> regenerate(new KruskalAlgorithm(mazePanel)));
 		addGenerationButton("Algorithme de Kruskal non-trié",
 				ae -> regenerate(new ShuffledKruskalAlgorithm(mazePanel)));
@@ -145,7 +152,7 @@ public class MainWindowController implements Observer {
 				return null;
 			}
 		});
-		
+
 		deltaSlider.valueProperty().addListener((bean_p, old_p, new_p) -> {
 			long timeValue = (long) Math.pow(10, 6 - new_p.doubleValue());
 			generator.setTimeout(timeValue);
@@ -184,17 +191,18 @@ public class MainWindowController implements Observer {
 	private void setTimeout() {
 		generator.setTimeout(delta.getValue());
 		Mazette.LOGGER.info("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
-		
+
 		double timeValue = 6 - Math.log10(delta.getValue());
 		deltaSlider.setValue(timeValue);
 	}
 
 	@FXML
 	private void selectTime() {
-		/*String val = Double.toString(((int) (deltaSlider.getValue() * 10)) / 10.0);
-		Pane thumb = (Pane) deltaSlider.lookup(".thumb");
-		thumb.getChildren().clear();
-		thumb.getChildren().add(new Label(val));*/
+		/*
+		 * String val = Double.toString(((int) (deltaSlider.getValue() * 10)) / 10.0);
+		 * Pane thumb = (Pane) deltaSlider.lookup(".thumb");
+		 * thumb.getChildren().clear(); thumb.getChildren().add(new Label(val));
+		 */
 	}
 
 	@FXML

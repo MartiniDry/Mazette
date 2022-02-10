@@ -10,6 +10,7 @@ import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.Maze.WallCoord;
 import com.rosty.util.NodeWriter;
+import com.rosty.util.colormap.DiscreteColorMap;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -152,21 +153,22 @@ public class MazePanel extends Pane {
 		wallColorProperty.set(value);
 	}
 
-	private final ObjectProperty<Color> blockColorProperty = new SimpleObjectProperty<>(new Color(0, 1, 0, 0.4));
+	private final ObjectProperty<DiscreteColorMap> blockColorMapProperty = new SimpleObjectProperty<>(
+			new DiscreteColorMap());
 
-	/** Propriété définissant la couleur des cases du labyrinthe. */
-	public final ObjectProperty<Color> blockColorProperty() {
-		return blockColorProperty;
+	/** Propriété définissant la plage de couleurs des cases du labyrinthe. */
+	public final ObjectProperty<DiscreteColorMap> blockColorMapProperty() {
+		return blockColorMapProperty;
 	}
 
-	/** Fournit la couleur des cases du labyrinthe. */
-	public final Color getBlockColor() {
-		return blockColorProperty.get();
+	/** Fournit la plage de couleurs des cases du labyrinthe. */
+	public final DiscreteColorMap getBlockColorMap() {
+		return blockColorMapProperty.get();
 	}
 
-	/** Définit la couleur des cases du labyrinthe. */
-	public final void setBlockColor(Color value) {
-		blockColorProperty.set(value);
+	/** Définit la plage de couleurs des cases du labyrinthe. */
+	public final void setBlockColorMap(DiscreteColorMap value) {
+		blockColorMapProperty.set(value);
 	}
 
 	/* VARIABLES */
@@ -351,7 +353,7 @@ public class MazePanel extends Pane {
 				if (getMaze().get(i, j) == 1) {
 					Rectangle block = new Rectangle(deltaX + (H * (j - 1)) / (X - 1), deltaY + (W * (i - 1)) / (Y - 1),
 							(2 * H) / (X - 1), (2 * W) / (Y - 1));
-					block.setFill(getBlockColor());
+					block.setFill(getBlockColorMap().get(0));
 					blocks[(i - 1) / 2][(j - 1) / 2] = block;
 					getChildren().add(block);
 				} else {
@@ -395,7 +397,9 @@ public class MazePanel extends Pane {
 	 */
 	public void setCell(int row, int col, int value) {
 		getMaze().setCell(row, col, value);
-		blocks[row][col].setFill((value == 1) ? getBlockColor() : Color.TRANSPARENT);
+//		blocks[row][col].setFill((value == 1) ? getBlockColor() : Color.TRANSPARENT);
+		Color blockColor = getBlockColorMap().get(value);
+		blocks[row][col].setFill(blockColor == null ? Color.TRANSPARENT : blockColor);
 
 		if (Mazette.arg_fxDebug())
 			labels[row][col].setText("" + value);
