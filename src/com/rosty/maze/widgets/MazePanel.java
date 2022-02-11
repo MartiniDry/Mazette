@@ -353,7 +353,7 @@ public class MazePanel extends Pane {
 				if (getMaze().get(i, j) == 1) {
 					Rectangle block = new Rectangle(deltaX + (H * (j - 1)) / (X - 1), deltaY + (W * (i - 1)) / (Y - 1),
 							(2 * H) / (X - 1), (2 * W) / (Y - 1));
-					block.setFill(getBlockColorMap().get(0));
+					block.setFill(getBlockColorMap().get(1));
 					blocks[(i - 1) / 2][(j - 1) / 2] = block;
 					getChildren().add(block);
 				} else {
