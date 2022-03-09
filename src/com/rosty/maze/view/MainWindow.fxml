@@ -23,11 +23,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@css/application.css" styleClass="main"
 	fx:controller="com.rosty.maze.controller.MainWindowController">
 	<left>
-		<VBox alignment="CENTER" spacing="10" minWidth="200" styleClass="left-border">
-			<fx:define>
-				<ToggleGroup fx:id="group" />
-			</fx:define>
-
+		<VBox alignment="TOP_CENTER" spacing="10" minWidth="200" styleClass="left-border">
 			<padding>
 				<Insets topRightBottomLeft="10" />
 			</padding>
@@ -61,11 +57,7 @@
 			</HBox>
 
 			<Slider fx:id="deltaSlider" showTickMarks="true" showTickLabels="true" max="6" min="0" blockIncrement="1"
-				minorTickCount="0" majorTickUnit="1" onMouseDragged="#selectTime" onMouseReleased="#setTime" />
-
-			<Separator />
-
-			<VBox fx:id="generationButtons" alignment="CENTER" spacing="3" />
+				minorTickCount="0" majorTickUnit="1" onMouseDragged="#setTimeoutFromSlider" />
 
 			<Separator />
 
