@@ -1,6 +1,10 @@
 <img src="src/com/rosty/maze/application/icons/logo_128x128.png" align="right" />
 
-# Mazette ![Available language: English](src/com/rosty/maze/view/pictures/english.png) ![Available language: French](src/com/rosty/maze/view/pictures/french.png)
+# Mazette
+![Available language: English](src/com/rosty/maze/view/pictures/english.png)
+![Available language: French](src/com/rosty/maze/view/pictures/french.png)
+![Available language: German](src/com/rosty/maze/view/pictures/german.png)
+![Available language: Spanish](src/com/rosty/maze/view/pictures/spanish.png)
 
 **Maze generator and solver using different algorithms**
 
