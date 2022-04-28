@@ -161,6 +161,12 @@ public class MenuBarController {
 	}
 
 	@FXML
+	private void switchToGerman() {
+		LocaleManager.set(Locale.GERMAN);
+		AppLauncher.reloadView();
+	}
+
+	@FXML
 	private void about() {
 		try {
 			DialogUtility.openAboutDialog();
