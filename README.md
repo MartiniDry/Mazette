@@ -1,6 +1,6 @@
 <img src="src/com/rosty/maze/application/icons/logo_128x128.png" align="right" />
 
-# Mazette
+# Mazette ![Available language: English](src/com/rosty/maze/view/pictures/english.png) ![Available language: French](src/com/rosty/maze/view/pictures/french.png)
 
 **Maze generator and solver using different algorithms**
 
