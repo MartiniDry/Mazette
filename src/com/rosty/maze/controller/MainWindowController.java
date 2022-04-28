@@ -202,7 +202,7 @@ public class MainWindowController implements Observer {
 	public final void regenerate(Algorithm genAlgo) {
 		mazePanel.clear();
 		generator.setAlgorithm(genAlgo);
-		genAlgo.init();
+		generator.reset();
 	}
 
 	@Override
@@ -218,8 +218,6 @@ public class MainWindowController implements Observer {
 				Algorithm algo = ((AlgorithmRunner) o).getAlgorithm();
 				runButton.setDisable(algo == null);
 				stepButton.setDisable(algo == null);
-
-				generator.reset();
 			}
 		});
 	}

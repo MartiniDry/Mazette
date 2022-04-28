@@ -152,9 +152,8 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 				mazePanel.setWall(lineId, index, Side.UP, 0);
 
 			return true;
-		} else {
+		} else
 			return false;
-		}
 	}
 
 	/**
