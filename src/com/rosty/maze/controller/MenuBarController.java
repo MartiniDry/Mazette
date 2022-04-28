@@ -167,6 +167,12 @@ public class MenuBarController {
 	}
 
 	@FXML
+	private void switchToSpanish() {
+		LocaleManager.set(new Locale("es", "ES")); // Spanish is not a standard Java locale
+		AppLauncher.reloadView();
+	}
+
+	@FXML
 	private void about() {
 		try {
 			DialogUtility.openAboutDialog();

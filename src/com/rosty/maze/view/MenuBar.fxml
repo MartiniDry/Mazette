@@ -46,6 +46,7 @@
 			<GMenuItem text="%main.menu.help.language.french" icon="@pictures/french.png" onAction="#switchToFrench" />
 			<GMenuItem text="%main.menu.help.language.english" icon="@pictures/english.png" onAction="#switchToEnglish" />
 			<GMenuItem text="%main.menu.help.language.german" icon="@pictures/german.png" onAction="#switchToGerman" />
+			<GMenuItem text="%main.menu.help.language.spanish" icon="@pictures/spanish.png" onAction="#switchToSpanish" />
 		</Menu>
 
 		<MenuItem text="%main.menu.help.colors" onAction="#changeColors" />
