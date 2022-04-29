@@ -47,6 +47,10 @@
 
 			<Separator />
 
+			<Label fx:id="algoName" alignment="TOP_CENTER" />
+
+			<Separator />
+
 			<CheckBox fx:id="stepOrRun" text="%main.left.step_gen" />
 
 			<HBox alignment="CENTER" spacing="5" visible="${!stepOrRun.selected}">
