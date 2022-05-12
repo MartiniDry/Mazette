@@ -39,14 +39,11 @@ public class Chrono extends Observable {
 			if (elapsing) {
 				toc = System.nanoTime();
 
-				ObsChronoState state = launched ? ObsChronoState.STARTED : ObsChronoState.UPDATED;
 				if (launched) {
-					state = ObsChronoState.STARTED;
+					setTime(Duration.ofNanos(toc - tic + accumulator), ObsChronoState.STARTED);
 					launched = false;
 				} else
-					state = ObsChronoState.UPDATED;
-
-				setTime(Duration.ofNanos(toc - tic + accumulator), state);
+					setTime(Duration.ofNanos(toc - tic + accumulator), ObsChronoState.UPDATED);
 
 				try {
 					Thread.sleep(updatePeriod);
@@ -121,8 +118,8 @@ public class Chrono extends Observable {
 		elapsing = false;
 		launched = false;
 
-		setTime(Duration.ofNanos(toc - tic + accumulator), ObsChronoState.STOPPED);
 		accumulator += (toc - tic);
+		setTime(Duration.ofNanos(accumulator), ObsChronoState.STOPPED);
 	}
 
 	/**
@@ -133,8 +130,9 @@ public class Chrono extends Observable {
 	 * </p>
 	 */
 	public void reset() {
-		setTime(Duration.ZERO, ObsChronoState.RESET);
 		accumulator = 0L;
+		tic = toc = System.nanoTime();
+		setTime(Duration.ofNanos(accumulator), ObsChronoState.RESET);
 
 		thread.interrupt();
 		newThread();
@@ -142,7 +140,7 @@ public class Chrono extends Observable {
 
 	/** Indique si le chronomètre est actuellement lancé. */
 	public boolean isElapsing() {
-		return (thread != null) ? thread.isAlive() : false;
+		return thread != null && thread.isAlive();
 	}
 
 	/** Rédéfinit le <i>thread</i> de lancement */
