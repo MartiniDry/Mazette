@@ -114,12 +114,14 @@ public class Chrono extends Observable {
 
 	/** Arrête le chronomètre. */
 	public void stop() {
-		toc = System.nanoTime();
-		elapsing = false;
-		launched = false;
+		if (elapsing) {
+			toc = System.nanoTime();
+			elapsing = false;
+			launched = false;
 
-		accumulator += (toc - tic);
-		setTime(Duration.ofNanos(accumulator), ObsChronoState.STOPPED);
+			accumulator += (toc - tic);
+			setTime(Duration.ofNanos(accumulator), ObsChronoState.STOPPED);
+		}
 	}
 
 	/**

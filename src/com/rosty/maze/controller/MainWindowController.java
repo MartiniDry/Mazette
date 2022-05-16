@@ -244,11 +244,11 @@ public class MainWindowController implements Observer {
 				else if (algo instanceof HuntAndKillAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.hunt_and_kill"));
 				else if (algo instanceof KruskalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal.unsorted"));
-				else if (algo instanceof Personal2Algorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.personal._2"));
+					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " (" + LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
 				else if (algo instanceof PersonalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.personal._1"));
+					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " (" + LocaleManager.getString("main.menu.generation.personal._1") + ")");
+				else if (algo instanceof Personal2Algorithm)
+					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " (" + LocaleManager.getString("main.menu.generation.personal._2") + ")");
 				else if (algo instanceof PrimAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.prim"));
 				else if (algo instanceof RecursiveBacktrackingAlgorithm)
@@ -256,7 +256,7 @@ public class MainWindowController implements Observer {
 				else if (algo instanceof RecursiveDivisionAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.recursive_division"));
 				else if (algo instanceof ShuffledKruskalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal.sorted"));
+					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " (" + LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
 				else if (algo instanceof SidewinderAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.sidewinder"));
 				else if (algo instanceof WilsonAlgorithm)
