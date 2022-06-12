@@ -72,8 +72,8 @@
 				</columnConstraints>
 				
 				<StackPane GridPane.columnIndex="0">
-					<ToggleButton fx:id="runButton" text="%main.left.launch" onMouseClicked="#runOrWait" />
-					<Button fx:id="stepButton" text="%main.left.step" onMouseClicked="#step" />
+					<ToggleButton fx:id="runButton" text="%main.left.launch" onMouseClicked="#runOrWait" visible="${!stepOrRun.selected}" />
+					<Button fx:id="stepButton" text="%main.left.step" onMouseClicked="#step" visible="${stepOrRun.selected}" />
 				</StackPane>
 
 				<Label fx:id="elapsedTime" GridPane.columnIndex="1" />

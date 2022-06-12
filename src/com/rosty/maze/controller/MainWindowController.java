@@ -64,7 +64,7 @@ public class MainWindowController implements Observer {
 
 	@FXML
 	private Label algoName;
-	
+
 	@FXML
 	private CheckBox stepOrRun;
 
@@ -141,19 +141,11 @@ public class MainWindowController implements Observer {
 			}
 		});
 
-		stepOrRun.selectedProperty().addListener((bean_p, old_p, new_p) -> {
-			runButton.setVisible(!new_p.booleanValue());
-			stepButton.setVisible(new_p.booleanValue());
-		});
-
-		runButton.setVisible(!stepOrRun.isSelected());
-		stepButton.setVisible(stepOrRun.isSelected());
-
 		generator.addObserver(this);
 
 		newMazeRows.setValue(ApplicationModel.getInstance().getMaze().getNbRows());
 		newMazeColumns.setValue(ApplicationModel.getInstance().getMaze().getNbColumns());
-		
+
 		EventHandler<? super KeyEvent> actionReload = ke -> {
 			if (ke.getCode() == KeyCode.ENTER)
 				reloadMaze();
@@ -165,7 +157,7 @@ public class MainWindowController implements Observer {
 	@FXML
 	private void setTimeout() {
 		Mazette.LOGGER.info("Nouveau pas de temps : " + delta.getValue() + " µs.");
-		
+
 		generator.setTimeout(delta.getValue());
 		double timeValue = 6 - Math.log10(delta.getValue());
 		deltaSlider.setValue(timeValue);
@@ -175,7 +167,7 @@ public class MainWindowController implements Observer {
 	private void setTimeoutFromSlider() {
 		long timeValue = (long) Math.pow(10, 6 - deltaSlider.getValue());
 		Mazette.LOGGER.info("Nouveau pas de temps : " + timeValue + " µs.");
-		
+
 		generator.setTimeout(timeValue);
 		delta.setValue(timeValue);
 	}
@@ -244,11 +236,14 @@ public class MainWindowController implements Observer {
 				else if (algo instanceof HuntAndKillAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.hunt_and_kill"));
 				else if (algo instanceof KruskalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " (" + LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
+					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
+							+ LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
 				else if (algo instanceof PersonalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " (" + LocaleManager.getString("main.menu.generation.personal._1") + ")");
+					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
+							+ LocaleManager.getString("main.menu.generation.personal._1") + ")");
 				else if (algo instanceof Personal2Algorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " (" + LocaleManager.getString("main.menu.generation.personal._2") + ")");
+					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
+							+ LocaleManager.getString("main.menu.generation.personal._2") + ")");
 				else if (algo instanceof PrimAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.prim"));
 				else if (algo instanceof RecursiveBacktrackingAlgorithm)
@@ -256,14 +251,15 @@ public class MainWindowController implements Observer {
 				else if (algo instanceof RecursiveDivisionAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.recursive_division"));
 				else if (algo instanceof ShuffledKruskalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " (" + LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
+					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
+							+ LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
 				else if (algo instanceof SidewinderAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.sidewinder"));
 				else if (algo instanceof WilsonAlgorithm)
 					algoName.setText(LocaleManager.getString("main.menu.generation.wilson"));
 				else
 					algoName.setText("");
-				
+
 				runButton.setDisable(algo == null);
 				stepButton.setDisable(algo == null);
 			}
