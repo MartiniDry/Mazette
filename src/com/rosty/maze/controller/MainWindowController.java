@@ -10,20 +10,6 @@ import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
-import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
-import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
-import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
-import com.rosty.maze.model.algorithm.generation.GrowingTreeAlgorithm;
-import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
-import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
-import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
-import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
-import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
-import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
-import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
-import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
-import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
-import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
@@ -225,40 +211,56 @@ public class MainWindowController implements Observer {
 			ObsRunnerState state = (ObsRunnerState) arg;
 			if (state == ObsRunnerState.ALGORITHM) {
 				Algorithm algo = ((AlgorithmRunner) o).getAlgorithm();
-				if (algo instanceof AldousBroderAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.aldous_broder"));
-				else if (algo instanceof BinaryTreeAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.binary_tree"));
-				else if (algo instanceof EllerAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.eller"));
-				else if (algo instanceof GrowingTreeAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.growing_tree"));
-				else if (algo instanceof HuntAndKillAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.hunt_and_kill"));
-				else if (algo instanceof KruskalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
-							+ LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
-				else if (algo instanceof PersonalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
-							+ LocaleManager.getString("main.menu.generation.personal._1") + ")");
-				else if (algo instanceof Personal2Algorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
-							+ LocaleManager.getString("main.menu.generation.personal._2") + ")");
-				else if (algo instanceof PrimAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.prim"));
-				else if (algo instanceof RecursiveBacktrackingAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.recursive_backtracker"));
-				else if (algo instanceof RecursiveDivisionAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.recursive_division"));
-				else if (algo instanceof ShuffledKruskalAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
-							+ LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
-				else if (algo instanceof SidewinderAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.sidewinder"));
-				else if (algo instanceof WilsonAlgorithm)
-					algoName.setText(LocaleManager.getString("main.menu.generation.wilson"));
-				else
-					algoName.setText("");
+				switch (algo.getClass().getSimpleName()) {
+					case "AldousBroderAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.aldous_broder"));
+						break;
+					case "BinaryTreeAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.binary_tree"));
+						break;
+					case "EllerAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.eller"));
+						break;
+					case "GrowingTreeAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.growing_tree"));
+						break;
+					case "HuntAndKillAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.hunt_and_kill"));
+						break;
+					case "KruskalAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
+								+ LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
+						break;
+					case "PersonalAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
+								+ LocaleManager.getString("main.menu.generation.personal._1") + ")");
+						break;
+					case "Personal2Algorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
+								+ LocaleManager.getString("main.menu.generation.personal._2") + ")");
+						break;
+					case "PrimAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.prim"));
+						break;
+					case "RecursiveBacktrackingAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.recursive_backtracker"));
+						break;
+					case "RecursiveDivisionAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.recursive_division"));
+						break;
+					case "ShuffledKruskalAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
+								+ LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
+						break;
+					case "SidewinderAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.sidewinder"));
+						break;
+					case "WilsonAlgorithm":
+						algoName.setText(LocaleManager.getString("main.menu.generation.wilson"));
+						break;
+					default:
+						break;
+				}
 
 				runButton.setDisable(algo == null);
 				stepButton.setDisable(algo == null);
