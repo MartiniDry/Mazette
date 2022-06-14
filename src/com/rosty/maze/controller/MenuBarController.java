@@ -152,24 +152,28 @@ public class MenuBarController {
 	private void switchToFrench() {
 		LocaleManager.set(Locale.FRENCH);
 		AppLauncher.reloadView();
+		AppLauncher.getMainController().displayAlgoName();
 	}
 
 	@FXML
 	private void switchToEnglish() {
 		LocaleManager.set(Locale.ENGLISH);
 		AppLauncher.reloadView();
+		AppLauncher.getMainController().displayAlgoName();
 	}
 
 	@FXML
 	private void switchToGerman() {
 		LocaleManager.set(Locale.GERMAN);
 		AppLauncher.reloadView();
+		AppLauncher.getMainController().displayAlgoName();
 	}
 
 	@FXML
 	private void switchToSpanish() {
 		LocaleManager.set(new Locale("es", "ES")); // Spanish is not a standard Java locale
 		AppLauncher.reloadView();
+		AppLauncher.getMainController().displayAlgoName();
 	}
 
 	@FXML

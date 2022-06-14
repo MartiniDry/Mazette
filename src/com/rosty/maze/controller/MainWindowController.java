@@ -200,71 +200,83 @@ public class MainWindowController implements Observer {
 		generator.reset();
 	}
 
+	public final void displayAlgoName(Algorithm algo) {
+		switch (algo.getClass().getSimpleName()) {
+			case "AldousBroderAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.aldous_broder"));
+				break;
+			case "BinaryTreeAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.binary_tree"));
+				break;
+			case "EllerAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.eller"));
+				break;
+			case "GrowingTreeAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.growing_tree"));
+				break;
+			case "HuntAndKillAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.hunt_and_kill"));
+				break;
+			case "KruskalAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
+						+ LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
+				break;
+			case "PersonalAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
+						+ LocaleManager.getString("main.menu.generation.personal._1") + ")");
+				break;
+			case "Personal2Algorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
+						+ LocaleManager.getString("main.menu.generation.personal._2") + ")");
+				break;
+			case "PrimAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.prim"));
+				break;
+			case "RecursiveBacktrackingAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.recursive_backtracker"));
+				break;
+			case "RecursiveDivisionAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.recursive_division"));
+				break;
+			case "ShuffledKruskalAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
+						+ LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
+				break;
+			case "SidewinderAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.sidewinder"));
+				break;
+			case "WilsonAlgorithm":
+				algoName.setText(LocaleManager.getString("main.menu.generation.wilson"));
+				break;
+			default:
+				break;
+		}
+	}
+
+	public final void displayAlgoName() {
+		displayAlgoName(generator.getAlgorithm());
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
-		Platform.runLater(() -> {
-			Duration time = ((AlgorithmRunner) o).getTime();
-			double chronoTime = time.getSeconds() + time.getNano() / 1e9D;
+		if (o instanceof AlgorithmRunner) {
+			Platform.runLater(() -> {
+				Duration time = ((AlgorithmRunner) o).getTime();
+				double chronoTime = time.getSeconds() + time.getNano() / 1e9D;
 
-			elapsedTime.setText(String.format("%.3f", chronoTime) + " s");
+				elapsedTime.setText(String.format("%.3f", chronoTime) + " s");
 
-			ObsRunnerState state = (ObsRunnerState) arg;
-			if (state == ObsRunnerState.ALGORITHM) {
-				Algorithm algo = ((AlgorithmRunner) o).getAlgorithm();
-				switch (algo.getClass().getSimpleName()) {
-					case "AldousBroderAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.aldous_broder"));
-						break;
-					case "BinaryTreeAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.binary_tree"));
-						break;
-					case "EllerAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.eller"));
-						break;
-					case "GrowingTreeAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.growing_tree"));
-						break;
-					case "HuntAndKillAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.hunt_and_kill"));
-						break;
-					case "KruskalAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
-								+ LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
-						break;
-					case "PersonalAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
-								+ LocaleManager.getString("main.menu.generation.personal._1") + ")");
-						break;
-					case "Personal2Algorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
-								+ LocaleManager.getString("main.menu.generation.personal._2") + ")");
-						break;
-					case "PrimAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.prim"));
-						break;
-					case "RecursiveBacktrackingAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.recursive_backtracker"));
-						break;
-					case "RecursiveDivisionAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.recursive_division"));
-						break;
-					case "ShuffledKruskalAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
-								+ LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
-						break;
-					case "SidewinderAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.sidewinder"));
-						break;
-					case "WilsonAlgorithm":
-						algoName.setText(LocaleManager.getString("main.menu.generation.wilson"));
-						break;
-					default:
-						break;
+				ObsRunnerState state = (ObsRunnerState) arg;
+				if (state == ObsRunnerState.ALGORITHM) {
+					Algorithm algo = ((AlgorithmRunner) o).getAlgorithm();
+					displayAlgoName(algo);
+
+					// Les boutons d'actions sont grisés lorsque aucun algorithme n'a été choisi.
+					runButton.setDisable(algo == null);
+					stepButton.setDisable(algo == null);
 				}
-
-				runButton.setDisable(algo == null);
-				stepButton.setDisable(algo == null);
-			}
-		});
+			});
+		} else
+			Mazette.LOGGER.error("The observable event is unknown: " + arg.getClass().getSimpleName() + "." + arg);
 	}
 }
