@@ -1,6 +1,7 @@
 package com.rosty.maze.controller;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,6 +11,20 @@ import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
+import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
+import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
+import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
+import com.rosty.maze.model.algorithm.generation.GrowingTreeAlgorithm;
+import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
+import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
+import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
+import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
+import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
+import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
+import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
+import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
@@ -79,6 +94,26 @@ public class MainWindowController implements Observer {
 
 	// Générateur de labyrinthes
 	private static final AlgorithmRunner generator = ApplicationModel.getInstance().getGenerator();
+
+	// Table des "labels" des algorithmes. Ces identifiants permettent d'afficher le
+	// nom des algorithmes à l'écran avec la langue choisie par l'utilisateur.
+	private static final HashMap<Class<? extends Algorithm>, String> algoLabels = new HashMap<>();
+	static {
+		algoLabels.put(AldousBroderAlgorithm.class, "main.menu.generation.aldous_broder");
+		algoLabels.put(BinaryTreeAlgorithm.class, "main.menu.generation.binary_tree");
+		algoLabels.put(EllerAlgorithm.class, "main.menu.generation.eller");
+		algoLabels.put(GrowingTreeAlgorithm.class, "main.menu.generation.growing_tree");
+		algoLabels.put(HuntAndKillAlgorithm.class, "main.menu.generation.hunt_and_kill");
+		algoLabels.put(KruskalAlgorithm.class, "main.menu.generation.kruskal.unsorted");
+		algoLabels.put(PersonalAlgorithm.class, "main.menu.generation.personal._1");
+		algoLabels.put(Personal2Algorithm.class, "main.menu.generation.personal._2");
+		algoLabels.put(PrimAlgorithm.class, "main.menu.generation.prim");
+		algoLabels.put(RecursiveBacktrackingAlgorithm.class, "main.menu.generation.recursive_backtracker");
+		algoLabels.put(RecursiveDivisionAlgorithm.class, "main.menu.generation.recursive_division");
+		algoLabels.put(ShuffledKruskalAlgorithm.class, "main.menu.generation.kruskal.sorted");
+		algoLabels.put(SidewinderAlgorithm.class, "main.menu.generation.sidewinder");
+		algoLabels.put(WilsonAlgorithm.class, "main.menu.generation.wilson");
+	}
 
 	@FXML
 	public void initialize() {
@@ -200,59 +235,47 @@ public class MainWindowController implements Observer {
 		generator.reset();
 	}
 
-	public final void displayAlgoName(Algorithm algo) {
-		switch (algo.getClass().getSimpleName()) {
-			case "AldousBroderAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.aldous_broder"));
-				break;
-			case "BinaryTreeAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.binary_tree"));
-				break;
-			case "EllerAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.eller"));
-				break;
-			case "GrowingTreeAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.growing_tree"));
-				break;
-			case "HuntAndKillAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.hunt_and_kill"));
-				break;
-			case "KruskalAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
-						+ LocaleManager.getString("main.menu.generation.kruskal.unsorted") + ")");
-				break;
-			case "PersonalAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
-						+ LocaleManager.getString("main.menu.generation.personal._1") + ")");
-				break;
-			case "Personal2Algorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.personal") + " ("
-						+ LocaleManager.getString("main.menu.generation.personal._2") + ")");
-				break;
-			case "PrimAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.prim"));
-				break;
-			case "RecursiveBacktrackingAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.recursive_backtracker"));
-				break;
-			case "RecursiveDivisionAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.recursive_division"));
-				break;
-			case "ShuffledKruskalAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.kruskal") + " ("
-						+ LocaleManager.getString("main.menu.generation.kruskal.sorted") + ")");
-				break;
-			case "SidewinderAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.sidewinder"));
-				break;
-			case "WilsonAlgorithm":
-				algoName.setText(LocaleManager.getString("main.menu.generation.wilson"));
-				break;
-			default:
-				break;
-		}
+	/**
+	 * Affiche le nom d'un algorithme dans l'IHM avec la locale courante.
+	 * 
+	 * @param algo Instance de la classe {@link Algorithm}.
+	 */
+	final void displayAlgoName(Algorithm algo) {
+		if (algo != null) {
+			// "main.menu.generation.kruskal.sorted"
+			String algoLabel = algoLabels.get(algo.getClass());
+
+			// Le label peut faire partie d'une sous-famille d'algorithmes (ex :
+			// l'algorithme de Kruskal se décline en 2 versions, triée et non-triée). Cette
+			// sous-famille est représentée par un point supplémentaire dans le label.
+			String temp = algoLabel.substring("main.menu.".length()); // Décomposition du label couche par couche
+			if (temp.startsWith("generation")) {
+				temp = temp.substring("generation.".length());
+				if (!temp.contains(".")) { // Si l'algorithme est identifié seulement par un nom, ...
+					// ...alors l'afficher dans l'IHM.
+					algoName.setText(LocaleManager.getString(algoLabel));
+				} else { // Si l'algorithme est identifié par un nom et une ou plusieurs familles, ...
+					// ...alors afficher les familles suivies du nom entre parenthèses.
+					String finalText = "";
+					temp = "main.menu.generation"; // Recomposition du label
+
+					String[] keys = temp.split("\\.");
+					for (int i = 0; i < keys.length - 1; i++) {
+						temp += ("." + keys[i]);
+						finalText += (LocaleManager.getString(temp) + " ");
+					}
+
+					// A ce stade, temp + "." + keys[keys.length-1] = algoLabel ; simplifions !
+					finalText += ("(" + LocaleManager.getString(algoLabel) + ")");
+					algoName.setText(finalText);
+				}
+			} else
+				algoName.setText(LocaleManager.getString(algoLabel));
+		} else
+			algoName.setText(null);
 	}
 
+	/** Affiche le nom de l'algorithme courant dans l'IHM. */
 	public final void displayAlgoName() {
 		displayAlgoName(generator.getAlgorithm());
 	}
