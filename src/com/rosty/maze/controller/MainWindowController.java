@@ -198,6 +198,7 @@ public class MainWindowController implements Observer {
 		try {
 			ApplicationModel.getInstance().reload(newMazeRows.getValue(), newMazeColumns.getValue());
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
+			generator.reset();
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 
@@ -258,11 +259,11 @@ public class MainWindowController implements Observer {
 					// ...alors afficher le nom suivi des caractéristiques entre parenthèses.
 					StringBuilder finalText = new StringBuilder();
 					String[] keys = temp.split("\\.");
-					
+
 					// Recomposition du label
 					temp = "main.menu.generation";
 					temp += ("." + keys[0]);
-					finalText.append(LocaleManager.getString(temp) + " ("); // Nom 
+					finalText.append(LocaleManager.getString(temp) + " ("); // Nom
 
 					for (int i = 1; i < keys.length; i++) {
 						temp += ("." + keys[i]);
