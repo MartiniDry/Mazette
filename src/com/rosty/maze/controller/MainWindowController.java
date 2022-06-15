@@ -254,20 +254,24 @@ public class MainWindowController implements Observer {
 				if (!temp.contains(".")) { // Si l'algorithme est identifié seulement par un nom, ...
 					// ...alors l'afficher dans l'IHM.
 					algoName.setText(LocaleManager.getString(algoLabel));
-				} else { // Si l'algorithme est identifié par un nom et une ou plusieurs familles, ...
-					// ...alors afficher les familles suivies du nom entre parenthèses.
-					String finalText = "";
-					temp = "main.menu.generation"; // Recomposition du label
-
+				} else { // Si l'algorithme est identifié par un nom et un ou plusieurs aspects, ...
+					// ...alors afficher le nom suivi des caractéristiques entre parenthèses.
+					StringBuilder finalText = new StringBuilder();
 					String[] keys = temp.split("\\.");
-					for (int i = 0; i < keys.length - 1; i++) {
+					
+					// Recomposition du label
+					temp = "main.menu.generation";
+					temp += ("." + keys[0]);
+					finalText.append(LocaleManager.getString(temp) + " ("); // Nom 
+
+					for (int i = 1; i < keys.length; i++) {
 						temp += ("." + keys[i]);
-						finalText += (LocaleManager.getString(temp) + " ");
+						finalText.append(LocaleManager.getString(temp) + ", ");
 					}
 
-					// A ce stade, temp + "." + keys[keys.length-1] = algoLabel ; simplifions !
-					finalText += ("(" + LocaleManager.getString(algoLabel) + ")");
-					algoName.setText(finalText);
+					finalText.delete(finalText.length() - 2, finalText.length());
+					finalText.append(")");
+					algoName.setText(finalText.toString());
 				}
 			} else
 				algoName.setText(LocaleManager.getString(algoLabel));
