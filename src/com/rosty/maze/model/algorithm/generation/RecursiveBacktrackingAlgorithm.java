@@ -47,7 +47,7 @@ public class RecursiveBacktrackingAlgorithm extends MazeGenerationAlgorithm {
 	/** Position initiale de l'explorateur dans la grille. */
 	private int x0 /* ligne */, y0 /* colonne */;
 	/** Chemin de l'explorateur sans prendre en compte les retours en arrière. */
-	private List<int[]> directPath = new ArrayList<>();
+	private List<int[]> directPath;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -74,6 +74,7 @@ public class RecursiveBacktrackingAlgorithm extends MazeGenerationAlgorithm {
 		y0 = rand.nextInt(nbCol - 1);
 
 		// Placement de l'explorateur sur ce point de départ
+		directPath = new ArrayList<>();
 		directPath.add(new int[] { x0, y0 });
 		mazePanel.getMaze().setCell(x0, y0, 1); // La case est maintenant explorée
 	}

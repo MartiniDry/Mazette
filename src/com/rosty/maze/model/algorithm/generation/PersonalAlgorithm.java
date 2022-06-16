@@ -138,12 +138,12 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class PersonalAlgorithm extends MazeGenerationAlgorithm {
 	/** Numéro qui s'incrémente chaque fois qu'une case de la grille est traitée. */
-	private int cellId = 0;
+	private int cellId;
 	/**
 	 * Numéro identifiant une nouvelle cellule de la grille, pour laquelle aucune
 	 * valeur n'est attribuée.
 	 */
-	private int cellValue = 2;
+	private int cellValue;
 
 	/** Générateur de nombres aléatoires. */
 	private static final Random rand = new Random();
@@ -170,6 +170,10 @@ public class PersonalAlgorithm extends MazeGenerationAlgorithm {
 
 		for (int j = 0; j < nbCol - 1; j++)
 			mazePanel.setWall(nbRow - 1, j, Side.RIGHT, 0);
+		
+		// Assignation des valeurs pour l'exploration des cellules
+		cellId = 0;
+		cellValue = 2;
 	}
 
 	@Override

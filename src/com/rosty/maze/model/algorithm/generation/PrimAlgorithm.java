@@ -57,7 +57,7 @@ public class PrimAlgorithm extends MazeGenerationAlgorithm {
 	 * Liste des cellules indiquées par l'algorithme et à partir desquelles seront
 	 * identifiés les prochains murs à retirer.
 	 */
-	private List<int[]> pendingCells = new ArrayList<>();
+	private List<int[]> pendingCells;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -79,6 +79,7 @@ public class PrimAlgorithm extends MazeGenerationAlgorithm {
 				mazePanel.getMaze().setCell(i, j, 2);
 
 		/* Etape 2 : placement de la toute première cellule à analyser. */
+		pendingCells = new ArrayList<>();
 		int r = rand.nextInt(nbRow), c = rand.nextInt(nbCol);
 		pendingCells.add(new int[] { r, c });
 		mazePanel.setCell(r, c, 1);

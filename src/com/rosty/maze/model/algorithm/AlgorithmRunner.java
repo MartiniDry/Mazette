@@ -182,7 +182,7 @@ public class AlgorithmRunner extends Observable implements Observer {
 			return;
 		else {
 			algorithm.step();
-			
+
 			int timeoutMs = (int) timeout / 1000;
 			int timeoutNs = ((int) timeout % 1000) * 1000;
 			Thread.sleep(timeoutMs, timeoutNs); // Pause du thread à la microseconde près
@@ -210,29 +210,29 @@ public class AlgorithmRunner extends Observable implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		switch ((ObsChronoState) arg) {
-		case STARTED:
-			setChanged();
-			notifyObservers(ObsRunnerState.STARTED);
+			case STARTED:
+				setChanged();
+				notifyObservers(ObsRunnerState.STARTED);
 
-			break;
-		case UPDATED:
-			setChanged();
-			notifyObservers(ObsRunnerState.UPDATED);
+				break;
+			case UPDATED:
+				setChanged();
+				notifyObservers(ObsRunnerState.UPDATED);
 
-			break;
-		case STOPPED:
-			setChanged();
-			notifyObservers(ObsRunnerState.STOPPED);
+				break;
+			case STOPPED:
+				setChanged();
+				notifyObservers(ObsRunnerState.STOPPED);
 
-			break;
-		case RESET:
-			setChanged();
-			notifyObservers(ObsRunnerState.RESET);
+				break;
+			case RESET:
+				setChanged();
+				notifyObservers(ObsRunnerState.RESET);
 
-			break;
-		case NEW:
-		default:
-			break;
+				break;
+			case NEW:
+			default:
+				break;
 		}
 	}
 

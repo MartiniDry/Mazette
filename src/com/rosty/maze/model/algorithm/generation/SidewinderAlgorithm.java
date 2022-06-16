@@ -57,9 +57,9 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class SidewinderAlgorithm extends MazeGenerationAlgorithm {
 	/** Indicateur de position dans la grille. */
-	private int cellId = 0;
+	private int cellId;
 	/** Liste des cases actuellement mémorisées pour une excavation nord. */
-	private List<int[]> rowBlock = new ArrayList<>();
+	private List<int[]> rowBlock;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -75,9 +75,14 @@ public class SidewinderAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public void init() {
+		rowBlock = new ArrayList<>();
+		
 		for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)
 				mazePanel.setCell(i, j, 0);
+		
+		// Positionnement dans la grille
+		cellId = 0;
 	}
 
 	@Override

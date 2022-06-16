@@ -53,12 +53,12 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 	/** Liste des pièces obtenues par divisions successives. */
-	List<Section> sections = new ArrayList<>();
+	private List<Section> sections;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
 
-	private boolean vertical = true; // Définit le sens des murs à placer
+	private boolean vertical; // Définit le sens des murs à placer
 
 	/**
 	 * Constructeur de la classe {@link RecursiveDivisionAlgorithm}.
@@ -85,7 +85,11 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 			mazePanel.setWall(nbRow - 1, j, Side.RIGHT, 0);
 
 		// Initialisation de la liste avec la première section
+		sections = new ArrayList<>();
 		sections.add(new Section(0, 0, nbCol, nbRow));
+		
+		// Placement vertical des murs pour débuter
+		vertical = true;
 	}
 
 	@Override

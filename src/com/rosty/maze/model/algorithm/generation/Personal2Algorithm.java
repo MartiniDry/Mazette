@@ -156,7 +156,7 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class Personal2Algorithm extends MazeGenerationAlgorithm {
 	/** Points identifiant le trait courant pendant la phase de tracé. */
-	private int[] A = null, B = null;
+	private int[] A, B;
 	/**
 	 * Liste des murs reliant A à B (resp. B à A) en s'arrêtant à la première case
 	 * visitée.
@@ -164,7 +164,7 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 	private ArrayList<WallCoord> pathFromAtoB, pathFromBtoA;
 
 	/** Mode de fonctionnement de l'algorithme. */
-	private Mode mode = Mode.DRAFT;
+	private Mode mode;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -184,8 +184,14 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 			for (int j = 0; j < nbCol; j++)
 				mazePanel.setCell(i, j, 0);
 
+		// Initialisation du chemin
+		A = null;
+		B = null;
 		pathFromAtoB = new ArrayList<>();
 		pathFromBtoA = new ArrayList<>();
+		
+		// Mode de démarrage de l'algorithme
+		mode = Mode.DRAFT;
 	}
 
 	@Override
@@ -201,75 +207,75 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 	@Override
 	public void step() {
 		switch (mode) {
-		case DRAFT:
-			// Listage de toutes les cellules non encore explorées
-			ArrayList<int[]> unexploredCells = new ArrayList<>();
-			for (int i = 0; i < nbRow; i++)
-				for (int j = 0; j < nbCol; j++)
-					if (mazePanel.getCell(i, j) == 0)
-						unexploredCells.add(new int[] { i, j });
+			case DRAFT:
+				// Listage de toutes les cellules non encore explorées
+				ArrayList<int[]> unexploredCells = new ArrayList<>();
+				for (int i = 0; i < nbRow; i++)
+					for (int j = 0; j < nbCol; j++)
+						if (mazePanel.getCell(i, j) == 0)
+							unexploredCells.add(new int[] { i, j });
 
-			if (unexploredCells.isEmpty()) {
+				if (unexploredCells.isEmpty()) {
+					identifyGroups();
+					mode = Mode.GATHERING;
+				} else if (unexploredCells.size() == 1) {
+					int[] lastCell = unexploredCells.get(0);
+					mazePanel.setCell(lastCell[0], lastCell[1], 1);
+					mode = Mode.LAST_ONE_OUT;
+				} else { // Equivalent à "size > 1"
+					// Choix de deux cellules distincts, aléatoirement dans la liste.
+					int ranStart = rand.nextInt(unexploredCells.size());
+					A = unexploredCells.get(ranStart);
+					unexploredCells.remove(ranStart);
+					int ranEnd = rand.nextInt(unexploredCells.size());
+					B = unexploredCells.get(ranEnd);
+
+					// Esquisse du trait entre ces deux cellules
+					draftLine();
+					mode = Mode.DRAWING;
+				}
+
+				break;
+			case DRAWING:
+				drawLine();
+				// Listage de toutes les cellules non encore explorées
+				ArrayList<int[]> unexploredCellsList = new ArrayList<>();
+				for (int i = 0; i < nbRow; i++)
+					for (int j = 0; j < nbCol; j++)
+						if (mazePanel.getCell(i, j) == 0)
+							unexploredCellsList.add(new int[] { i, j });
+
+				if (unexploredCellsList.isEmpty()) {
+					identifyGroups();
+					mode = Mode.GATHERING;
+				} else {
+					mode = Mode.DRAFT;
+				}
+				break;
+			case LAST_ONE_OUT:
+				int[] L = null;
+				// Listage de toutes la cellule non-explorée
+				rowLoop: for (int i = 0; i < nbRow; i++)
+					for (int j = 0; j < nbCol; j++)
+						if (mazePanel.getCell(i, j) == 1) {
+							L = new int[] { i, j };
+							break rowLoop;
+						}
+
+				ArrayList<WallCoord> sides = getSides(L[0], L[1]);
+				WallCoord chosenWall = sides.get(rand.nextInt(sides.size()));
+				mazePanel.setWall(chosenWall.x, chosenWall.y, chosenWall.side, 0);
+				mazePanel.setCell(chosenWall.x, chosenWall.y, 2);
+
 				identifyGroups();
 				mode = Mode.GATHERING;
-			} else if (unexploredCells.size() == 1) {
-				int[] lastCell = unexploredCells.get(0);
-				mazePanel.setCell(lastCell[0], lastCell[1], 1);
-				mode = Mode.LAST_ONE_OUT;
-			} else { // Equivalent à "size > 1"
-				// Choix de deux cellules distincts, aléatoirement dans la liste.
-				int ranStart = rand.nextInt(unexploredCells.size());
-				A = unexploredCells.get(ranStart);
-				unexploredCells.remove(ranStart);
-				int ranEnd = rand.nextInt(unexploredCells.size());
-				B = unexploredCells.get(ranEnd);
-
-				// Esquisse du trait entre ces deux cellules
-				draftLine();
-				mode = Mode.DRAWING;
-			}
-
-			break;
-		case DRAWING:
-			drawLine();
-			// Listage de toutes les cellules non encore explorées
-			ArrayList<int[]> unexploredCellsList = new ArrayList<>();
-			for (int i = 0; i < nbRow; i++)
-				for (int j = 0; j < nbCol; j++)
-					if (mazePanel.getCell(i, j) == 0)
-						unexploredCellsList.add(new int[] { i, j });
-
-			if (unexploredCellsList.isEmpty()) {
+				break;
+			case GATHERING:
+				gatherGroups();
 				identifyGroups();
-				mode = Mode.GATHERING;
-			} else {
-				mode = Mode.DRAFT;
-			}
-			break;
-		case LAST_ONE_OUT:
-			int[] L = null;
-			// Listage de toutes la cellule non-explorée
-			rowLoop: for (int i = 0; i < nbRow; i++)
-				for (int j = 0; j < nbCol; j++)
-					if (mazePanel.getCell(i, j) == 1) {
-						L = new int[] { i, j };
-						break rowLoop;
-					}
-
-			ArrayList<WallCoord> sides = getSides(L[0], L[1]);
-			WallCoord chosenWall = sides.get(rand.nextInt(sides.size()));
-			mazePanel.setWall(chosenWall.x, chosenWall.y, chosenWall.side, 0);
-			mazePanel.setCell(chosenWall.x, chosenWall.y, 2);
-
-			identifyGroups();
-			mode = Mode.GATHERING;
-			break;
-		case GATHERING:
-			gatherGroups();
-			identifyGroups();
-			break;
-		default:
-			break;
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -569,16 +575,16 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 	private int[] move(int[] point, Side dir) {
 		if (point.length == 2) {
 			switch (dir) {
-			case UP:
-				return new int[] { point[0] - 1, point[1] };
-			case LEFT:
-				return new int[] { point[0], point[1] - 1 };
-			case DOWN:
-				return new int[] { point[0] + 1, point[1] };
-			case RIGHT:
-				return new int[] { point[0], point[1] + 1 };
-			default:
-				return null;
+				case UP:
+					return new int[] { point[0] - 1, point[1] };
+				case LEFT:
+					return new int[] { point[0], point[1] - 1 };
+				case DOWN:
+					return new int[] { point[0] + 1, point[1] };
+				case RIGHT:
+					return new int[] { point[0], point[1] + 1 };
+				default:
+					return null;
 			}
 		} else
 			return null;

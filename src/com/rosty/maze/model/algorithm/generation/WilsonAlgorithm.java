@@ -58,9 +58,9 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 	/** Portion de chemin explorée. */
-	private List<WallCoord> partialPath = new ArrayList<>();
+	private List<WallCoord> partialPath;
 	/** Position courante de l'explorateur dans la grille. */
-	private int x = -1 /* ligne */, y = -1 /* colonne */;
+	private int x /* ligne */, y /* colonne */;
 	/**
 	 * Point d'ancrage initial ; au démarrage de l'algorithme, l'explorateur doit
 	 * arriver à ce point.
@@ -71,7 +71,7 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 	 * Booléen indiquant si l'explorateur débute ses promenades en partant du haut
 	 * ou du bas de la grille.
 	 */
-	private boolean reversed = false;
+	private boolean reversed;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -87,6 +87,8 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public void init() {
+		partialPath = new ArrayList<>();
+
 		// Initialisation de la grille ; toutes les cases sont marquées à 0 pour
 		// indiquer que la case est inexplorée.
 		for (int i = 0; i < nbRow; i++)
@@ -97,8 +99,16 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 		x0 = rand.nextInt(nbRow - 1);
 		y0 = rand.nextInt(nbCol - 1);
 
+		// Positionnement de l'explorateur hors de la grille ; sa valeur sera définie au
+		// lancement de l'algorithme
+		x = -1;
+		y = -1;
+
 		// Le point de départ est exploré.
 		mazePanel.setCell(x0, y0, 2);
+
+		// Définition du sens de balayage
+		reversed = false;
 	}
 
 	@Override
@@ -175,44 +185,44 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 			move(lastDirection.side);
 
 			switch (mazePanel.getCell(x, y)) { // Nouvelle position de l'explorateur
-			case 0: // Si la case n'est pas visitée, ...
-				// ...alors on la marque comme explorée et on détermine le prochain pas à
-				// réaliser.
-				mazePanel.setCell(x, y, 1);
-				ArrayList<WallCoord> sides = getSides(x, y);
-				WallCoord newDirection = sides.get(rand.nextInt(sides.size()));
-				partialPath.add(newDirection);
+				case 0: // Si la case n'est pas visitée, ...
+					// ...alors on la marque comme explorée et on détermine le prochain pas à
+					// réaliser.
+					mazePanel.setCell(x, y, 1);
+					ArrayList<WallCoord> sides = getSides(x, y);
+					WallCoord newDirection = sides.get(rand.nextInt(sides.size()));
+					partialPath.add(newDirection);
 
-				break;
-			case 1: // Si la case est marquée comme visitée, ...
-				// ...alors elle fait partie du chemin courant, ce qui indique que l'explorateur
-				// tourne en rond ! Il doit faire demi-tour pour que la boucle disparaisse.
-				int index = partialPath.size() - 1;
-				WallCoord dir = lastDirection;
-				do { // Faire un pas en arrière, ...
-					partialPath.remove(index--);
-					mazePanel.setCell(dir.x, dir.y, 0);
-					if (index >= 0) // Simple sécurité
-						dir = partialPath.get(index);
-					else
-						break;
-				} while (dir.x != x || dir.y != y); // ...tant que l'on n'est pas revenu à (x,y).
+					break;
+				case 1: // Si la case est marquée comme visitée, ...
+					// ...alors elle fait partie du chemin courant, ce qui indique que l'explorateur
+					// tourne en rond ! Il doit faire demi-tour pour que la boucle disparaisse.
+					int index = partialPath.size() - 1;
+					WallCoord dir = lastDirection;
+					do { // Faire un pas en arrière, ...
+						partialPath.remove(index--);
+						mazePanel.setCell(dir.x, dir.y, 0);
+						if (index >= 0) // Simple sécurité
+							dir = partialPath.get(index);
+						else
+							break;
+					} while (dir.x != x || dir.y != y); // ...tant que l'on n'est pas revenu à (x,y).
 
-				mazePanel.setCell(x, y, 1); // Le chemin est relancé en (x,y).
+					mazePanel.setCell(x, y, 1); // Le chemin est relancé en (x,y).
 
-				break;
-			case 2: // Si la case est déjà explorée, ...
-				// ...alors on valide le chemin partiel en brisant les murs et en marquant les
-				// cases comme valides (valeur 2).
-				partialPath.forEach(wall -> {
-					mazePanel.setWall(wall.x, wall.y, wall.side, 0);
-					mazePanel.setCell(wall.x, wall.y, 2);
-				});
-				partialPath.clear(); // Le chemin est effacé pour débuter une nouvelle exploration.
+					break;
+				case 2: // Si la case est déjà explorée, ...
+					// ...alors on valide le chemin partiel en brisant les murs et en marquant les
+					// cases comme valides (valeur 2).
+					partialPath.forEach(wall -> {
+						mazePanel.setWall(wall.x, wall.y, wall.side, 0);
+						mazePanel.setCell(wall.x, wall.y, 2);
+					});
+					partialPath.clear(); // Le chemin est effacé pour débuter une nouvelle exploration.
 
-				break;
-			default:
-				break;
+					break;
+				default:
+					break;
 			}
 		}
 	}
@@ -250,20 +260,20 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 	 */
 	private void move(Side direction) {
 		switch (direction) {
-		case UP:
-			x--;
-			break;
-		case LEFT:
-			y--;
-			break;
-		case DOWN:
-			x++;
-			break;
-		case RIGHT:
-			y++;
-			break;
-		default:
-			break;
+			case UP:
+				x--;
+				break;
+			case LEFT:
+				y--;
+				break;
+			case DOWN:
+				x++;
+				break;
+			case RIGHT:
+				y++;
+				break;
+			default:
+				break;
 		}
 	}
 }

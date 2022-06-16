@@ -35,7 +35,7 @@ import com.rosty.maze.widgets.MazePanel;
  * @version 1.0
  */
 public class ShuffledKruskalAlgorithm extends MazeGenerationAlgorithm {
-	List<WallCoord> walls = new ArrayList<>();
+	private List<WallCoord> walls;
 
 	/**
 	 * Constructeur de la classe {@link ShuffledKruskalAlgorithm}.
@@ -48,7 +48,7 @@ public class ShuffledKruskalAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public void init() {
-		walls.clear();
+		walls = new ArrayList<>();
 		for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)
 				mazePanel.getMaze().setCell(i, j, 2 + i * nbCol + j);

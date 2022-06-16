@@ -63,7 +63,7 @@ public class GrowingTreeAlgorithm extends MazeGenerationAlgorithm {
 	 * Liste des cellules en suspens. Celles-ci enregistre les cellules sur
 	 * lesquelles exécuter l'algorithme.
 	 */
-	private List<int[]> pendingCells = new ArrayList<>();
+	private List<int[]> pendingCells;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -79,6 +79,8 @@ public class GrowingTreeAlgorithm extends MazeGenerationAlgorithm {
 
 	@Override
 	public void init() {
+		pendingCells = new ArrayList<>();
+
 		/* Etape 1 : remplissage du terrain avec la valeur 2. */
 		for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)

@@ -51,7 +51,7 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class BinaryTreeAlgorithm extends MazeGenerationAlgorithm {
 	/** Position du curseur dans la grille. */
-	private int x0 = 0 /* ligne */, y0 = -1 /* colonne */;
+	private int x0 /* ligne */, y0 /* colonne */;
 	/** Coin de la grille où se situe la racine de l'arbre binaire. */
 	private Corner corner = Corner.UPPER_RIGHT;
 
@@ -73,6 +73,10 @@ public class BinaryTreeAlgorithm extends MazeGenerationAlgorithm {
 		for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)
 				mazePanel.getMaze().setCell(i, j, 0);
+
+		// Positionnement dans la grille
+		x0 = 0;
+		y0 = -1;
 	}
 
 	@Override

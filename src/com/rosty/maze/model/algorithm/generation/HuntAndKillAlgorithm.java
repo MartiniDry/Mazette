@@ -66,14 +66,14 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class HuntAndKillAlgorithm extends MazeGenerationAlgorithm {
 	/** Mode d'exécution de l'algorithme. */
-	private Mode mode = Mode.KILL;
+	private Mode mode;
 
 	/** Position courante dans la grille (définie en mode KILL). */
 	private int x /* ligne */, y /* colonne */;
 	/** Booléen indiquant le sens de balayage en mode HUNT. */
 	private boolean vertical = true;
 	/** Point de lancement du mode KILL. */
-	private int lineLevel = 0;
+	private int lineLevel;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -100,6 +100,12 @@ public class HuntAndKillAlgorithm extends MazeGenerationAlgorithm {
 		y = rand.nextInt(nbCol - 1);
 
 		mazePanel.getMaze().setCell(x, y, 1); // La case départ est marquée comme explorée
+
+		// Ligne de départ de l'algorithme
+		lineLevel = 0;
+		
+		// Mode de démarrage
+		mode = Mode.KILL;
 	}
 
 	@Override
@@ -113,99 +119,99 @@ public class HuntAndKillAlgorithm extends MazeGenerationAlgorithm {
 	@Override
 	public void step() {
 		switch (mode) {
-		case HUNT:
-			int index = -1;
-			ArrayList<WallCoord> visitedSides = null;
+			case HUNT:
+				int index = -1;
+				ArrayList<WallCoord> visitedSides = null;
 
-			if (vertical)
-				for (int j = 0; j < nbCol; j++) {
-					boolean unvisitedCell = (mazePanel.getCell(lineLevel, j) == 0);
-					visitedSides = getSides(lineLevel, j);
-					// Retrait des murs qui sont associés à des cellules non-visitées
-					visitedSides.removeIf(wc -> {
-						int neighbour = mazePanel.getNeighbourCell(wc);
-						return neighbour != 2 // case visitée
-								&& neighbour != 1; // case marquée comme visitée
-					});
+				if (vertical)
+					for (int j = 0; j < nbCol; j++) {
+						boolean unvisitedCell = (mazePanel.getCell(lineLevel, j) == 0);
+						visitedSides = getSides(lineLevel, j);
+						// Retrait des murs qui sont associés à des cellules non-visitées
+						visitedSides.removeIf(wc -> {
+							int neighbour = mazePanel.getNeighbourCell(wc);
+							return neighbour != 2 // case visitée
+									&& neighbour != 1; // case marquée comme visitée
+						});
 
-					// Si la cellule n'est pas visitée mais possède un voisin qui a été visité, ...
-					if (unvisitedCell && !visitedSides.isEmpty()) {
-						index = j;
-						break; // ...alors on arrête la recherche.
+						// Si la cellule n'est pas visitée mais possède un voisin qui a été visité, ...
+						if (unvisitedCell && !visitedSides.isEmpty()) {
+							index = j;
+							break; // ...alors on arrête la recherche.
+						}
 					}
-				}
-			else
-				for (int i = 0; i < nbRow; i++) {
-					boolean unvisitedCell = (mazePanel.getCell(i, lineLevel) == 0);
-					visitedSides = getSides(i, lineLevel);
-					// Retrait des murs qui sont associés à des cellules non-visitées
-					visitedSides.removeIf(wc -> {
-						int neighbour = mazePanel.getNeighbourCell(wc);
-						return neighbour != 2 // case visitée
-								&& neighbour != 1; // case marquée comme visitée
-					});
+				else
+					for (int i = 0; i < nbRow; i++) {
+						boolean unvisitedCell = (mazePanel.getCell(i, lineLevel) == 0);
+						visitedSides = getSides(i, lineLevel);
+						// Retrait des murs qui sont associés à des cellules non-visitées
+						visitedSides.removeIf(wc -> {
+							int neighbour = mazePanel.getNeighbourCell(wc);
+							return neighbour != 2 // case visitée
+									&& neighbour != 1; // case marquée comme visitée
+						});
 
-					// Si la cellule n'est pas visitée mais possède un voisin qui a été visité, ...
-					if (unvisitedCell && !visitedSides.isEmpty()) {
-						index = i;
-						break; // ...alors on arrête la recherche.
+						// Si la cellule n'est pas visitée mais possède un voisin qui a été visité, ...
+						if (unvisitedCell && !visitedSides.isEmpty()) {
+							index = i;
+							break; // ...alors on arrête la recherche.
+						}
 					}
+
+				if (index >= 0) { // Si une ligne a été trouvée en mode HUNT, ...
+					mode = Mode.KILL; // ...alors la chasse est ouverte !
+
+					// Sauvegarde du nouveau point de départ
+					if (vertical) {
+						x = lineLevel;
+						y = index;
+					} else {
+						x = index;
+						y = lineLevel;
+					}
+
+					mazePanel.setCell(x, y, 1);
+
+					// visitedSides contient au moins un élément ; on le choisit au hasard dans la
+					// liste pour débuter le mode KILL.
+					WallCoord wall = visitedSides.get(rand.nextInt(visitedSides.size()));
+					mazePanel.setWall(wall.x, wall.y, wall.side, 0);
+
+					// Réinitialisation du mode HUNT (pour la prochaine fois)
+					lineLevel = 0;
+				} else
+					lineLevel++;
+
+				break;
+			case KILL:
+				// Repérage des directions à explorer
+				List<WallCoord> unexplored = new ArrayList<>();
+
+				List<WallCoord> sides = getSides(x, y);
+				for (WallCoord side : sides) {
+					int sideValue = mazePanel.getNeighbourCell(side);
+					if (sideValue != -1 /* hors-grille, c'est une simple sécurité */
+							&& sideValue != 1 /* case explorée */
+							&& sideValue != 2 /* case explorée mais non coloriée */)
+						unexplored.add(side);
 				}
 
-			if (index >= 0) { // Si une ligne a été trouvée en mode HUNT, ...
-				mode = Mode.KILL; // ...alors la chasse est ouverte !
+				// Phase d'exploration (ou de rembobinage)
+				mazePanel.setCell(x, y, 2); // Case courante marquée comme explorée
+				if (!unexplored.isEmpty()) {
+					WallCoord selectedSide = unexplored.get(rand.nextInt(unexplored.size()));
+					move(selectedSide.side);
 
-				// Sauvegarde du nouveau point de départ
-				if (vertical) {
-					x = lineLevel;
-					y = index;
+					mazePanel.setCell(x, y, 1); // Nouvelle case explorée
+					// Brisage du mur
+					mazePanel.setWall(selectedSide.x, selectedSide.y, selectedSide.side, 0);
 				} else {
-					x = index;
-					y = lineLevel;
+					mode = Mode.HUNT;
 				}
 
-				mazePanel.setCell(x, y, 1);
-
-				// visitedSides contient au moins un élément ; on le choisit au hasard dans la
-				// liste pour débuter le mode KILL.
-				WallCoord wall = visitedSides.get(rand.nextInt(visitedSides.size()));
-				mazePanel.setWall(wall.x, wall.y, wall.side, 0);
-
-				// Réinitialisation du mode HUNT (pour la prochaine fois)
-				lineLevel = 0;
-			} else
-				lineLevel++;
-
-			break;
-		case KILL:
-			// Repérage des directions à explorer
-			List<WallCoord> unexplored = new ArrayList<>();
-
-			List<WallCoord> sides = getSides(x, y);
-			for (WallCoord side : sides) {
-				int sideValue = mazePanel.getNeighbourCell(side);
-				if (sideValue != -1 /* hors-grille, c'est une simple sécurité */
-						&& sideValue != 1 /* case explorée */
-						&& sideValue != 2 /* case explorée mais non coloriée */)
-					unexplored.add(side);
-			}
-
-			// Phase d'exploration (ou de rembobinage)
-			mazePanel.setCell(x, y, 2); // Case courante marquée comme explorée
-			if (!unexplored.isEmpty()) {
-				WallCoord selectedSide = unexplored.get(rand.nextInt(unexplored.size()));
-				move(selectedSide.side);
-
-				mazePanel.setCell(x, y, 1); // Nouvelle case explorée
-				// Brisage du mur
-				mazePanel.setWall(selectedSide.x, selectedSide.y, selectedSide.side, 0);
-			} else {
-				mode = Mode.HUNT;
-			}
-
-			break;
-		default:
-			break;
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -241,20 +247,20 @@ public class HuntAndKillAlgorithm extends MazeGenerationAlgorithm {
 	 */
 	private void move(Side direction) {
 		switch (direction) {
-		case UP:
-			x--;
-			break;
-		case LEFT:
-			y--;
-			break;
-		case DOWN:
-			x++;
-			break;
-		case RIGHT:
-			y++;
-			break;
-		default:
-			break;
+			case UP:
+				x--;
+				break;
+			case LEFT:
+				y--;
+				break;
+			case DOWN:
+				x++;
+				break;
+			case RIGHT:
+				y++;
+				break;
+			default:
+				break;
 		}
 	}
 

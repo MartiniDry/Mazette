@@ -45,7 +45,7 @@ public class AldousBroderAlgorithm extends MazeGenerationAlgorithm {
 	/** Position courante dans la grille (définie en mode KILL). */
 	private int x /* ligne */, y /* colonne */;
 	/** Compteur de cases visitées par l'algorithme. */
-	private int cellCounter = 0;
+	private int cellCounter;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -71,6 +71,9 @@ public class AldousBroderAlgorithm extends MazeGenerationAlgorithm {
 		x = rand.nextInt(nbRow - 1);
 		y = rand.nextInt(nbCol - 1);
 
+		// Lancement du décompte des cellules explorées
+		cellCounter = 0;
+		
 		mazePanel.getMaze().setCell(x, y, 1); // La case départ est marquée comme explorée
 		cellCounter++;
 	}

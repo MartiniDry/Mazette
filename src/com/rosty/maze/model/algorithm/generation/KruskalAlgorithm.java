@@ -99,7 +99,7 @@ public class KruskalAlgorithm extends MazeGenerationAlgorithm {
 	 * déterminer s'il est nécessaire de les enlever ou non pour former l'arbre des
 	 * chemins du labyrinthe.
 	 */
-	private List<WallCoord> walls = new ArrayList<>();
+	private List<WallCoord> walls;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -125,7 +125,7 @@ public class KruskalAlgorithm extends MazeGenerationAlgorithm {
 		 * "walls". Cette liste indiquera en temps réel les murs qui n'ont pas été
 		 * analysés par l'algorithme.
 		 */
-		walls.clear();
+		walls = new ArrayList<>();
 		for (int i = 0, lenI = nbRow - 1; i < lenI; i++) {
 			for (int j = 0, lenJ = nbCol - 1; j < lenJ; j++)
 				walls.add(new WallCoord(i, j, Side.RIGHT));

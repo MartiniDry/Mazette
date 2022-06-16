@@ -61,13 +61,13 @@ import com.rosty.maze.widgets.MazePanel;
  */
 public class EllerAlgorithm extends MazeGenerationAlgorithm {
 	/** Indicateur de position dans la grille. */
-	private int cellId = 0;
+	private int cellId;
 
 	/** Mode de construction du labyrinthe sur la ligne courante. */
-	private Mode mode = Mode.SOUTH_PROCESS;
+	private Mode mode;
 
 	/** Incrémenteur de la valeur de la cellule. */
-	private int inc = 2;
+	private int inc;
 
 	/** Générateur de nombres aléatoires. */
 	private final Random rand = new Random();
@@ -95,6 +95,13 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 
 		for (int j = 0; j < nbCol - 1; j++)
 			mazePanel.setWall(nbRow - 1, j, Side.RIGHT, 0);
+		
+		// Initialisation de la position et de l'incrémenteur
+		cellId = 0;
+		inc = 2;
+		
+		// Le balayage commence par les murs du bas.
+		mode = Mode.SOUTH_PROCESS;
 	}
 
 	@Override
