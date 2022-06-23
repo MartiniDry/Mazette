@@ -1,7 +1,5 @@
 package com.rosty.util.maze;
 
-import java.util.ArrayList;
-
 import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 
@@ -23,9 +21,7 @@ public class MazeUtils {
 	 */
 	public static int enclosures(Maze maze) {
 		Maze copy = new Maze(maze);
-
-		ArrayList<Integer> tokens = new ArrayList<>();
-		int currentToken = 0;
+		int addedTokens = 0, deletedTokens = 0;
 
 		for (int i = 0; i < copy.getNbRows(); i++) {
 			for (int j = 0; j < copy.getNbColumns(); j++) {
@@ -33,50 +29,39 @@ public class MazeUtils {
 				int left = copy.getWall(i, j, Side.LEFT);
 
 				if (i == 0 && j == 0) {
-					tokens.add(++currentToken);
-					copy.setCell(i, j, currentToken);
+					copy.setCell(i, j, ++addedTokens);
 				} else if (i == 0) {
-					if (left == 1) {
-						tokens.add(++currentToken);
-						copy.setCell(i, j, currentToken);
-					} else {
+					if (left == 1)
+						copy.setCell(i, j, ++addedTokens);
+					else
 						copy.setCell(i, j, copy.getCell(i, j - 1));
-					}
-
 				} else if (j == 0) {
-					if (up == 1) {
-						tokens.add(++currentToken);
-						copy.setCell(i, j, currentToken);
-					} else {
+					if (up == 1)
+						copy.setCell(i, j, ++addedTokens);
+					else
 						copy.setCell(i, j, copy.getCell(i - 1, j));
-					}
-
 				} else {
 					int upCell = copy.getCell(i - 1, j);
 					int leftCell = copy.getCell(i, j - 1);
 
 					if (up != 1 && left != 1 && upCell != leftCell) {
 						copy.setCell(i, j, upCell);
-						for (int k = 0; k < j; k++) {
-							if (copy.getCell(i, k) == leftCell) {
+						for (int k = 0; k < j; k++)
+							if (copy.getCell(i, k) == leftCell)
 								copy.setCell(i, k, upCell);
-							}
-						}
 
-						tokens.remove((Integer) leftCell);
-					} else if (up != 1) {
+						deletedTokens++;
+					} else if (up != 1)
 						copy.setCell(i, j, upCell);
-					} else if (left != 1) {
+					else if (left != 1)
 						copy.setCell(i, j, leftCell);
-					} else {
-						tokens.add(++currentToken);
-						copy.setCell(i, j, currentToken);
-					}
+					else
+						copy.setCell(i, j, ++addedTokens);
 				}
 			}
 		}
 
-		return tokens.size();
+		return addedTokens - deletedTokens;
 	}
 
 	/**
@@ -102,7 +87,7 @@ public class MazeUtils {
 				if (maze.getWall(i, j, Side.LEFT) != 1)
 					openings++;
 
-		return - (r * c - 1) /* total */ + (enclosures(maze) - 1) + openings;
+		return -(r * c - 1) /* total */ + (enclosures(maze) - 1) + openings;
 	}
 
 	/**
