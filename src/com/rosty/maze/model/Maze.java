@@ -24,6 +24,21 @@ public class Maze {
 	}
 
 	/**
+	 * Constructeur par copie de la classe {@link Maze}.
+	 * 
+	 * @param old Matrice d'origine.
+	 */
+	public Maze(Maze old) {
+		this.nbRow = old.nbRow;
+		this.nbCol = old.nbCol;
+
+		this.table = new int[2 * nbRow + 1][2 * nbCol + 1];
+		for (int i = 0; i < 2 * nbRow + 1; i++)
+			for (int j = 0; j < 2 * nbCol + 1; j++)
+				this.table[i][j] = old.table[i][j];
+	}
+
+	/**
 	 * Charge le terrain sur lequel sera construit le labyrinthe. Par défaut, les
 	 * murs ont pour valeur 1 et les cases ont pour valeur 0.
 	 */
