@@ -67,16 +67,39 @@ public class MazeUtils {
 	/**
 	 * Détermine le nombre d'ilôts dans le labyrinthe spécifié.
 	 * <p>
-	 * <h2>Définition</h2> Un <b>ilôt</b> est un ensemble de murs reliés entre eux
-	 * qui ne sont pas reliés au bord du labyrinthe. Par conséquent, si l'on
-	 * sélectionne une case voisine de l'ilôt, il est possible de tracer un chemin
-	 * qui fait tout le tour de cette dernière.
+	 * <h2>Définition</h2> Un <b>ilôt</b> est un ensemble de murs et de jonctions de
+	 * mur reliés entre eux, qui ne sont pas reliés au bord du labyrinthe. Par
+	 * conséquent, si l'on sélectionne une case voisine de l'ilôt, il est possible
+	 * de tracer un chemin qui fait tout le tour de cette dernière.<br />
+	 * <u>ATTENTION:</u> si l'on considère un carré de 2 cases par 2 qui ne contient
+	 * aucun mur, alors la jonction entre les cases constitue un ilôt.
+	 * </p>
+	 * <p>
+	 * <h2>Propriété</h2> Le nombre d'ilôts peut aisément être déduit du nombre
+	 * d'enclos par la formule suivante :<br />
+	 * <code>O = P + I - (E-1)</code> , où :
+	 * <ul>
+	 * <li><b>O</b> est le nombre d'ouvertures dans la grille</li>
+	 * <li><b>P</b> est le nombre d'ouvertures dans un labyrinthe parfait i.e.
+	 * <code>P=col*row-1</code></li>
+	 * <li><b>I</b> est le nombre d'ilôts</li>
+	 * <li><b>E</b> est le nombre d'enclos.</li>
+	 * </ul>
+	 * En effet, quelque soit le labyrinthe étudié, il est possible de le
+	 * transformer en un labyrinthe parfait en ajoutant et en retirant des murs.
+	 * Retirer un mur autour d'un enclos réduit de 1 le nombre total d'enclos ; de
+	 * même, ajouter un mur à un ilôt va faire disparaître ce dernier. Partant de ce
+	 * principe, il faut ajouter <code>I</code> murs et en enlever <code>E-1</code>
+	 * pour obtenir un labyrinthe parfait. Le décompte des murs ouverts, avant et
+	 * après le processus, nous fournit la formule.
 	 * </p>
 	 */
 	public static int islets(Maze maze) {
 		int r = maze.getNbRows(), c = maze.getNbColumns();
-		int openings = 0;
 
+		int overEnclosures = enclosures(maze) - 1;
+
+		int openings = 0;
 		for (int i = 1; i < r; i++)
 			for (int j = 0; j < c; j++)
 				if (maze.getWall(i, j, Side.UP) != 1)
@@ -87,7 +110,9 @@ public class MazeUtils {
 				if (maze.getWall(i, j, Side.LEFT) != 1)
 					openings++;
 
-		return -(r * c - 1) /* total */ + (enclosures(maze) - 1) + openings;
+		int openingsForPerfectMaze = r * c - 1;
+
+		return overEnclosures + openings - openingsForPerfectMaze;
 	}
 
 	/**

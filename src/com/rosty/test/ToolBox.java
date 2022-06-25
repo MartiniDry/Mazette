@@ -3,7 +3,14 @@ package com.rosty.test;
 import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 
+/**
+ * Classe utilitaire pour la base de test du logiciel.
+ * 
+ * @author Martin Rostagnat
+ * @version 1.0
+ */
 public class ToolBox {
+	/** Transpose le contenu d'une table 2D dans une instance {@link Maze}. */
 	static Maze parse(int[][] table) {
 		if (table.length % 2 == 0)
 			return null;
