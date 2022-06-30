@@ -15,9 +15,11 @@ import com.rosty.maze.view.box.MessageBox;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -76,8 +78,8 @@ public class AppLauncher extends Application {
 
 			primaryStage.setOnCloseRequest(event -> Mazette.shutDown());
 
-			primaryStage.centerOnScreen();
 			primaryStage.show();
+			center();
 		} catch (IOException | RuntimeException e) {
 			Mazette.LOGGER.fatal(e.getMessage(), e);
 
@@ -117,12 +119,19 @@ public class AppLauncher extends Application {
 				clip.start();
 			} catch (Exception e) {
 				Mazette.LOGGER.error(e.getMessage(), e);
-				
+
 				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 				box.setContentText(e.getLocalizedMessage());
 				box.showAndWait();
 			}
 		}).start();
+	}
+
+	/** Place l'IHM au centre de la fenêtre principale du PC. */
+	private void center() {
+		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+		primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
+		primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
 	}
 
 	/**
@@ -147,7 +156,7 @@ public class AppLauncher extends Application {
 			AppLauncher.mainController = (MainWindowController) loader.getController();
 		} catch (IOException | RuntimeException e) {
 			Mazette.LOGGER.fatal(e.getMessage(), e);
-			
+
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
