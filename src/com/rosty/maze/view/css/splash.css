@@ -1,0 +1,23 @@
+/* Style CSS pour la fenêtre de chargement */
+
+.main {
+	-fx-background-color: transparent;
+	-fx-effect: dropshadow(three-pass-box, #FFF8, 15, 0, 0, 0);
+}
+
+.footer {
+	-fx-padding: 5.0;
+	-fx-alignment: center-right;
+	-fx-background-color: #7030A0;
+	/*-fx-background-radius: 0.0 0.0 10.0 10.0;*/
+}
+
+.label {
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+}
+
+.title {
+	-fx-font-size: 36.0;
+	-fx-text-fill: #AAA;
+}

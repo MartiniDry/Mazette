@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.rosty.maze.application.AppLauncher;
+import com.rosty.maze.application.AppLoader;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,6 +23,12 @@ public class Mazette {
 
 	/** Booléen indiquant si les données de débogage graphique sont affichées. */
 	private static boolean fxDebug = false;
+
+	/**
+	 * Booléen indiquant si la fenêtre de chargement est affichée au lancement du
+	 * logiciel.
+	 */
+	private static boolean noSplashScreen = false;
 
 	/**
 	 * Méthode principale de l'application <b>Mazette</b> (anciennement <b>Maze
@@ -80,8 +87,13 @@ public class Mazette {
 				}
 
 				LOGGER.info(" * fxdebug: " + fxDebug);
+			} else if (kv[0].equals("--nosplashscreen")) {
+				noSplashScreen = true;
 			}
 		}
+
+		if (!noSplashScreen)
+			System.setProperty("javafx.preloader", AppLoader.class.getCanonicalName());
 
 		Application.launch(AppLauncher.class, args);
 	}

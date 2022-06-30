@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@css/splash.css" styleClass="main"
+	fx:controller="com.rosty.maze.controller.SplashScreenController">
+	<rowConstraints>
+		<RowConstraints valignment="BOTTOM" />
+		<RowConstraints valignment="TOP" />
+	</rowConstraints>
+
+	<columnConstraints>
+		<ColumnConstraints fillWidth="true" hgrow="ALWAYS" />
+	</columnConstraints>
+
+	<ImageView GridPane.rowIndex="0" fitHeight="320" fitWidth="400">
+		<image>
+			<Image url="@pictures/splash_background.png" />
+		</image>
+	</ImageView>
+
+	<GridPane GridPane.rowIndex="1" styleClass="footer">
+		<rowConstraints>
+			<RowConstraints valignment="BOTTOM" />
+			<RowConstraints valignment="TOP" />
+		</rowConstraints>
+
+		<columnConstraints>
+			<ColumnConstraints hgrow="ALWAYS" halignment="CENTER" />
+			<ColumnConstraints hgrow="NEVER" halignment="LEFT" />
+		</columnConstraints>
+
+		<Label fx:id="title" GridPane.rowSpan="2" styleClass="title" />
+		<Label fx:id="version" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+		<Label fx:id="copyright" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+	</GridPane>
+</GridPane>
