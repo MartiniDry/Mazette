@@ -75,11 +75,10 @@ public class AppLauncher extends Application {
 			primaryStage.setTitle(LocaleManager.getString("main.title"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_24x24.png"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
-
 			primaryStage.setOnCloseRequest(event -> Mazette.shutDown());
 
 			primaryStage.show();
-			center();
+			placeStage(Mazette.dimensions);
 		} catch (IOException | RuntimeException e) {
 			Mazette.LOGGER.fatal(e.getMessage(), e);
 
@@ -127,11 +126,36 @@ public class AppLauncher extends Application {
 		}).start();
 	}
 
-	/** Place l'IHM au centre de la fenêtre principale du PC. */
-	private void center() {
+	/**
+	 * Place l'IHM au centre de la fenêtre principale du PC.
+	 * 
+	 * @param dim Instance {@link Dimensions}.
+	 */
+	private void placeStage(Dimensions dim) {
 		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-		primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
-		primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
+
+		/* Etape 1 : récupération des dimensions de la fenêtre */
+		if (dim.height != null)
+			primaryStage.setHeight(Math.min(dim.height, screenBounds.getHeight()));
+
+		if (dim.width != null)
+			primaryStage.setWidth(Math.min(dim.width, screenBounds.getWidth()));
+
+		if (dim.percHeight != null)
+			primaryStage.setHeight(Math.min(dim.percHeight, 1D) * screenBounds.getHeight());
+
+		if (dim.percWidth != null)
+			primaryStage.setWidth(Math.min(dim.percWidth, 1D) * screenBounds.getWidth());
+
+		// Caractéristiques physiques de la fenêtre
+		primaryStage.setMaximized(dim.maximized);
+		primaryStage.setFullScreen(dim.fullScreen);
+
+		// Etape 2 : placement de la fenêtre au centre de l'écran
+		if (!dim.maximized) {
+			primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
+			primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
+		}
 	}
 
 	/**
@@ -160,6 +184,54 @@ public class AppLauncher extends Application {
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.main.creation"));
 			box.setContentText(e.getLocalizedMessage());
 			box.showAndWait();
+		}
+	}
+
+	/**
+	 * Classe définissant les dimensions de l'IHM à l'écran. Ces dimensions peuvent
+	 * être définies de trois façons différentes :
+	 * <ul>
+	 * <li>En valeur absolue (nombre de pixels)</li>
+	 * <li>En valeur relative (ratio de la taille de l'écran principal)</li>
+	 * <li>Via une caractéristique de l'écran (affichage <b>maximisé</b> ou
+	 * affichage <b>plein-écran</b>).</li>
+	 * </ul>
+	 * 
+	 * Cette classe est publique mais ne peut être utilisée que dans la classe
+	 * {@link AppLauncher} ; pour cette raison, les membres sont tous privés et ne
+	 * possèdent pas de <i>getters</i>.
+	 * 
+	 * @author Martin Rostagnat
+	 * @version 1.0
+	 */
+	public static class Dimensions {
+		private Double width, height;
+		private Double percWidth, percHeight;
+		private boolean maximized;
+		private boolean fullScreen;
+
+		public void setWidth(double value) {
+			width = Math.max(0D, value);
+		}
+
+		public void setHeight(double value) {
+			height = Math.max(0D, value);
+		}
+
+		public void setPercWidth(double value) {
+			percWidth = Math.max(0D, value);
+		}
+
+		public void setPercHeight(double value) {
+			percHeight = Math.max(0D, value);
+		}
+
+		public void setMaximized(boolean value) {
+			maximized = value;
+		}
+
+		public void setFullScreen(boolean value) {
+			fullScreen = value;
 		}
 	}
 }

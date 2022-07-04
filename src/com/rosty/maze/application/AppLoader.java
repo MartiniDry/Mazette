@@ -35,6 +35,7 @@ public class AppLoader extends Preloader {
 	public void start(Stage stage) throws Exception {
 		AppLoader.primaryStage = stage;
 
+		Mazette.LOGGER.info("Preparing 'SplashScreen.fxml'...");
 		FXMLLoader loader = new FXMLLoader(Mazette.class.getResource("view/SplashScreen.fxml"),
 				LocaleManager.getBundle());
 		try {

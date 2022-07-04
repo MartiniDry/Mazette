@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.rosty.maze.application.AppLauncher;
+import com.rosty.maze.application.AppLauncher.Dimensions;
 import com.rosty.maze.application.AppLoader;
 
 import javafx.application.Application;
@@ -23,6 +24,9 @@ public class Mazette {
 
 	/** Booléen indiquant si les données de débogage graphique sont affichées. */
 	private static boolean fxDebug = false;
+
+	/** Instance mémorisant les dimensions de l'IHM voulues par l'utilisateur. */
+	public static final Dimensions dimensions = new Dimensions();
 
 	/**
 	 * Booléen indiquant si la fenêtre de chargement est affichée au lancement du
@@ -87,8 +91,59 @@ public class Mazette {
 				}
 
 				LOGGER.info(" * fxdebug: " + fxDebug);
+			} else if (kv[0].equals("-size")) {
+				String sizeValue = kv[1];
+				if (sizeValue.equals("full")) {
+					dimensions.setFullScreen(true);
+				} else if (sizeValue.equals("max")) {
+					dimensions.setMaximized(true);
+				} else if (sizeValue.equals("min")) {
+					dimensions.setWidth(0D);
+					dimensions.setHeight(0D);
+				} else {
+					String[] values = sizeValue.split("x");
+					switch (values.length) {
+						case 1:
+							if (values[0].matches("^\\d+$")) {
+								double dValue = Double.parseDouble(values[0]);
+								dimensions.setWidth(dValue);
+								dimensions.setHeight(dValue);
+							} else if (values[0].matches("^\\d+%$")) {
+								Double pValue = Double.parseDouble(values[0].replace("%", ""));
+								dimensions.setPercHeight(pValue / 100D);
+								dimensions.setPercWidth(pValue / 100D);
+							} else
+								LOGGER.error("Erreur de syntaxe !");
+
+							break;
+						case 2:
+							if (values[0].matches("^\\d+$")) {
+								double dValue = Double.parseDouble(values[0]);
+								dimensions.setWidth(dValue);
+							} else if (values[0].matches("^\\d+%$")) {
+								Double pValue = Double.parseDouble(values[0].replace("%", ""));
+								dimensions.setPercWidth(pValue / 100D);
+							} else
+								LOGGER.error("Erreur de syntaxe : " + values[0]);
+
+							if (values[1].matches("^\\d+$")) {
+								double dValue = Double.parseDouble(values[1]);
+								dimensions.setWidth(dValue);
+							} else if (values[1].matches("^\\d+%$")) {
+								Double pValue = Double.parseDouble(values[1].replace("%", ""));
+								dimensions.setPercWidth(pValue / 100D);
+							} else
+								LOGGER.error("Erreur de syntaxe : " + values[1]);
+
+							break;
+						default:
+							LOGGER.warn("Seuls un ou deux paramètres de taille sont autorisés !");
+							break;
+					}
+				}
 			} else if (kv[0].equals("--nosplashscreen")) {
 				noSplashScreen = true;
+				LOGGER.info(" * noSplashScreen");
 			}
 		}
 
