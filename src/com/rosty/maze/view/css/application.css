@@ -128,6 +128,44 @@
 	-fx-text-fill: white;
 }
 
+/* Style CSS pour les tableaux à onglets */
+
+/* Style d'affichage pour la fenêtre des préférences */
+
+.preferences-dialog {
+	-fx-background-color: #BBB;
+	-fx-padding: 5.0;
+}
+
+.tab-pane {
+	-fx-padding: 0.0 5.0 5.0 5.0;
+	-fx-effect: dropshadow(gaussian, black, 10.0, 0.0, 0.0, 0.0);
+}
+
+.tab {
+	-fx-background-color: #DDD;
+	-fx-background-radius: 5.0 5.0 0.0 0.0;
+}
+
+.tab:selected {
+	-fx-background-color: white;
+}
+
+.tab-pane > .tab-content-area {
+	-fx-background-color: white;
+	-fx-background-radius: 5.0;
+}
+
+.tab-pane .tab-header-background {
+	-fx-background-color: transparent;
+}
+
+.grid-pane {
+	-fx-padding: 5.0;
+	-fx-vgap: 5.0;
+	-fx-hgap: 5.0;
+}
+
 /* Style d'affichage pour la fenêtre "À propos" */
 
 .about-dialog {

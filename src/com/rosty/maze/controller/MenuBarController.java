@@ -150,7 +150,15 @@ public class MenuBarController {
 
 	@FXML
 	private void preferences() {
-		;
+		try {
+			DialogUtility.openPreferencesDialog();
+		} catch (IOException e) {
+			Mazette.LOGGER.error(e.getMessage(), e);
+
+			MessageBox box = new MessageBox(AlertType.ERROR, "Préférences du logiciel");
+			box.setContentText("L'ouverture de la fenêtre a échoué ; veuillez recommencer.");
+			box.showAndWait();
+		}
 	}
 
 	@FXML

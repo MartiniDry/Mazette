@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.control.ColorPicker?>
+
+<Scene stylesheets="@../../view/css/application.css" xmlns:fx="http://javafx.com/fxml/1">
+	<TabPane styleClass="preferences-dialog">
+		<Tab text="%preferences.tab.colors" closable="false">
+			<GridPane styleClass="grid-pane">
+				<columnConstraints>
+					<ColumnConstraints hgrow="NEVER" halignment="RIGHT" />
+					<ColumnConstraints halignment="LEFT" />
+				</columnConstraints>
+
+				<Label GridPane.rowIndex="0" text="Texte 1 :" />
+				<ColorPicker GridPane.rowIndex="0" GridPane.columnIndex="1" editable="true" promptText="Sélectionnez..." />
+
+				<Label GridPane.rowIndex="1" text="Texte 2.0 :" />
+				<ColorPicker GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" promptText="Sélectionnez..." />
+			</GridPane>
+		</Tab>
+	</TabPane>
+</Scene>
