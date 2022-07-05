@@ -137,10 +137,15 @@ public class MenuBarController {
 	private void generateGrowingTree() {
 		AppLauncher.getMainController().regenerate(new GrowingTreeAlgorithm(AppLauncher.getMainController().mazePanel));
 	}
-	
+
 	@FXML
 	private void changeColors() {
 		;
+	}
+
+	@FXML
+	private void changeFullScreen() {
+		AppLauncher.getPrimaryStage().setFullScreen(!AppLauncher.getPrimaryStage().isFullScreen());
 	}
 
 	@FXML
@@ -182,7 +187,7 @@ public class MenuBarController {
 			DialogUtility.openAboutDialog();
 		} catch (IOException e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
-			
+
 			MessageBox box = new MessageBox(AlertType.ERROR, "A propos du logiciel");
 			box.setContentText("L'ouverture de la fenêtre a échoué ; veuillez recommencer.");
 			box.showAndWait();

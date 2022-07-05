@@ -46,7 +46,7 @@ public class AppLauncher extends Application {
 	/** Carte des raccourcis clavier de l'IHM principale. */
 	private static final HashMap<KeyCombination, Runnable> SHORTCUTS = new HashMap<>();
 	static { // Remplissage de la carte des raccourcis
-		SHORTCUTS.put(KeyCombination.valueOf("F11"), () -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
+//		SHORTCUTS.put(KeyCombination.valueOf("F11"), () -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
 	}
 
 	/** Contrôleur principal de l'application. */

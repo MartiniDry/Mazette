@@ -2,6 +2,7 @@
 
 <?import com.rosty.maze.widgets.GMenuItem?>
 
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -9,10 +10,10 @@
 
 <MenuBar xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rosty.maze.controller.MenuBarController">
 	<Menu text="%main.menu.file">
-		<MenuItem text="%main.menu.file.save_as" onAction="#saveDataAs" />
-		<MenuItem text="%main.menu.file.export" onAction="#exportData" />
+		<MenuItem text="%main.menu.file.save_as" accelerator="Ctrl+S" onAction="#saveDataAs" />
+		<MenuItem text="%main.menu.file.export" accelerator="Ctrl+E" onAction="#exportData" />
 		<SeparatorMenuItem />
-		<MenuItem text="%main.menu.file.exit" onAction="#quitApplication" />
+		<MenuItem text="%main.menu.file.exit" accelerator="Ctrl+Q" onAction="#quitApplication" />
 	</Menu>
 
 	<Menu text="%main.menu.generation">
@@ -50,6 +51,7 @@
 		</Menu>
 
 		<MenuItem text="%main.menu.help.colors" onAction="#changeColors" />
+		<CheckMenuItem text="%main.menu.help.fullscreen" accelerator="F11" onAction="#changeFullScreen" />
 		<SeparatorMenuItem />
 		<MenuItem text="%main.menu.help.preferences" onAction="#preferences" />
 		<MenuItem text="%main.menu.help.about" onAction="#about" />
