@@ -10,6 +10,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.rosty.maze.Mazette;
+import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.util.xml.XmlUtil;
 import com.rosty.util.xml.checksum.ChecksumException;
 import com.rosty.util.xml.checksum.XmlChecksum;
@@ -40,12 +41,12 @@ public class ConfigManager {
 
 	private ConfigManager() throws ParserConfigurationException, SAXException, IOException, ChecksumException {
 		if (!xmlFile.exists())
-			throw new IOException("Le fichier de configuration n'est pas présent "
-					+ "dans le répertoire d'installation (" + xmlFile.getPath() + ").");
+			throw new IOException(String.format(LocaleManager.getString("error.config.absent"),
+					xmlFile.getAbsoluteFile().getParent()));
 
 		document = XmlUtil.load(xmlFile, xsdFile);
 		if (document == null)
-			throw new ParserConfigurationException("Le fichier de configuration est corrompu.");
+			throw new ParserConfigurationException(LocaleManager.getString("error.config.corruption"));
 
 		try {
 			XmlChecksum checker = new XmlChecksum(document);
@@ -53,9 +54,9 @@ public class ConfigManager {
 					+ String.format("0x%08X", checker.getSavedChecksum()));
 
 			if (checker.calculateChecksum() != checker.getSavedChecksum())
-				throw new ChecksumException("Le fichier de configuration est corrompu.");
+				throw new ChecksumException(LocaleManager.getString("error.config.corruption"));
 		} catch (ParserConfigurationException e) {
-			throw new ParserConfigurationException("Le fichier de configuration est corrompu.");
+			throw new ParserConfigurationException(LocaleManager.getString("error.config.corruption"));
 		}
 	}
 

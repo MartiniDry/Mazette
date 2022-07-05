@@ -8,9 +8,12 @@ import org.xml.sax.SAXException;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.config.ConfigManager;
+import com.rosty.maze.application.labels.LocaleManager;
+import com.rosty.maze.view.box.MessageBox;
 import com.rosty.util.xml.checksum.ChecksumException;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 
 /**
@@ -31,6 +34,10 @@ public class SplashScreenController {
 			copyright.setText(ConfigManager.getInstance().getCopyright());
 		} catch (ParserConfigurationException | SAXException | IOException | ChecksumException e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
+
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.splash"));
+			box.setContentText(e.getLocalizedMessage());
+			box.show();
 		}
 	}
 }

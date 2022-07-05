@@ -48,12 +48,8 @@ public class MenuBarController {
 		try {
 			File file = chooser.showSaveDialog(AppLauncher.getPrimaryStage().getOwner());
 			AppLauncher.getMainController().mazePanel.save(file);
-		} catch (IOException e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, "Sauvegarde de l'image");
-			box.setContentText(e.getLocalizedMessage());
-			box.show();
-		} catch (IllegalArgumentException e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, "Sauvegarde de l'image");
+		} catch (IOException | IllegalArgumentException e) {
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.export"));
 			box.setContentText(e.getLocalizedMessage());
 			box.show();
 		}
@@ -155,8 +151,8 @@ public class MenuBarController {
 		} catch (IOException e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 
-			MessageBox box = new MessageBox(AlertType.ERROR, "Préférences du logiciel");
-			box.setContentText("L'ouverture de la fenêtre a échoué ; veuillez recommencer.");
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.preferences"));
+			box.setContentText(LocaleManager.getString("error.preferences.failed"));
 			box.showAndWait();
 		}
 	}
@@ -196,8 +192,8 @@ public class MenuBarController {
 		} catch (IOException e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 
-			MessageBox box = new MessageBox(AlertType.ERROR, "A propos du logiciel");
-			box.setContentText("L'ouverture de la fenêtre a échoué ; veuillez recommencer.");
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.about"));
+			box.setContentText(LocaleManager.getString("error.about.failed"));
 			box.showAndWait();
 		}
 	}
