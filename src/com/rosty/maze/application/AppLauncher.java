@@ -2,6 +2,7 @@ package com.rosty.maze.application;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -19,6 +20,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -39,6 +41,12 @@ public class AppLauncher extends Application {
 	/** Fournit le conteneur de l'IHM principale de l'application. */
 	public static final Stage getPrimaryStage() {
 		return primaryStage;
+	}
+
+	/** Carte des raccourcis clavier de l'IHM principale. */
+	private static final HashMap<KeyCombination, Runnable> SHORTCUTS = new HashMap<>();
+	static { // Remplissage de la carte des raccourcis
+		SHORTCUTS.put(KeyCombination.valueOf("F11"), () -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
 	}
 
 	/** Contrôleur principal de l'application. */
@@ -76,6 +84,8 @@ public class AppLauncher extends Application {
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_24x24.png"));
 			primaryStage.getIcons().add(new Image(ICON_PATH + "logo_128x128.png"));
 			primaryStage.setOnCloseRequest(event -> Mazette.shutDown());
+
+			primaryStage.getScene().getAccelerators().putAll(SHORTCUTS);
 
 			primaryStage.show();
 			placeStage(Mazette.dimensions);
