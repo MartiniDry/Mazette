@@ -113,7 +113,7 @@ public class Mazette {
 								dimensions.setPercHeight(pValue / 100D);
 								dimensions.setPercWidth(pValue / 100D);
 							} else
-								LOGGER.error("Erreur de syntaxe !");
+								LOGGER.error("Syntax error!");
 
 							break;
 						case 2:
@@ -124,7 +124,7 @@ public class Mazette {
 								Double pValue = Double.parseDouble(values[0].replace("%", ""));
 								dimensions.setPercWidth(pValue / 100D);
 							} else
-								LOGGER.error("Erreur de syntaxe : " + values[0]);
+								LOGGER.error("Syntax error: " + values[0]);
 
 							if (values[1].matches("^\\d+$")) {
 								double dValue = Double.parseDouble(values[1]);
@@ -133,11 +133,11 @@ public class Mazette {
 								Double pValue = Double.parseDouble(values[1].replace("%", ""));
 								dimensions.setPercWidth(pValue / 100D);
 							} else
-								LOGGER.error("Erreur de syntaxe : " + values[1]);
+								LOGGER.error("Syntax error: " + values[1]);
 
 							break;
 						default:
-							LOGGER.warn("Seuls un ou deux paramètres de taille sont autorisés !");
+							LOGGER.warn("Only one or two size parameters are authorized!");
 							break;
 					}
 				}
