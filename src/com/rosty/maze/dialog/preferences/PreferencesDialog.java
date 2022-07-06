@@ -5,6 +5,8 @@ import java.io.IOException;
 import com.rosty.maze.application.AppLauncher;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.application.labels.PropertiesManager;
+import com.rosty.maze.widgets.MazePanel;
+import com.rosty.util.javafx.FxUtils;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,20 +32,10 @@ public class PreferencesDialog extends Stage {
 	public void initialize() {
 		setTitle(LocaleManager.getString("preferences.title"));
 
-		wallColor.setValue(AppLauncher.getMainController().mazePanel.getWallColor());
-		wallColor.valueProperty().addListener((bean_p, old_p, new_p) -> //
-		AppLauncher.getMainController().mazePanel.setWallColor(new_p));
-
-//		cellColor.setValue(AppLauncher.getMainController().mazePanel.getWallColor());
-//		cellColor.valueProperty().addListener((bean_p, old_p, new_p) -> //
-//		AppLauncher.getMainController().mazePanel.setWallColor(new_p));
-
-		borderColor.setValue(AppLauncher.getMainController().mazePanel.getBorderColor());
-		borderColor.valueProperty().addListener((bean_p, old_p, new_p) -> //
-		AppLauncher.getMainController().mazePanel.setBorderColor(new_p));
-
-		gridColor.setValue(AppLauncher.getMainController().mazePanel.getGridColor());
-		gridColor.valueProperty().addListener((bean_p, old_p, new_p) -> //
-		AppLauncher.getMainController().mazePanel.setGridColor(new_p));
+		MazePanel mainPanel = AppLauncher.getMainController().mazePanel;
+		FxUtils.link(wallColor.valueProperty(), mainPanel::getWallColor, mainPanel::setWallColor);
+//		FxUtils.link(cellColor.valueProperty(), mainPanel::getCellColor, mainPanel::setCellColor);
+		FxUtils.link(borderColor.valueProperty(), mainPanel::getBorderColor, mainPanel::setBorderColor);
+		FxUtils.link(gridColor.valueProperty(), mainPanel::getGridColor, mainPanel::setGridColor);
 	}
 }

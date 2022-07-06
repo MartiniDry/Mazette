@@ -7,7 +7,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.VBox?>
 
 <Scene stylesheets="@../../view/css/application.css" xmlns:fx="http://javafx.com/fxml/1">
 	<TabPane styleClass="preferences-dialog">
