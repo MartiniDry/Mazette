@@ -1,4 +1,4 @@
-package com.rosty.util;
+package com.rosty.util.javafx;
 
 import java.io.File;
 import java.io.IOException;

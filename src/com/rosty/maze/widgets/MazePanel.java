@@ -9,8 +9,8 @@ import com.rosty.maze.Mazette;
 import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.Maze.WallCoord;
-import com.rosty.util.NodeWriter;
 import com.rosty.util.colormap.DiscreteColorMap;
+import com.rosty.util.javafx.NodeWriter;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -114,6 +114,7 @@ public class MazePanel extends Pane {
 	/** Définit la couleur des bordures délimitant le labyrinthe. */
 	public final void setBorderColor(Color value) {
 		borderColorProperty.set(value);
+		update();
 	}
 
 	private final ObjectProperty<Color> gridColorProperty = new SimpleObjectProperty<>(Color.BLUE);
@@ -134,6 +135,7 @@ public class MazePanel extends Pane {
 	/** Définit la couleur du quadrillage du labyrinthe. */
 	public final void setGridColor(Color value) {
 		gridColorProperty.set(value);
+		update();
 	}
 
 	private final ObjectProperty<Color> wallColorProperty = new SimpleObjectProperty<>(Color.web("#080"));
@@ -151,6 +153,7 @@ public class MazePanel extends Pane {
 	/** Définit la couleur des murs du labyrinthe. */
 	public final void setWallColor(Color value) {
 		wallColorProperty.set(value);
+		update();
 	}
 
 	private final ObjectProperty<DiscreteColorMap> blockColorMapProperty = new SimpleObjectProperty<>(
@@ -169,6 +172,7 @@ public class MazePanel extends Pane {
 	/** Définit la plage de couleurs des cases du labyrinthe. */
 	public final void setBlockColorMap(DiscreteColorMap value) {
 		blockColorMapProperty.set(value);
+		update();
 	}
 
 	/* VARIABLES */

@@ -139,7 +139,7 @@
 
 .tab-pane {
 	-fx-padding: 0.0 5.0 5.0 5.0;
-	-fx-effect: dropshadow(gaussian, black, 10.0, 0.0, 0.0, 0.0);
+    -fx-effect: dropshadow(gaussian, #AAA, 10.0, 0.0, 0.0, 0.0);
 }
 
 .tab {
@@ -164,6 +164,13 @@
 	-fx-padding: 5.0;
 	-fx-vgap: 5.0;
 	-fx-hgap: 5.0;
+}
+
+.grid-header {
+	-fx-padding: 0.0 10.0;
+	-fx-font-weight: bold;
+	-fx-text-fill: blue;
+	-fx-font-size: 20.0;
 }
 
 /* Style d'affichage pour la fenêtre "À propos" */

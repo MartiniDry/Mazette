@@ -7,21 +7,34 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
 
 <Scene stylesheets="@../../view/css/application.css" xmlns:fx="http://javafx.com/fxml/1">
 	<TabPane styleClass="preferences-dialog">
 		<Tab text="%preferences.tab.colors" closable="false">
 			<GridPane styleClass="grid-pane">
 				<columnConstraints>
-					<ColumnConstraints hgrow="NEVER" halignment="RIGHT" />
+					<ColumnConstraints hgrow="NEVER" />
 					<ColumnConstraints halignment="LEFT" />
 				</columnConstraints>
 
-				<Label GridPane.rowIndex="0" text="Texte 1 :" />
-				<ColorPicker GridPane.rowIndex="0" GridPane.columnIndex="1" editable="true" promptText="Sélectionnez..." />
+				<Label GridPane.rowIndex="0" GridPane.columnSpan="2" text="Labyrinthe" styleClass="grid-header" />
 
-				<Label GridPane.rowIndex="1" text="Texte 2.0 :" />
-				<ColorPicker GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" promptText="Sélectionnez..." />
+				<Label GridPane.rowIndex="1" GridPane.halignment="RIGHT" text="Couleur des murs :" />
+				<ColorPicker fx:id="wallColor" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true"
+					promptText="Sélectionnez..." />
+
+				<Label GridPane.rowIndex="2" GridPane.halignment="RIGHT" text="Couleur des cases :" />
+				<ColorPicker fx:id="cellColor" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true"
+					promptText="Sélectionnez..." />
+
+				<Label GridPane.rowIndex="3" GridPane.halignment="RIGHT" text="Couleur de la bordure :" />
+				<ColorPicker fx:id="borderColor" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true"
+					promptText="Sélectionnez..." />
+
+				<Label GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="Couleur de la grille :" />
+				<ColorPicker fx:id="gridColor" GridPane.rowIndex="4" GridPane.columnIndex="1" editable="true"
+					promptText="Sélectionnez..." />
 			</GridPane>
 		</Tab>
 	</TabPane>
