@@ -8,7 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.paint.Color;
 
 /**
  * Gestionnaire des propriétés du logiciel. Cette classe permet d'enregistrer
@@ -92,7 +98,7 @@ public class PropertiesManager {
 	}
 
 	/**
-	 * Fournit la valeur d'une propriété si celle-ci estprésente dans le
+	 * Fournit la valeur d'une propriété si celle-ci est présente dans le
 	 * gestionnaire.
 	 * 
 	 * @param key Nom de la propriété.
@@ -148,5 +154,69 @@ public class PropertiesManager {
 		}
 
 		return false;
+	}
+
+	public static void link(String key, DoubleProperty property) {
+		String value = getString(key);
+		if (value != null)
+			property.set(Double.parseDouble(value));
+
+		property.addListener((bean_p, old_p, new_p) -> {
+			if (new_p != null && !new_p.equals(old_p)) {
+				setString(key, property.getValue().toString());
+				/* save(key, file) */
+			}
+		});
+	}
+
+	public static void link(String key, FloatProperty property) {
+		String value = getString(key);
+		if (value != null)
+			property.set(Float.parseFloat(value));
+
+		property.addListener((bean_p, old_p, new_p) -> {
+			if (new_p != null && !new_p.equals(old_p)) {
+				setString(key, property.getValue().toString());
+				/* save(key, file) */
+			}
+		});
+	}
+
+	public static void link(String key, IntegerProperty property) {
+		String value = getString(key);
+		if (value != null)
+			property.set(Integer.parseInt(value));
+
+		property.addListener((bean_p, old_p, new_p) -> {
+			if (new_p != null && !new_p.equals(old_p)) {
+				setString(key, property.getValue().toString());
+				/* save(key, file) */
+			}
+		});
+	}
+
+	public static void link(String key, LongProperty property) {
+		String value = getString(key);
+		if (value != null)
+			property.set(Long.parseLong(value));
+
+		property.addListener((bean_p, old_p, new_p) -> {
+			if (new_p != null && !new_p.equals(old_p)) {
+				setString(key, property.getValue().toString());
+				/* save(key, file) */
+			}
+		});
+	}
+
+	public static void link(String key, ObjectProperty<Color> property) {
+		String value = getString(key);
+		if (value != null)
+			property.set(Color.web(value));
+
+		property.addListener((bean_p, old_p, new_p) -> {
+			if (new_p != null && !new_p.equals(old_p)) {
+				setString(key, property.get().toString());
+				/* save(key, file) */}
+		});
 	}
 }

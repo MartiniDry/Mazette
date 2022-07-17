@@ -7,6 +7,7 @@ import java.util.Observer;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.labels.LocaleManager;
+import com.rosty.maze.application.labels.PropertiesManager;
 import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
@@ -173,6 +174,10 @@ public class MainWindowController implements Observer {
 		};
 		newMazeRows.addEventFilter(KeyEvent.KEY_PRESSED, actionReload);
 		newMazeColumns.addEventFilter(KeyEvent.KEY_PRESSED, actionReload);
+
+		PropertiesManager.link("ihm.grid", mazePanel.gridColorProperty());
+		PropertiesManager.link("ihm.border", mazePanel.borderColorProperty());
+		PropertiesManager.link("ihm.wall", mazePanel.wallColorProperty());
 	}
 
 	@FXML
