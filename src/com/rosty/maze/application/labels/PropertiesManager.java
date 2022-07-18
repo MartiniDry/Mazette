@@ -159,20 +159,32 @@ public class PropertiesManager {
 		return false;
 	}
 
+	/**
+	 * Sauvegarde les fichiers de propriété possédant une clé spécifique, afin de
+	 * mettre à jour la propriété.
+	 * 
+	 * @param key Clé de la propriété.
+	 */
 	public static void save(String key) {
 		for (Entry<String, Properties> item : propertiesPack.entrySet()) {
 			File file = new File(PROPERTIES_LOCATION.toString(), item.getKey());
-			if (getString(item.getKey(), key) != null) {
+			if (getString(item.getKey(), key) != null)
 				try (FileOutputStream fos = new FileOutputStream(file)) {
 					Properties prop = item.getValue();
 					prop.store(fos, null);
 				} catch (IOException e) {
 					// Ne rien faire
 				}
-			}
 		}
 	}
 
+	/**
+	 * Établit une liaison de données entre une propriété FXML <b>double</b> et une
+	 * propriété Java (via une clé spécifique dans les fichiers ".properties").
+	 * 
+	 * @param key      Clé de la propriété Java.
+	 * @param property Propriété FXML (instance {@link DoubleProperty}).
+	 */
 	public static void link(String key, DoubleProperty property) {
 		String value = getString(key);
 		if (value != null)
@@ -186,6 +198,13 @@ public class PropertiesManager {
 		});
 	}
 
+	/**
+	 * Établit une liaison de données entre une propriété FXML <b>float</b> et une
+	 * propriété Java (via une clé spécifique dans les fichiers ".properties").
+	 * 
+	 * @param key      Clé de la propriété Java.
+	 * @param property Propriété FXML (instance {@link FloatProperty}).
+	 */
 	public static void link(String key, FloatProperty property) {
 		String value = getString(key);
 		if (value != null)
@@ -199,6 +218,13 @@ public class PropertiesManager {
 		});
 	}
 
+	/**
+	 * Établit une liaison de données entre une propriété FXML <b>int</b> et une
+	 * propriété Java (via une clé spécifique dans les fichiers ".properties").
+	 * 
+	 * @param key      Clé de la propriété Java.
+	 * @param property Propriété FXML (instance {@link IntegerProperty}).
+	 */
 	public static void link(String key, IntegerProperty property) {
 		String value = getString(key);
 		if (value != null)
@@ -212,6 +238,13 @@ public class PropertiesManager {
 		});
 	}
 
+	/**
+	 * Établit une liaison de données entre une propriété FXML <b>long</b> et une
+	 * propriété Java (via une clé spécifique dans les fichiers ".properties").
+	 * 
+	 * @param key      Clé de la propriété Java.
+	 * @param property Propriété FXML (instance {@link LongProperty}).
+	 */
 	public static void link(String key, LongProperty property) {
 		String value = getString(key);
 		if (value != null)
@@ -225,6 +258,13 @@ public class PropertiesManager {
 		});
 	}
 
+	/**
+	 * Établit une liaison de données entre une propriété de couleur FXML et une
+	 * propriété Java (via une clé spécifique dans les fichiers ".properties").
+	 * 
+	 * @param key      Clé de la propriété Java.
+	 * @param property Propriété FXML {@link Color}.
+	 */
 	public static void link(String key, ObjectProperty<Color> property) {
 		String value = getString(key);
 		if (value != null)
