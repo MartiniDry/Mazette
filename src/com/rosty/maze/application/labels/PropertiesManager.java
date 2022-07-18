@@ -1,11 +1,14 @@
 package com.rosty.maze.application.labels;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import javafx.beans.property.DoubleProperty;
@@ -156,6 +159,20 @@ public class PropertiesManager {
 		return false;
 	}
 
+	public static void save(String key) {
+		for (Entry<String, Properties> item : propertiesPack.entrySet()) {
+			File file = new File(PROPERTIES_LOCATION.toString(), item.getKey());
+			if (getString(item.getKey(), key) != null) {
+				try (FileOutputStream fos = new FileOutputStream(file)) {
+					Properties prop = item.getValue();
+					prop.store(fos, null);
+				} catch (IOException e) {
+					// Ne rien faire
+				}
+			}
+		}
+	}
+
 	public static void link(String key, DoubleProperty property) {
 		String value = getString(key);
 		if (value != null)
@@ -164,7 +181,7 @@ public class PropertiesManager {
 		property.addListener((bean_p, old_p, new_p) -> {
 			if (new_p != null && !new_p.equals(old_p)) {
 				setString(key, property.getValue().toString());
-				/* save(key, file) */
+				save(key);
 			}
 		});
 	}
@@ -177,7 +194,7 @@ public class PropertiesManager {
 		property.addListener((bean_p, old_p, new_p) -> {
 			if (new_p != null && !new_p.equals(old_p)) {
 				setString(key, property.getValue().toString());
-				/* save(key, file) */
+				save(key);
 			}
 		});
 	}
@@ -190,7 +207,7 @@ public class PropertiesManager {
 		property.addListener((bean_p, old_p, new_p) -> {
 			if (new_p != null && !new_p.equals(old_p)) {
 				setString(key, property.getValue().toString());
-				/* save(key, file) */
+				save(key);
 			}
 		});
 	}
@@ -203,7 +220,7 @@ public class PropertiesManager {
 		property.addListener((bean_p, old_p, new_p) -> {
 			if (new_p != null && !new_p.equals(old_p)) {
 				setString(key, property.getValue().toString());
-				/* save(key, file) */
+				save(key);
 			}
 		});
 	}
@@ -216,7 +233,8 @@ public class PropertiesManager {
 		property.addListener((bean_p, old_p, new_p) -> {
 			if (new_p != null && !new_p.equals(old_p)) {
 				setString(key, property.get().toString());
-				/* save(key, file) */}
+				save(key);
+			}
 		});
 	}
 }
