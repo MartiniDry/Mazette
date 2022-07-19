@@ -175,9 +175,10 @@ public class MainWindowController implements Observer {
 		newMazeRows.addEventFilter(KeyEvent.KEY_PRESSED, actionReload);
 		newMazeColumns.addEventFilter(KeyEvent.KEY_PRESSED, actionReload);
 
-		PropertiesManager.link("ihm.grid", mazePanel.gridColorProperty());
-		PropertiesManager.link("ihm.border", mazePanel.borderColorProperty());
-		PropertiesManager.link("ihm.wall", mazePanel.wallColorProperty());
+		// Liaison des propriétés de l'application
+		PropertiesManager.link("hmi.grid", mazePanel.gridColorProperty());
+		PropertiesManager.link("hmi.border", mazePanel.borderColorProperty());
+		PropertiesManager.link("hmi.wall", mazePanel.wallColorProperty());
 	}
 
 	@FXML
