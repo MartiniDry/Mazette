@@ -1,4 +1,4 @@
-package com.rosty.util.colormap;
+package com.rosty.util.javafx;
 
 import java.util.Random;
 

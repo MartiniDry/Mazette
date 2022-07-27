@@ -7,6 +7,8 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.rosty.util.javafx.ColorUtils;
+
 import javafx.scene.paint.Color;
 
 /**
@@ -52,7 +54,7 @@ public class DiscreteColorMap implements ColorMap<Integer> {
 	public void clear() {
 		colorSet.clear();
 	}
-	
+
 	/**
 	 * Construit une instance {@link DiscreteColorMap} à partir d'une chaîne de
 	 * caractères (ou la valeur <code>null</code> si le <i>parsing</i> a échoué).
