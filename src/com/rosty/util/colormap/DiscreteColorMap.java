@@ -2,6 +2,7 @@ package com.rosty.util.colormap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,10 +16,10 @@ import javafx.scene.paint.Color;
  * Exemple :
  * 
  * <pre>
- * ColorMap palette = new DiscreteColorMap();
- * palette.put(2, Color.GREEN);
- * palette.put(1, Color.GREEN);
- * palette.put(0, Color.RED);
+ * ColorMap<Integer> palette = new DiscreteColorMap();
+ * palette.add(2, Color.GREEN);
+ * palette.add(1, Color.GREEN);
+ * palette.add(0, Color.RED);
  * </pre>
  * <p>
  * La carte est triée par ordre croissant des clés.
@@ -28,9 +29,30 @@ import javafx.scene.paint.Color;
  * @version 1.0
  * @see {@link ColorUtils}
  */
-public class DiscreteColorMap extends TreeMap<Integer, Color> {
-	private static final long serialVersionUID = 546558419103233589L;
+public class DiscreteColorMap implements ColorMap<Integer> {
+	/** Plage des couleurs triée par ordre croissant des indices. */
+	private final SortedMap<Integer, Color> colorSet = new TreeMap<>();
 
+	@Override
+	public void add(Integer key, Color value) {
+		colorSet.put(key, value);
+	}
+
+	@Override
+	public void delete(Integer key) {
+		colorSet.remove(key);
+	}
+
+	@Override
+	public Color get(Integer position) {
+		return colorSet.get(position);
+	}
+
+	@Override
+	public void clear() {
+		colorSet.clear();
+	}
+	
 	/**
 	 * Construit une instance {@link DiscreteColorMap} à partir d'une chaîne de
 	 * caractères (ou la valeur <code>null</code> si le <i>parsing</i> a échoué).
@@ -61,7 +83,7 @@ public class DiscreteColorMap extends TreeMap<Integer, Color> {
 
 			int key = Integer.parseInt(keyAndValue[0]);
 			Color value = Color.web(keyAndValue[1]);
-			map.put(key, value);
+			map.add(key, value);
 		}
 
 		return map;
@@ -70,12 +92,12 @@ public class DiscreteColorMap extends TreeMap<Integer, Color> {
 	@Override
 	public final String toString() {
 		List<String> items = new ArrayList<>();
-		for (Integer k : keySet()) {
+		for (Integer k : colorSet.keySet()) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
 			sb.append(k.intValue());
 			sb.append("; ");
-			sb.append(get(k).toString());
+			sb.append(colorSet.get(k).toString());
 			sb.append("]");
 
 			items.add(sb.toString());
