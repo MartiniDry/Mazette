@@ -7,8 +7,6 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.rosty.util.javafx.ColorUtils;
-
 import javafx.scene.paint.Color;
 
 /**
@@ -29,7 +27,6 @@ import javafx.scene.paint.Color;
  * 
  * @author Martin Rostagnat
  * @version 1.0
- * @see {@link ColorUtils}
  */
 public class DiscreteColorMap implements ColorMap<Integer> {
 	/** Plage des couleurs triée par ordre croissant des indices. */
@@ -76,7 +73,7 @@ public class DiscreteColorMap implements ColorMap<Integer> {
 	public static final DiscreteColorMap fromString(String str) {
 		DiscreteColorMap map = new DiscreteColorMap();
 
-		String regex = "\\[-?\\d+;\\s*(\\w+|#[a-fA-F0-9]+)\\]";
+		String regex = "\\[[^\\]]*;[^\\[]*\\]"; // Extrait les chaînes de la forme "[xxx; xxx]"
 		Matcher match = Pattern.compile(regex).matcher(str);
 		while (match.find()) {
 			String item = match.group();
