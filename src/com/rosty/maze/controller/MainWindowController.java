@@ -121,9 +121,9 @@ public class MainWindowController implements Observer {
 		mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 
 		DiscreteColorMap colorMap = new DiscreteColorMap();
-		colorMap.put(0, Color.TRANSPARENT);
-		colorMap.put(1, Color.web("#0F06"));
-		colorMap.put(2, Color.web("#00F6"));
+		colorMap.add(0, Color.TRANSPARENT);
+		colorMap.add(1, Color.web("#0F06"));
+		colorMap.add(2, Color.web("#00F6"));
 //		DiscreteColorMap colorMap = DiscreteColorMap.fromString("[0; transparent] [1; #0F06] [2; #00F6]");
 
 		mazePanel.setBlockColorMap(colorMap);
