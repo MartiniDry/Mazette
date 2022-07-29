@@ -29,8 +29,7 @@ public interface ColorMap<T> {
 	/**
 	 * Fournit, si elle existe, la couleur présente à la position indiquée.
 	 * 
-	 * @param position
-	 * @return
+	 * @param position Position de la couleur par rapport à la carte.
 	 */
 	public Color get(T position);
 
