@@ -2,6 +2,7 @@ package com.rosty.maze.widgets;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import com.rosty.maze.Mazette;
 import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.Maze.WallCoord;
+import com.rosty.maze.model.MazeRoute;
 import com.rosty.util.colormap.DiscreteColorMap;
 import com.rosty.util.javafx.NodeWriter;
 
@@ -21,8 +23,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * Composant FXML permettant d'afficher un labyrinthe à l'écran, plus
@@ -71,6 +75,23 @@ public class MazePanel extends Pane {
 	/** Définit le labyrinthe du modèle. */
 	public final void setMaze(Maze value) {
 		mazeProperty.set(value);
+	}
+
+	private final ObjectProperty<MazeRoute> routeProperty = new SimpleObjectProperty<>();
+
+	/** Propriété correspondant au chemin tracé dans le labyrinthe. */
+	public final ObjectProperty<MazeRoute> routeProperty() {
+		return routeProperty;
+	}
+
+	/** Fournit le chemin du labyrinthe. */
+	public final MazeRoute getRoute() {
+		return routeProperty.get();
+	}
+
+	/** Définit le chemin du labyrinthe. */
+	public final void setRoute(MazeRoute value) {
+		routeProperty.set(value);
 	}
 
 	private final ObjectProperty<Spacing> spacingProperty = new SimpleObjectProperty<>();
@@ -183,6 +204,9 @@ public class MazePanel extends Pane {
 	private Line[][] hLines; // Murs horizontaux du labyrinthe
 	private Circle[][] corners; // Points placés dans les intersections des murs
 
+	private Circle start, end;
+	private Polyline path;
+
 	private double W = 0; // Largeur du labyrinthe
 	private double H = 0; // Hauteur du labytinthe
 	private double deltaX = 0; // Ecartement du labyrinthe à gauche du conteneur graphique
@@ -200,6 +224,8 @@ public class MazePanel extends Pane {
 	@FXML
 	public void initialize() {
 		mazeProperty.addListener(e -> update());
+		routeProperty.addListener(e -> update());
+
 		widthProperty().addListener(e -> update());
 		heightProperty().addListener(e -> update());
 	}
@@ -387,6 +413,37 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	protected void displayStart() {
+		start = new Circle(7, Color.FORESTGREEN);
+		int is = getRoute().getStart()[0], js = getRoute().getStart()[1];
+		start.setCenterX(deltaX + H * (js + 0.5) / getMaze().getNbRows());
+		start.setCenterY(deltaY + W * (is + 0.5) / getMaze().getNbColumns());
+		getChildren().add(start);
+	}
+
+	protected void displayEnd() {
+		end = new Circle(7, Color.RED);
+		int ie = getRoute().getEnd()[0], je = getRoute().getEnd()[1];
+		end.setCenterX(deltaX + H * (je + 0.5) / getMaze().getNbRows());
+		end.setCenterY(deltaY + W * (ie + 0.5) / getMaze().getNbColumns());
+		getChildren().add(end);
+	}
+
+	protected void displayPath() {
+		path = new Polyline();
+		path.setStroke(Color.ORANGERED);
+		path.setStrokeWidth(1.5 * THICK);
+		path.setStrokeLineJoin(StrokeLineJoin.ROUND);
+
+		for (int[] pt : getRoute().getPath()) {
+			double posX = deltaX + (pt[0] + 0.5) * (H / getMaze().getNbRows());
+			double posY = deltaY + (pt[1] + 0.5) * (W / getMaze().getNbColumns());
+			path.getPoints().addAll(posX, posY);
+		}
+
+		getChildren().add(path);
+	}
+
 	/** Fournit la valeur de la cellule à la ligne et à la colonne indiquée. */
 	public int getCell(int row, int col) {
 		return getMaze().getCell(row, col);
@@ -449,6 +506,26 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	public int[] getStart() {
+		return getRoute().getStart();
+	}
+
+	public void setStart(int x, int y) {
+		getRoute().setStart(x, y);
+	}
+
+	public int[] getEnd() {
+		return getRoute().getEnd();
+	}
+
+	public void setEnd(int x, int y) {
+		getRoute().setEnd(x, y);
+	}
+
+	public ArrayList<int[]> getPath() {
+		return getRoute().getPath();
+	}
+
 	/**
 	 * Récupère la valeur d'une case voisine à la case spécifiée.
 	 * 
@@ -478,10 +555,12 @@ public class MazePanel extends Pane {
 	/** Efface les cases et réinitialise le labyrinthe */
 	public void clear() {
 		getMaze().clear();
+		getRoute().getPath().clear();
+
 		update();
 	}
 
-	/** Met à jour le composant graphique. */
+	/** Met à jour le labyrinthe dans composant graphique. */
 	protected void update() {
 		getChildren().clear();
 
@@ -504,6 +583,16 @@ public class MazePanel extends Pane {
 //				displayGrid();
 				if (Mazette.arg_fxDebug())
 					displayLabels();
+			}
+
+			if (getRoute() != null) {
+				start = new Circle();
+				end = new Circle();
+				path = new Polyline();
+
+				displayStart();
+				displayEnd();
+				displayPath();
 			}
 		}
 	}

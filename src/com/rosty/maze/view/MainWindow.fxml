@@ -76,6 +76,13 @@
 
 				<Label fx:id="elapsedTime" GridPane.columnIndex="1" />
 			</GridPane>
+			
+			<Separator />
+			
+			<HBox>
+				<Button onAction="#justATest"/>
+				<Label fx:id="justTheResult" HBox.hgrow="ALWAYS"/>
+			</HBox>
 		</VBox>
 	</left>
 

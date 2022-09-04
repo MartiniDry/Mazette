@@ -4,11 +4,13 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.application.labels.PropertiesManager;
 import com.rosty.maze.model.ApplicationModel;
+import com.rosty.maze.model.MazeRoute;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
@@ -89,31 +91,34 @@ public class MainWindowController implements Observer {
 	private Label elapsedTime;
 
 	@FXML
+	Label justTheResult;
+
+	@FXML
 	public MazePanel mazePanel;
 
 	/* ATTRIBUTS */
 
 	// Générateur de labyrinthes
-	private static final AlgorithmRunner generator = ApplicationModel.getInstance().getGenerator();
+	private static final AlgorithmRunner GENERATOR = ApplicationModel.getInstance().getGenerator();
 
 	// Table des "labels" des algorithmes. Ces identifiants permettent d'afficher le
 	// nom des algorithmes à l'écran avec la langue choisie par l'utilisateur.
-	private static final HashMap<Class<? extends Algorithm>, String> algoLabels = new HashMap<>();
+	private static final HashMap<Class<? extends Algorithm>, String> ALGO_LABELS = new HashMap<>();
 	static {
-		algoLabels.put(AldousBroderAlgorithm.class, "main.menu.generation.aldous_broder");
-		algoLabels.put(BinaryTreeAlgorithm.class, "main.menu.generation.binary_tree");
-		algoLabels.put(EllerAlgorithm.class, "main.menu.generation.eller");
-		algoLabels.put(GrowingTreeAlgorithm.class, "main.menu.generation.growing_tree");
-		algoLabels.put(HuntAndKillAlgorithm.class, "main.menu.generation.hunt_and_kill");
-		algoLabels.put(KruskalAlgorithm.class, "main.menu.generation.kruskal.unsorted");
-		algoLabels.put(PersonalAlgorithm.class, "main.menu.generation.personal._1");
-		algoLabels.put(Personal2Algorithm.class, "main.menu.generation.personal._2");
-		algoLabels.put(PrimAlgorithm.class, "main.menu.generation.prim");
-		algoLabels.put(RecursiveBacktrackingAlgorithm.class, "main.menu.generation.recursive_backtracker");
-		algoLabels.put(RecursiveDivisionAlgorithm.class, "main.menu.generation.recursive_division");
-		algoLabels.put(ShuffledKruskalAlgorithm.class, "main.menu.generation.kruskal.sorted");
-		algoLabels.put(SidewinderAlgorithm.class, "main.menu.generation.sidewinder");
-		algoLabels.put(WilsonAlgorithm.class, "main.menu.generation.wilson");
+		ALGO_LABELS.put(AldousBroderAlgorithm.class, "main.menu.generation.aldous_broder");
+		ALGO_LABELS.put(BinaryTreeAlgorithm.class, "main.menu.generation.binary_tree");
+		ALGO_LABELS.put(EllerAlgorithm.class, "main.menu.generation.eller");
+		ALGO_LABELS.put(GrowingTreeAlgorithm.class, "main.menu.generation.growing_tree");
+		ALGO_LABELS.put(HuntAndKillAlgorithm.class, "main.menu.generation.hunt_and_kill");
+		ALGO_LABELS.put(KruskalAlgorithm.class, "main.menu.generation.kruskal.unsorted");
+		ALGO_LABELS.put(PersonalAlgorithm.class, "main.menu.generation.personal._1");
+		ALGO_LABELS.put(Personal2Algorithm.class, "main.menu.generation.personal._2");
+		ALGO_LABELS.put(PrimAlgorithm.class, "main.menu.generation.prim");
+		ALGO_LABELS.put(RecursiveBacktrackingAlgorithm.class, "main.menu.generation.recursive_backtracker");
+		ALGO_LABELS.put(RecursiveDivisionAlgorithm.class, "main.menu.generation.recursive_division");
+		ALGO_LABELS.put(ShuffledKruskalAlgorithm.class, "main.menu.generation.kruskal.sorted");
+		ALGO_LABELS.put(SidewinderAlgorithm.class, "main.menu.generation.sidewinder");
+		ALGO_LABELS.put(WilsonAlgorithm.class, "main.menu.generation.wilson");
 	}
 
 	@FXML
@@ -128,16 +133,16 @@ public class MainWindowController implements Observer {
 
 		mazePanel.setBlockColorMap(colorMap);
 
-		delta.setValue(generator.getTimeout());
+		delta.setValue(GENERATOR.getTimeout());
 		delta.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
 			String content = delta.getText();
 			if (e.getCode() == KeyCode.ENTER) {
-				generator.setTimeout(content.isEmpty() ? 0L : Long.valueOf(content));
-				Mazette.LOGGER.info("Nouveau pas de temps : " + generator.getTimeout() + " µs.");
+				GENERATOR.setTimeout(content.isEmpty() ? 0L : Long.valueOf(content));
+				Mazette.LOGGER.info("Nouveau pas de temps : " + GENERATOR.getTimeout() + " µs.");
 			}
 		});
 
-		deltaSlider.setValue((long) Math.pow(10, 6 - generator.getTimeout()));
+		deltaSlider.setValue((long) Math.pow(10, 6 - GENERATOR.getTimeout()));
 		deltaSlider.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double object) {
@@ -159,7 +164,7 @@ public class MainWindowController implements Observer {
 			}
 		});
 
-		generator.addObserver(this);
+		GENERATOR.addObserver(this);
 
 		newMazeRows.setValue(ApplicationModel.getInstance().getMaze().getNbRows());
 		newMazeColumns.setValue(ApplicationModel.getInstance().getMaze().getNbColumns());
@@ -181,7 +186,7 @@ public class MainWindowController implements Observer {
 	private void setTimeout() {
 		Mazette.LOGGER.info("Nouveau pas de temps : " + delta.getValue() + " µs.");
 
-		generator.setTimeout(delta.getValue());
+		GENERATOR.setTimeout(delta.getValue());
 		double timeValue = 6 - Math.log10(delta.getValue());
 		deltaSlider.setValue(timeValue);
 	}
@@ -191,7 +196,7 @@ public class MainWindowController implements Observer {
 		long timeValue = (long) Math.pow(10, 6 - deltaSlider.getValue());
 		Mazette.LOGGER.info("Nouveau pas de temps : " + timeValue + " µs.");
 
-		generator.setTimeout(timeValue);
+		GENERATOR.setTimeout(timeValue);
 		delta.setValue(timeValue);
 	}
 
@@ -200,7 +205,7 @@ public class MainWindowController implements Observer {
 		try {
 			ApplicationModel.getInstance().reload(newMazeRows.getValue(), newMazeColumns.getValue());
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
-			generator.reset();
+			GENERATOR.reset();
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 
@@ -214,17 +219,90 @@ public class MainWindowController implements Observer {
 	private void runOrWait() {
 		try {
 			if (runButton.isSelected())
-				generator.start();
+				GENERATOR.start();
 			else
-				generator.stop();
+				GENERATOR.stop();
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 		}
 	}
 
 	@FXML
+	private void justATest() {
+		int r = ApplicationModel.getInstance().getMaze().getNbRows();
+		int c = ApplicationModel.getInstance().getMaze().getNbColumns();
+
+		int xa, ya, xb, yb;
+
+		xa = (new Random()).nextInt(r);
+		ya = (new Random()).nextInt(c);
+
+		do {
+			xb = (new Random()).nextInt(r);
+			yb = (new Random()).nextInt(c);
+		} while (xa == xb && ya == yb);
+
+		MazeRoute route = new MazeRoute();
+		route.setStart(xa, ya);
+		route.setEnd(xb, yb);
+
+		justTheResult.setText(String.format("(%s,%s) -> (%s,%s)", xa, ya, xb, yb));
+
+		int acc = 0, i = ya, j = xa, lastOne = -1;
+		do {
+			route.getPath().add(new int[] { i, j });
+
+			int current = -1;
+			boolean outOfBounds = false;
+			do {
+				current = (int) (2 * Math.sqrt((new Random()).nextInt(4)));
+				
+				switch (current) {
+					case 0:
+						outOfBounds = (i + 1 >= r);
+						break;
+					case 1:
+						outOfBounds = (j + 1 >= c);
+						break;
+					case 2:
+						outOfBounds = (i - 1 < 0);
+						break;
+					case 3:
+						outOfBounds = (j - 1 < 0);
+						break;
+					default:
+						break;
+				}
+			} while (current == lastOne || outOfBounds);
+			
+			lastOne = current;
+			
+			System.out.println(current);
+			
+			switch (current) {
+				case 0:
+					i++;
+					break;
+				case 1:
+					j++;
+					break;
+				case 2:
+					i--;
+					break;
+				case 3:
+					j--;
+					break;
+				default:
+					break;
+			}
+		} while (acc++ < 10);
+
+		mazePanel.setRoute(route);
+	}
+
+	@FXML
 	private void step() throws InterruptedException {
-		generator.step();
+		GENERATOR.step();
 	}
 
 	/**
@@ -234,8 +312,8 @@ public class MainWindowController implements Observer {
 	 */
 	public final void regenerate(Algorithm genAlgo) {
 		mazePanel.clear();
-		generator.setAlgorithm(genAlgo);
-		generator.reset();
+		GENERATOR.setAlgorithm(genAlgo);
+		GENERATOR.reset();
 	}
 
 	/**
@@ -246,7 +324,7 @@ public class MainWindowController implements Observer {
 	final void displayAlgoName(Algorithm algo) {
 		if (algo != null) {
 			// "main.menu.generation.kruskal.sorted"
-			String algoLabel = algoLabels.get(algo.getClass());
+			String algoLabel = ALGO_LABELS.get(algo.getClass());
 
 			// Le label peut faire partie d'une sous-famille d'algorithmes (ex :
 			// l'algorithme de Kruskal se décline en 2 versions, triée et non-triée). Cette
@@ -284,7 +362,7 @@ public class MainWindowController implements Observer {
 
 	/** Affiche le nom de l'algorithme courant dans l'IHM. */
 	public final void displayAlgoName() {
-		displayAlgoName(generator.getAlgorithm());
+		displayAlgoName(GENERATOR.getAlgorithm());
 	}
 
 	@Override
