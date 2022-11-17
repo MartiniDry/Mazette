@@ -114,7 +114,7 @@ public class ApplicationModel implements Observer {
 			else if (algoClass == MazeSolvingAlgorithm.class)
 				mode = Mode.RESOLUTION;
 			else
-				System.err.println("This algorithm cannot be determined for the application.");
+				Mazette.LOGGER.error("This algorithm cannot be determined for the application.");
 		}
 	}
 }

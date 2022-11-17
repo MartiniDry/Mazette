@@ -229,10 +229,27 @@ public class MainWindowController implements Observer {
 	@FXML
 	private void runOrWait() {
 		try {
-			if (runButton.isSelected())
-				GENERATOR.start();
-			else
-				GENERATOR.stop();
+			switch (ApplicationModel.getInstance().getMode()) {
+				case GENERATION:
+					if (runButton.isSelected())
+						GENERATOR.start();
+					else
+						GENERATOR.stop();
+				
+					break;
+				case RESOLUTION:
+					// TODO insérer le critère de connexité du labyrinthe avant de choisir l'algo
+					if (runButton.isSelected())
+						SOLVER.start();
+					else
+						SOLVER.stop();
+					
+					break;
+				default:
+					break;
+			}
+			
+			
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 		}
@@ -347,7 +364,7 @@ public class MainWindowController implements Observer {
 	 */
 	public final void resetSolve(MazeSolvingAlgorithm solAlgo) {
 		// TODO insérer le critère de connexité du labyrinthe avant de choisir l'algo
-		mazePanel.setRoute(null);
+		mazePanel.getRoute().getPath().clear();
 		SOLVER.setAlgorithm(solAlgo);
 		SOLVER.reset();
 	}
