@@ -22,6 +22,7 @@ import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
+import com.rosty.maze.model.algorithm.solving.WallFollowingAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 
 import javafx.fxml.FXML;
@@ -135,6 +136,12 @@ public class MenuBarController {
 	}
 
 	@FXML
+	private void solveWallFollowing() {
+		AppLauncher.getMainController()
+				.resetSolve(new WallFollowingAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
 	private void changeColors() {
 		;
 	}
@@ -159,30 +166,22 @@ public class MenuBarController {
 
 	@FXML
 	private void switchToFrench() {
-		LocaleManager.set(Locale.FRENCH);
-		AppLauncher.reloadView();
-		AppLauncher.getMainController().displayAlgoName();
+		switchTo(Locale.FRENCH);
 	}
 
 	@FXML
 	private void switchToEnglish() {
-		LocaleManager.set(Locale.ENGLISH);
-		AppLauncher.reloadView();
-		AppLauncher.getMainController().displayAlgoName();
+		switchTo(Locale.ENGLISH);
 	}
 
 	@FXML
 	private void switchToGerman() {
-		LocaleManager.set(Locale.GERMAN);
-		AppLauncher.reloadView();
-		AppLauncher.getMainController().displayAlgoName();
+		switchTo(Locale.GERMAN);
 	}
 
 	@FXML
 	private void switchToSpanish() {
-		LocaleManager.set(new Locale("es", "ES")); // Spanish is not a standard Java locale
-		AppLauncher.reloadView();
-		AppLauncher.getMainController().displayAlgoName();
+		switchTo(new Locale("es", "ES")); // Spanish is not a standard Java locale
 	}
 
 	@FXML
@@ -196,5 +195,11 @@ public class MenuBarController {
 			box.setContentText(LocaleManager.getString("error.about.failed"));
 			box.showAndWait();
 		}
+	}
+
+	private void switchTo(Locale language) {
+		LocaleManager.set(language);
+		AppLauncher.reloadView();
+		AppLauncher.getMainController().displayAlgoName();
 	}
 }

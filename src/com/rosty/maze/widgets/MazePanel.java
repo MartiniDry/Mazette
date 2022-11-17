@@ -414,7 +414,7 @@ public class MazePanel extends Pane {
 	}
 
 	protected void displayStart() {
-		start = new Circle(7, Color.FORESTGREEN);
+		start = new Circle(2 * THICK, Color.FORESTGREEN);
 		int is = getRoute().getStart()[0], js = getRoute().getStart()[1];
 		start.setCenterX(deltaX + H * (js + 0.5) / getMaze().getNbRows());
 		start.setCenterY(deltaY + W * (is + 0.5) / getMaze().getNbColumns());
@@ -422,7 +422,7 @@ public class MazePanel extends Pane {
 	}
 
 	protected void displayEnd() {
-		end = new Circle(7, Color.RED);
+		end = new Circle(2 * THICK, Color.RED);
 		int ie = getRoute().getEnd()[0], je = getRoute().getEnd()[1];
 		end.setCenterX(deltaX + H * (je + 0.5) / getMaze().getNbRows());
 		end.setCenterY(deltaY + W * (ie + 0.5) / getMaze().getNbColumns());
@@ -590,16 +590,16 @@ public class MazePanel extends Pane {
 				end = new Circle();
 				path = new Polyline();
 
+				displayPath();
 				displayStart();
 				displayEnd();
-				displayPath();
 			}
 		}
 	}
 
 	/**
 	 * Enregistre le labyrinthe sous la forme d'une image. Les seules extensions
-	 * autorisées sont JPG, JPEG, PDF et GIF.
+	 * autorisées sont JPG, JPEG, PNG, TIFF, PDF et GIF.
 	 * 
 	 * @param file Fichier contenant l'image à enregistrer.
 	 * @throws IOException En cas d'erreur lors de la création du fichier ou de la

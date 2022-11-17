@@ -80,7 +80,7 @@
 			<Separator />
 			
 			<HBox>
-				<Button onAction="#justATest"/>
+				<Button onAction="#justATest" text="SIMPLE TEST"/>
 				<Label fx:id="justTheResult" HBox.hgrow="ALWAYS"/>
 			</HBox>
 		</VBox>

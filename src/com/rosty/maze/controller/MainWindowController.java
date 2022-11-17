@@ -14,6 +14,8 @@ import com.rosty.maze.model.MazeRoute;
 import com.rosty.maze.model.algorithm.Algorithm;
 import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
+import com.rosty.maze.model.algorithm.MazeGenerationAlgorithm;
+import com.rosty.maze.model.algorithm.MazeSolvingAlgorithm;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
@@ -28,6 +30,7 @@ import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
+import com.rosty.maze.model.algorithm.solving.WallFollowingAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
@@ -101,6 +104,9 @@ public class MainWindowController implements Observer {
 	// Générateur de labyrinthes
 	private static final AlgorithmRunner GENERATOR = ApplicationModel.getInstance().getGenerator();
 
+	// Solveur de labyrinthes
+	private static final AlgorithmRunner SOLVER = ApplicationModel.getInstance().getSolver();
+
 	// Table des "labels" des algorithmes. Ces identifiants permettent d'afficher le
 	// nom des algorithmes à l'écran avec la langue choisie par l'utilisateur.
 	private static final HashMap<Class<? extends Algorithm>, String> ALGO_LABELS = new HashMap<>();
@@ -119,11 +125,14 @@ public class MainWindowController implements Observer {
 		ALGO_LABELS.put(ShuffledKruskalAlgorithm.class, "main.menu.generation.kruskal.sorted");
 		ALGO_LABELS.put(SidewinderAlgorithm.class, "main.menu.generation.sidewinder");
 		ALGO_LABELS.put(WilsonAlgorithm.class, "main.menu.generation.wilson");
+
+		ALGO_LABELS.put(WallFollowingAlgorithm.class, "main.menu.resolution.wall_following");
 	}
 
 	@FXML
 	public void initialize() {
 		mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
+		mazePanel.setRoute(ApplicationModel.getInstance().getRoute());
 
 		DiscreteColorMap colorMap = new DiscreteColorMap();
 		colorMap.add(0, Color.TRANSPARENT);
@@ -205,7 +214,9 @@ public class MainWindowController implements Observer {
 		try {
 			ApplicationModel.getInstance().reload(newMazeRows.getValue(), newMazeColumns.getValue());
 			mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
+			mazePanel.setRoute(ApplicationModel.getInstance().getRoute());
 			GENERATOR.reset();
+			SOLVER.reset();
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 
@@ -256,7 +267,7 @@ public class MainWindowController implements Observer {
 			boolean outOfBounds = false;
 			do {
 				current = (int) (2 * Math.sqrt((new Random()).nextInt(4)));
-				
+
 				switch (current) {
 					case 0:
 						outOfBounds = (i + 1 >= r);
@@ -274,11 +285,11 @@ public class MainWindowController implements Observer {
 						break;
 				}
 			} while (current == lastOne || outOfBounds);
-			
+
 			lastOne = current;
-			
+
 			System.out.println(current);
-			
+
 			switch (current) {
 				case 0:
 					i++;
@@ -302,18 +313,43 @@ public class MainWindowController implements Observer {
 
 	@FXML
 	private void step() throws InterruptedException {
-		GENERATOR.step();
+		switch (ApplicationModel.getInstance().getMode()) {
+			case GENERATION:
+				GENERATOR.step();
+				break;
+			case RESOLUTION:
+				SOLVER.step();
+				break;
+			default:
+				break;
+		}
 	}
 
 	/**
-	 * Charge un nouvel algorithme dans le contrôleur et régénère le labyrinthe.
+	 * Efface le labyrinthe et charge un nouvel algorithme de génération dans le
+	 * contrôleur.
 	 * 
-	 * @param genAlgo Algorithme à exécuter.
+	 * @param genAlgo Algorithme de génération à exécuter.
 	 */
-	public final void regenerate(Algorithm genAlgo) {
+	public final void regenerate(MazeGenerationAlgorithm genAlgo) {
 		mazePanel.clear();
 		GENERATOR.setAlgorithm(genAlgo);
 		GENERATOR.reset();
+
+		SOLVER.reset();
+	}
+
+	/**
+	 * Efface le chemin du labyrinthe et charge un nouvel algorithme de résolution
+	 * dans le contrôleur.
+	 * 
+	 * @param solAlgo Algorithme de résolution à exécuter.
+	 */
+	public final void resetSolve(MazeSolvingAlgorithm solAlgo) {
+		// TODO insérer le critère de connexité du labyrinthe avant de choisir l'algo
+		mazePanel.setRoute(null);
+		SOLVER.setAlgorithm(solAlgo);
+		SOLVER.reset();
 	}
 
 	/**
@@ -323,7 +359,6 @@ public class MainWindowController implements Observer {
 	 */
 	final void displayAlgoName(Algorithm algo) {
 		if (algo != null) {
-			// "main.menu.generation.kruskal.sorted"
 			String algoLabel = ALGO_LABELS.get(algo.getClass());
 
 			// Le label peut faire partie d'une sous-famille d'algorithmes (ex :
