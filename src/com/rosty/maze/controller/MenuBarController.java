@@ -31,6 +31,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class MenuBarController {
+	private static final MainWindowController controller = AppLauncher.getMainController();
+
 	@FXML
 	private void saveDataAs() {
 		Mazette.LOGGER.info("Sauvegarde des données");
@@ -48,7 +50,7 @@ public class MenuBarController {
 
 		try {
 			File file = chooser.showSaveDialog(AppLauncher.getPrimaryStage().getOwner());
-			AppLauncher.getMainController().mazePanel.save(file);
+			controller.mazePanel.save(file);
 		} catch (IOException | IllegalArgumentException e) {
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.export"));
 			box.setContentText(e.getLocalizedMessage());
@@ -63,82 +65,77 @@ public class MenuBarController {
 
 	@FXML
 	private void generateKruskal() {
-		AppLauncher.getMainController().regenerate(new KruskalAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new KruskalAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateShuffledKruskal() {
-		AppLauncher.getMainController()
-				.regenerate(new ShuffledKruskalAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new ShuffledKruskalAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateRecursiveBacktracker() {
-		AppLauncher.getMainController()
-				.regenerate(new RecursiveBacktrackingAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new RecursiveBacktrackingAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateRecursiveDivision() {
-		AppLauncher.getMainController()
-				.regenerate(new RecursiveDivisionAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new RecursiveDivisionAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generatePrim() {
-		AppLauncher.getMainController().regenerate(new PrimAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new PrimAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateHuntAndKill() {
-		AppLauncher.getMainController().regenerate(new HuntAndKillAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new HuntAndKillAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateAldousBroder() {
-		AppLauncher.getMainController()
-				.regenerate(new AldousBroderAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new AldousBroderAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateWilson() {
-		AppLauncher.getMainController().regenerate(new WilsonAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new WilsonAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateBinaryTree() {
-		AppLauncher.getMainController().regenerate(new BinaryTreeAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new BinaryTreeAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateSidewinder() {
-		AppLauncher.getMainController().regenerate(new SidewinderAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new SidewinderAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateEller() {
-		AppLauncher.getMainController().regenerate(new EllerAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new EllerAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generatePersonal() {
-		AppLauncher.getMainController().regenerate(new PersonalAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new PersonalAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generatePersonal2() {
-		AppLauncher.getMainController().regenerate(new Personal2Algorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new Personal2Algorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void generateGrowingTree() {
-		AppLauncher.getMainController().regenerate(new GrowingTreeAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.regenerate(new GrowingTreeAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
 	private void solveWallFollowing() {
-		AppLauncher.getMainController()
-				.resetSolve(new WallFollowingAlgorithm(AppLauncher.getMainController().mazePanel));
+		controller.resetSolve(new WallFollowingAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
@@ -200,6 +197,6 @@ public class MenuBarController {
 	private void switchTo(Locale language) {
 		LocaleManager.set(language);
 		AppLauncher.reloadView();
-		AppLauncher.getMainController().displayAlgoName();
+		controller.displayAlgoName();
 	}
 }
