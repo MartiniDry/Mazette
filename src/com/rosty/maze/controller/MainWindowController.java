@@ -36,6 +36,7 @@ import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
 import com.rosty.maze.widgets.MazePanel;
 import com.rosty.util.colormap.DiscreteColorMap;
+import com.rosty.util.maze.MazeUtils;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -235,21 +236,18 @@ public class MainWindowController implements Observer {
 						GENERATOR.start();
 					else
 						GENERATOR.stop();
-				
+
 					break;
 				case RESOLUTION:
-					// TODO insérer le critère de connexité du labyrinthe avant de choisir l'algo
 					if (runButton.isSelected())
 						SOLVER.start();
 					else
 						SOLVER.stop();
-					
+
 					break;
 				default:
 					break;
 			}
-			
-			
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 		}
@@ -359,14 +357,28 @@ public class MainWindowController implements Observer {
 	/**
 	 * Efface le chemin du labyrinthe et charge un nouvel algorithme de résolution
 	 * dans le contrôleur.
+	 * <p>
+	 * <b>NB:</b> le choix de l'algorithme n'est possible que si le labyrinthe est
+	 * connexe.
+	 * </p>
 	 * 
 	 * @param solAlgo Algorithme de résolution à exécuter.
 	 */
 	public final void resetSolve(MazeSolvingAlgorithm solAlgo) {
-		// TODO insérer le critère de connexité du labyrinthe avant de choisir l'algo
-		mazePanel.getRoute().getPath().clear();
-		SOLVER.setAlgorithm(solAlgo);
-		SOLVER.reset();
+		try {
+			if (MazeUtils.isConnected(mazePanel.getMaze())) {
+				mazePanel.getRoute().getPath().clear();
+				SOLVER.setAlgorithm(solAlgo);
+				SOLVER.reset();
+			} else
+				throw new Exception(LocaleManager.getString("error.maze.run.connected"));
+		} catch (Exception e) {
+			Mazette.LOGGER.error(e.getMessage(), e);
+
+			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.maze.run"));
+			box.setContentText(e.getLocalizedMessage());
+			box.showAndWait();
+		}
 	}
 
 	/**
