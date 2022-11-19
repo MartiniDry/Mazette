@@ -72,6 +72,11 @@ public class SidewinderAlgorithm extends MazeGenerationAlgorithm {
 	public SidewinderAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".sidewinder";
+	}
 
 	@Override
 	public void init() {

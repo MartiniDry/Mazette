@@ -76,6 +76,11 @@ public class GrowingTreeAlgorithm extends MazeGenerationAlgorithm {
 	public GrowingTreeAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".growing_tree";
+	}
 
 	@Override
 	public void init() {

@@ -7,6 +7,11 @@ public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
 	public WallFollowingAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return "wall_following";
+	}
 
 	@Override
 	public void init() {

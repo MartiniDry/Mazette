@@ -45,6 +45,11 @@ public class ShuffledKruskalAlgorithm extends MazeGenerationAlgorithm {
 	public ShuffledKruskalAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".kruskal.unsorted";
+	}
 
 	@Override
 	public void init() {

@@ -66,6 +66,11 @@ public class BinaryTreeAlgorithm extends MazeGenerationAlgorithm {
 	public BinaryTreeAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".binary_tree";
+	}
 
 	@Override
 	public void init() {

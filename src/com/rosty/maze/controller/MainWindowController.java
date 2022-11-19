@@ -1,7 +1,6 @@
 package com.rosty.maze.controller;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -16,21 +15,6 @@ import com.rosty.maze.model.algorithm.AlgorithmRunner;
 import com.rosty.maze.model.algorithm.AlgorithmRunner.ObsRunnerState;
 import com.rosty.maze.model.algorithm.MazeGenerationAlgorithm;
 import com.rosty.maze.model.algorithm.MazeSolvingAlgorithm;
-import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
-import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
-import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
-import com.rosty.maze.model.algorithm.generation.GrowingTreeAlgorithm;
-import com.rosty.maze.model.algorithm.generation.HuntAndKillAlgorithm;
-import com.rosty.maze.model.algorithm.generation.KruskalAlgorithm;
-import com.rosty.maze.model.algorithm.generation.Personal2Algorithm;
-import com.rosty.maze.model.algorithm.generation.PersonalAlgorithm;
-import com.rosty.maze.model.algorithm.generation.PrimAlgorithm;
-import com.rosty.maze.model.algorithm.generation.RecursiveBacktrackingAlgorithm;
-import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
-import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
-import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
-import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
-import com.rosty.maze.model.algorithm.solving.WallFollowingAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
@@ -107,28 +91,6 @@ public class MainWindowController implements Observer {
 
 	// Solveur de labyrinthes
 	private static final AlgorithmRunner SOLVER = ApplicationModel.getInstance().getSolver();
-
-	// Table des "labels" des algorithmes. Ces identifiants permettent d'afficher le
-	// nom des algorithmes à l'écran avec la langue choisie par l'utilisateur.
-	private static final HashMap<Class<? extends Algorithm>, String> ALGO_LABELS = new HashMap<>();
-	static {
-		ALGO_LABELS.put(AldousBroderAlgorithm.class, "main.menu.generation.aldous_broder");
-		ALGO_LABELS.put(BinaryTreeAlgorithm.class, "main.menu.generation.binary_tree");
-		ALGO_LABELS.put(EllerAlgorithm.class, "main.menu.generation.eller");
-		ALGO_LABELS.put(GrowingTreeAlgorithm.class, "main.menu.generation.growing_tree");
-		ALGO_LABELS.put(HuntAndKillAlgorithm.class, "main.menu.generation.hunt_and_kill");
-		ALGO_LABELS.put(KruskalAlgorithm.class, "main.menu.generation.kruskal.unsorted");
-		ALGO_LABELS.put(PersonalAlgorithm.class, "main.menu.generation.personal._1");
-		ALGO_LABELS.put(Personal2Algorithm.class, "main.menu.generation.personal._2");
-		ALGO_LABELS.put(PrimAlgorithm.class, "main.menu.generation.prim");
-		ALGO_LABELS.put(RecursiveBacktrackingAlgorithm.class, "main.menu.generation.recursive_backtracker");
-		ALGO_LABELS.put(RecursiveDivisionAlgorithm.class, "main.menu.generation.recursive_division");
-		ALGO_LABELS.put(ShuffledKruskalAlgorithm.class, "main.menu.generation.kruskal.sorted");
-		ALGO_LABELS.put(SidewinderAlgorithm.class, "main.menu.generation.sidewinder");
-		ALGO_LABELS.put(WilsonAlgorithm.class, "main.menu.generation.wilson");
-
-		ALGO_LABELS.put(WallFollowingAlgorithm.class, "main.menu.resolution.wall_following");
-	}
 
 	@FXML
 	public void initialize() {
@@ -388,38 +350,11 @@ public class MainWindowController implements Observer {
 	 */
 	final void displayAlgoName(Algorithm algo) {
 		if (algo != null) {
-			String algoLabel = ALGO_LABELS.get(algo.getClass());
-
-			// Le label peut faire partie d'une sous-famille d'algorithmes (ex :
-			// l'algorithme de Kruskal se décline en 2 versions, triée et non-triée). Cette
-			// sous-famille est représentée par un point supplémentaire dans le label.
-			String temp = algoLabel.substring("main.menu.".length()); // Décomposition du label couche par couche
-			if (temp.startsWith("generation")) {
-				temp = temp.substring("generation.".length());
-				if (!temp.contains(".")) { // Si l'algorithme est identifié seulement par un nom, ...
-					// ...alors l'afficher dans l'IHM.
-					algoName.setText(LocaleManager.getString(algoLabel));
-				} else { // Si l'algorithme est identifié par un nom et un ou plusieurs aspects, ...
-					// ...alors afficher le nom suivi des caractéristiques entre parenthèses.
-					StringBuilder finalText = new StringBuilder();
-					String[] keys = temp.split("\\.");
-
-					// Recomposition du label
-					temp = "main.menu.generation";
-					temp += ("." + keys[0]);
-					finalText.append(LocaleManager.getString(temp) + " ("); // Nom
-
-					for (int i = 1; i < keys.length; i++) {
-						temp += ("." + keys[i]);
-						finalText.append(LocaleManager.getString(temp) + ", ");
-					}
-
-					finalText.delete(finalText.length() - 2, finalText.length());
-					finalText.append(")");
-					algoName.setText(finalText.toString());
-				}
+			if (algo instanceof MazeGenerationAlgorithm || algo instanceof MazeSolvingAlgorithm) {
+				String localeKey = "main.menu." + algo.getLabel();
+				algoName.setText(LocaleManager.getString(localeKey));
 			} else
-				algoName.setText(LocaleManager.getString(algoLabel));
+				algoName.setText("<algo label: " + algo.getLabel() + ">");
 		} else
 			algoName.setText(null);
 	}

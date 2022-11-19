@@ -60,6 +60,11 @@ public class AldousBroderAlgorithm extends MazeGenerationAlgorithm {
 	}
 
 	@Override
+	public String getLabel() {
+		return super.getLabel() + ".aldous_broder";
+	}
+
+	@Override
 	public void init() {
 		// Initialisation de la grille ; toutes les cases sont marquées à 0 pour
 		// indiquer que la case est inexplorée.
@@ -73,7 +78,7 @@ public class AldousBroderAlgorithm extends MazeGenerationAlgorithm {
 
 		// Lancement du décompte des cellules explorées
 		cellCounter = 0;
-		
+
 		mazePanel.getMaze().setCell(x, y, 1); // La case départ est marquée comme explorée
 		cellCounter++;
 	}
@@ -133,20 +138,20 @@ public class AldousBroderAlgorithm extends MazeGenerationAlgorithm {
 	 */
 	private void move(Side direction) {
 		switch (direction) {
-		case UP:
-			x--;
-			break;
-		case LEFT:
-			y--;
-			break;
-		case DOWN:
-			x++;
-			break;
-		case RIGHT:
-			y++;
-			break;
-		default:
-			break;
+			case UP:
+				x--;
+				break;
+			case LEFT:
+				y--;
+				break;
+			case DOWN:
+				x++;
+				break;
+			case RIGHT:
+				y++;
+				break;
+			default:
+				break;
 		}
 	}
 }

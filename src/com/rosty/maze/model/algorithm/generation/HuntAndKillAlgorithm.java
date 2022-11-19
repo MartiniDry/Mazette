@@ -86,6 +86,11 @@ public class HuntAndKillAlgorithm extends MazeGenerationAlgorithm {
 	public HuntAndKillAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".hunt_and_kill";
+	}
 
 	@Override
 	public void init() {

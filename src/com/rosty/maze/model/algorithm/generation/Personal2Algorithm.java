@@ -177,6 +177,11 @@ public class Personal2Algorithm extends MazeGenerationAlgorithm {
 	public Personal2Algorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".personal._2";
+	}
 
 	@Override
 	public void init() {

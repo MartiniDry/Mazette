@@ -60,6 +60,11 @@ public class RecursiveBacktrackingAlgorithm extends MazeGenerationAlgorithm {
 	public RecursiveBacktrackingAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".recursive_backtracker";
+	}
 
 	@Override
 	public void init() {

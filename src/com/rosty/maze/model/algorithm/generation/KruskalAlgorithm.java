@@ -112,6 +112,11 @@ public class KruskalAlgorithm extends MazeGenerationAlgorithm {
 	public KruskalAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".kruskal.sorted";
+	}
 
 	@Override
 	public void init() {

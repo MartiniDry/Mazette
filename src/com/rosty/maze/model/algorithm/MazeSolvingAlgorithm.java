@@ -24,4 +24,9 @@ public abstract class MazeSolvingAlgorithm extends Algorithm {
 		nbRow = mazePanel.getMaze().getNbRows();
 		nbCol = mazePanel.getMaze().getNbColumns();
 	}
+	
+	@Override
+	public String getLabel() {
+		return "resolution";
+	}
 }

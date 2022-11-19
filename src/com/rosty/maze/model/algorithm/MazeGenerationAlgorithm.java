@@ -32,4 +32,9 @@ public abstract class MazeGenerationAlgorithm extends Algorithm {
 		nbRow = mazePanel.getMaze().getNbRows();
 		nbCol = mazePanel.getMaze().getNbColumns();
 	}
+	
+	@Override
+	public String getLabel() {
+		return "generation";
+	}
 }

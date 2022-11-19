@@ -84,6 +84,11 @@ public class WilsonAlgorithm extends MazeGenerationAlgorithm {
 	public WilsonAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".wilson";
+	}
 
 	@Override
 	public void init() {

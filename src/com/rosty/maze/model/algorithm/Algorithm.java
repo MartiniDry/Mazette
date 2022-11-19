@@ -19,6 +19,16 @@ package com.rosty.maze.model.algorithm;
  */
 public abstract class Algorithm {
 	/**
+	 * Fournit un label désignant l'algorithme. Ce label peut-être:
+	 * <ul>
+	 * <li>Le nom de l'algorithme ou de l'instance courante.</li>
+	 * <li>Une clé de propriété pour nommer l'algorithme dans différentes
+	 * langues.</li>
+	 * </ul>
+	 */
+	public abstract String getLabel();
+
+	/**
 	 * Initialise l'algorithme en préparant le labytinthe et en chargeant des
 	 * paramètres spécifiques. Cette méthode est également appelée lorsque l'on
 	 * souhaite relancer l'algorithme.

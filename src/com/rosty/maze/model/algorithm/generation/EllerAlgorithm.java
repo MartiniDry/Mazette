@@ -80,6 +80,11 @@ public class EllerAlgorithm extends MazeGenerationAlgorithm {
 	public EllerAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".eller";
+	}
 
 	@Override
 	public void init() {

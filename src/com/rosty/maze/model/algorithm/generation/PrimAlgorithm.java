@@ -70,6 +70,11 @@ public class PrimAlgorithm extends MazeGenerationAlgorithm {
 	public PrimAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".prim";
+	}
 
 	@Override
 	public void init() {

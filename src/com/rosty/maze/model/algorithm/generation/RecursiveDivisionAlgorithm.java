@@ -68,6 +68,11 @@ public class RecursiveDivisionAlgorithm extends MazeGenerationAlgorithm {
 	public RecursiveDivisionAlgorithm(MazePanel panel) {
 		super(panel);
 	}
+	
+	@Override
+	public String getLabel() {
+		return super.getLabel() + ".recursive_division";
+	}
 
 	@Override
 	public void init() {
