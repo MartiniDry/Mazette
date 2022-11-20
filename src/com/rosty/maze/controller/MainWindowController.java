@@ -330,7 +330,11 @@ public class MainWindowController implements Observer {
 	public final void resetSolve(MazeSolvingAlgorithm solAlgo) {
 		try {
 			if (MazeUtils.isConnected(mazePanel.getMaze())) {
-				mazePanel.getRoute().getPath().clear();
+				MazeRoute route = new MazeRoute();
+				route.setStart(0, 0);
+				route.setEnd(mazePanel.getMaze().getNbRows() - 1, mazePanel.getMaze().getNbColumns() - 1);
+				mazePanel.setRoute(route);
+
 				SOLVER.setAlgorithm(solAlgo);
 				SOLVER.reset();
 			} else
