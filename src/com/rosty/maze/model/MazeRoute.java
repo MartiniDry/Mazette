@@ -1,6 +1,7 @@
 package com.rosty.maze.model;
 
-import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Classe définissant un chemin parcouru dans un labyrinthe. Ce chemin est
@@ -15,7 +16,7 @@ public class MazeRoute {
 	private final int[] start = { 0, 0 }, end = { 0, 0 };
 
 	/** Liste de cellules composant le chemin dans le labyrinthe */
-	private final ArrayList<int[]> path = new ArrayList<>();
+	private final ObservableList<int[]> path = FXCollections.observableArrayList();
 
 	public int[] getStart() {
 		return start;
@@ -35,7 +36,7 @@ public class MazeRoute {
 		end[1] = y;
 	}
 
-	public ArrayList<int[]> getPath() {
+	public ObservableList<int[]> getPath() {
 		return path;
 	}
 }

@@ -2,7 +2,6 @@ package com.rosty.maze.widgets;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +15,8 @@ import com.rosty.util.javafx.NodeWriter;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -441,6 +442,15 @@ public class MazePanel extends Pane {
 			path.getPoints().addAll(posX, posY);
 		}
 
+		getRoute().getPath().addListener((ListChangeListener<int[]>) change -> {
+			path.getPoints().clear();
+			for (int[] pt : getRoute().getPath()) {
+				double posX = deltaX + (pt[0] + 0.5) * (H / getMaze().getNbRows());
+				double posY = deltaY + (pt[1] + 0.5) * (W / getMaze().getNbColumns());
+				path.getPoints().addAll(posX, posY);
+			}
+		});
+
 		getChildren().add(path);
 	}
 
@@ -512,6 +522,9 @@ public class MazePanel extends Pane {
 
 	public void setStart(int x, int y) {
 		getRoute().setStart(x, y);
+
+		start.setCenterX(deltaX + H * (y + 0.5) / getMaze().getNbRows());
+		start.setCenterY(deltaY + W * (x + 0.5) / getMaze().getNbColumns());
 	}
 
 	public int[] getEnd() {
@@ -520,9 +533,12 @@ public class MazePanel extends Pane {
 
 	public void setEnd(int x, int y) {
 		getRoute().setEnd(x, y);
+
+		end.setCenterX(deltaX + H * (y + 0.5) / getMaze().getNbRows());
+		end.setCenterY(deltaY + W * (x + 0.5) / getMaze().getNbColumns());
 	}
 
-	public ArrayList<int[]> getPath() {
+	public ObservableList<int[]> getPath() {
 		return getRoute().getPath();
 	}
 
