@@ -110,6 +110,7 @@ public class MainWindowController implements Observer {
 			String content = delta.getText();
 			if (e.getCode() == KeyCode.ENTER) {
 				GENERATOR.setTimeout(content.isEmpty() ? 0L : Long.valueOf(content));
+				SOLVER.setTimeout(content.isEmpty() ? 0L : Long.valueOf(content));
 				Mazette.LOGGER.info("Nouveau pas de temps : " + GENERATOR.getTimeout() + " µs.");
 			}
 		});
