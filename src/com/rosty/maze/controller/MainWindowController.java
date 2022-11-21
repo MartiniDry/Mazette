@@ -160,6 +160,7 @@ public class MainWindowController implements Observer {
 		Mazette.LOGGER.info("Nouveau pas de temps : " + delta.getValue() + " µs.");
 
 		GENERATOR.setTimeout(delta.getValue());
+		SOLVER.setTimeout(delta.getValue());
 		double timeValue = 6 - Math.log10(delta.getValue());
 		deltaSlider.setValue(timeValue);
 	}
@@ -170,6 +171,7 @@ public class MainWindowController implements Observer {
 		Mazette.LOGGER.info("Nouveau pas de temps : " + timeValue + " µs.");
 
 		GENERATOR.setTimeout(timeValue);
+		SOLVER.setTimeout(timeValue);
 		delta.setValue(timeValue);
 	}
 
