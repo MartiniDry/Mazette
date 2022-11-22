@@ -22,18 +22,18 @@ public class MazeRoute {
 		return start;
 	}
 
-	public void setStart(int x, int y) {
-		start[0] = x;
-		start[1] = y;
+	public void setStart(int i, int j) {
+		start[0] = i;
+		start[1] = j;
 	}
 
 	public int[] getEnd() {
 		return end;
 	}
 
-	public void setEnd(int x, int y) {
-		end[0] = x;
-		end[1] = y;
+	public void setEnd(int i, int j) {
+		end[0] = i;
+		end[1] = j;
 	}
 
 	public ObservableList<int[]> getPath() {

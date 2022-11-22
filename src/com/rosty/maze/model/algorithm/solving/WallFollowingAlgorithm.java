@@ -7,8 +7,6 @@ import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.algorithm.MazeSolvingAlgorithm;
 import com.rosty.maze.widgets.MazePanel;
 
-import javafx.collections.ObservableList;
-
 /**
  * <h1>Algorithme de suivi du mur</h1>
  * 
@@ -42,7 +40,7 @@ import javafx.collections.ObservableList;
  * @version 1.0
  */
 public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
-	private int x, y;
+	private int cur_i, cur_j; // Current position
 	private Side lastDirection = null;
 
 	public WallFollowingAlgorithm(MazePanel panel) {
@@ -60,18 +58,18 @@ public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
 			for (int j = 0; j < mazePanel.getMaze().getNbColumns(); j++)
 				mazePanel.setCell(i, j, 0);
 
-		int[] start = mazePanel.getRoute().getStart();
-		x = start[0];
-		y = start[1];
-		mazePanel.setCell(x, y, 1);
-		mazePanel.getPath().add(new int[] { y, x });
+		int[] start = mazePanel.getStart();
+		cur_i = start[0];
+		cur_j = start[1];
+		mazePanel.setCell(cur_i, cur_j, 1);
+		mazePanel.getPath().add(new int[] { cur_i, cur_j });
 	}
 
 	@Override
 	public boolean isComplete() {
-		int[] end = mazePanel.getRoute().getEnd();
+		int[] end = mazePanel.getEnd();
 
-		return x == end[0] && y == end[1];
+		return cur_i == end[0] && cur_j == end[1];
 	}
 
 	@Override
@@ -80,22 +78,21 @@ public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
 		move(sideToGo);
 		lastDirection = sideToGo;
 
-		ObservableList<int[]> path = mazePanel.getRoute().getPath();
-		if (path.size() >= 2) {
-			int[] anteCell = path.get(path.size() - 2);
-			if (anteCell[0] == y && anteCell[1] == x)
-				path.remove(path.size() - 1);
+		if (mazePanel.getPath().size() >= 2) {
+			int[] anteCell = mazePanel.getPath().get(mazePanel.getPath().size() - 2);
+			if (anteCell[0] == cur_j && anteCell[1] == cur_i)
+				mazePanel.getPath().remove(mazePanel.getPath().size() - 1);
 			else
-				path.add(new int[] { y, x });
+				mazePanel.getPath().add(new int[] { cur_i, cur_j });
 		} else
-			path.add(new int[] { y, x });
+			mazePanel.getPath().add(new int[] { cur_i, cur_j });
 
-		if (mazePanel.getCell(x, y) != 1)
-			mazePanel.setCell(x, y, 1);
+		if (mazePanel.getCell(cur_i, cur_j) != 1)
+			mazePanel.setCell(cur_i, cur_j, 1);
 	}
 
 	private Side rightestWall() {
-		ArrayList<Side> sides = getSides(x, y);
+		ArrayList<Side> sides = getSides(cur_i, cur_j);
 
 		// Lors de la première étape (lastDirection non-défini), un mur est choisi au
 		// hasard ; c'est celui-ci qui sera suivi durant l'exécution de l'algorithme.
@@ -161,16 +158,16 @@ public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
 	private void move(Side direction) {
 		switch (direction) {
 			case UP:
-				x--;
+				cur_i--;
 				break;
 			case LEFT:
-				y--;
+				cur_j--;
 				break;
 			case DOWN:
-				x++;
+				cur_i++;
 				break;
 			case RIGHT:
-				y++;
+				cur_j++;
 				break;
 			default:
 				break;

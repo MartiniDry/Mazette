@@ -437,16 +437,16 @@ public class MazePanel extends Pane {
 		path.setStrokeLineJoin(StrokeLineJoin.ROUND);
 
 		for (int[] pt : getRoute().getPath()) {
-			double posX = deltaX + (pt[0] + 0.5) * (H / getMaze().getNbRows());
-			double posY = deltaY + (pt[1] + 0.5) * (W / getMaze().getNbColumns());
+			double posX = deltaX + (pt[1] + 0.5) * (H / getMaze().getNbRows());
+			double posY = deltaY + (pt[0] + 0.5) * (W / getMaze().getNbColumns());
 			path.getPoints().addAll(posX, posY);
 		}
 
 		getRoute().getPath().addListener((ListChangeListener<int[]>) change -> {
 			path.getPoints().clear();
 			for (int[] pt : getRoute().getPath()) {
-				double posX = deltaX + (pt[0] + 0.5) * (H / getMaze().getNbRows());
-				double posY = deltaY + (pt[1] + 0.5) * (W / getMaze().getNbColumns());
+				double posX = deltaX + (pt[1] + 0.5) * (H / getMaze().getNbRows());
+				double posY = deltaY + (pt[0] + 0.5) * (W / getMaze().getNbColumns());
 				path.getPoints().addAll(posX, posY);
 			}
 		});
