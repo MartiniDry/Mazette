@@ -96,6 +96,12 @@ public class ApplicationModel implements Observer {
 			throw new Exception(LocaleManager.getString("error.maze.creation.size"));
 	}
 
+	/**
+	 * Enumération des modes de fonctionnement généraux de l'application.
+	 * 
+	 * @author Martin Rostagnat
+	 * @version 1.0
+	 */
 	public enum Mode {
 		GENERATION, RESOLUTION;
 	}
