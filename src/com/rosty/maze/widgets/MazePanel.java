@@ -414,6 +414,7 @@ public class MazePanel extends Pane {
 		}
 	}
 
+	/** Génère le point de départ du labyrinthe dans la grille. */
 	protected void displayStart() {
 		start = new Circle(2 * THICK, Color.FORESTGREEN);
 		int is = getRoute().getStart()[0], js = getRoute().getStart()[1];
@@ -422,6 +423,7 @@ public class MazePanel extends Pane {
 		getChildren().add(start);
 	}
 
+	/** Génère le point d'arrivée du labyrinthe dans la grille. */
 	protected void displayEnd() {
 		end = new Circle(2 * THICK, Color.RED);
 		int ie = getRoute().getEnd()[0], je = getRoute().getEnd()[1];
@@ -430,25 +432,37 @@ public class MazePanel extends Pane {
 		getChildren().add(end);
 	}
 
+	/** Génère une ligne brisée représentant le chemin dans le labyrinthe. */
 	protected void displayPath() {
 		path = new Polyline();
 		path.setStroke(Color.ORANGERED);
 		path.setStrokeWidth(1.5 * THICK);
 		path.setStrokeLineJoin(StrokeLineJoin.ROUND);
 
+		// L'instance Polyline enchaîne les coordonnées X et Y de tous les points dans
+		// une liste.
 		for (int[] pt : getRoute().getPath()) {
 			double posX = deltaX + (pt[1] + 0.5) * (H / getMaze().getNbRows());
 			double posY = deltaY + (pt[0] + 0.5) * (W / getMaze().getNbColumns());
 			path.getPoints().addAll(posX, posY);
 		}
 
+		// Mise à jour du chemin chaque fois que les points changent.
 		getRoute().getPath().addListener((ListChangeListener<int[]>) change -> {
-			path.getPoints().clear();
-			for (int[] pt : getRoute().getPath()) {
-				double posX = deltaX + (pt[1] + 0.5) * (H / getMaze().getNbRows());
-				double posY = deltaY + (pt[0] + 0.5) * (W / getMaze().getNbColumns());
-				path.getPoints().addAll(posX, posY);
-			}
+			while (change.next())
+				if (change.wasAdded())
+					for (int id = change.getFrom(); id < change.getTo(); id++) {
+						int[] point = change.getList().get(id);
+						double posX = deltaX + (point[1] + 0.5) * (H / getMaze().getNbRows());
+						double posY = deltaY + (point[0] + 0.5) * (W / getMaze().getNbColumns());
+						path.getPoints().add(2 * id, posX);
+						path.getPoints().add(2 * id + 1, posY);
+					}
+				else if (change.wasRemoved())
+					for (int id = change.getTo(); id >= change.getFrom(); id--) {
+						path.getPoints().remove(2 * id);
+						path.getPoints().remove(2 * id);
+					}
 		});
 
 		getChildren().add(path);
