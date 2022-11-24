@@ -80,7 +80,7 @@ public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
 
 		if (mazePanel.getPath().size() >= 2) {
 			int[] anteCell = mazePanel.getPath().get(mazePanel.getPath().size() - 2);
-			if (anteCell[0] == cur_j && anteCell[1] == cur_i)
+			if (anteCell[0] == cur_i && anteCell[1] == cur_j)
 				mazePanel.getPath().remove(mazePanel.getPath().size() - 1);
 			else
 				mazePanel.getPath().add(new int[] { cur_i, cur_j });
