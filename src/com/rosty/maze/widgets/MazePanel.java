@@ -459,10 +459,7 @@ public class MazePanel extends Pane {
 						path.getPoints().add(2 * id + 1, posY);
 					}
 				else if (change.wasRemoved())
-					for (int id = change.getTo(); id >= change.getFrom(); id--) {
-						path.getPoints().remove(2 * id);
-						path.getPoints().remove(2 * id);
-					}
+					path.getPoints().remove(2 * change.getFrom(), 2 * (change.getTo() + 1));
 		});
 
 		getChildren().add(path);
