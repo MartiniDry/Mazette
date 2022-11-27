@@ -56,7 +56,6 @@
 /* Style CSS pour la barre de menu */
 
 .menu-bar {
-	-fx-alignment: center-left;
 	-fx-padding: 2.5;
     -fx-background-color: #0000E4;
     -fx-effect: dropshadow(gaussian, #222, 20.0, 0.0, 0.0, 0.0);
@@ -113,6 +112,12 @@
 .menu .menu-item:focused {
 	-fx-background-color: #FFF6;
 	-fx-background-radius: 5.0;
+}
+
+.menu-item>.accelerator-text {
+    -fx-font-weight: bold;
+    -fx-font-size: 10.0;
+    -fx-text-fill: lightgray;
 }
 
 /* Style CSS pour la barre d'outils à gauche de la fenêtre */
