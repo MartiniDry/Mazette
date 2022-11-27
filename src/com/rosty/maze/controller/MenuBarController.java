@@ -22,6 +22,7 @@ import com.rosty.maze.model.algorithm.generation.RecursiveDivisionAlgorithm;
 import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
+import com.rosty.maze.model.algorithm.solving.AStarAlgorithm;
 import com.rosty.maze.model.algorithm.solving.WallFollowingAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 
@@ -139,6 +140,11 @@ public class MenuBarController {
 	private void solveWallFollowing() {
 		AppLauncher.getMainController()
 				.resetSolve(new WallFollowingAlgorithm(AppLauncher.getMainController().mazePanel));
+	}
+
+	@FXML
+	private void solveAStar() {
+		AppLauncher.getMainController().resetSolve(new AStarAlgorithm(AppLauncher.getMainController().mazePanel));
 	}
 
 	@FXML
