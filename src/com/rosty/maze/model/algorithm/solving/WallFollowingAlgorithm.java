@@ -49,7 +49,7 @@ public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
 
 	@Override
 	public String getLabel() {
-		return "wall_following";
+		return super.getLabel() + ".wall_following";
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 
 	@Override
 	public String getLabel() {
-		return "a_star";
+		return super.getLabel() + ".a_star";
 	}
 
 	@Override
