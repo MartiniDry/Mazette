@@ -138,6 +138,7 @@ public class MainWindowController implements Observer {
 		});
 
 		GENERATOR.addObserver(this);
+		SOLVER.addObserver(this);
 
 		newMazeRows.setValue(ApplicationModel.getInstance().getMaze().getNbRows());
 		newMazeColumns.setValue(ApplicationModel.getInstance().getMaze().getNbColumns());
@@ -368,7 +369,16 @@ public class MainWindowController implements Observer {
 
 	/** Affiche le nom de l'algorithme courant dans l'IHM. */
 	public final void displayAlgoName() {
-		displayAlgoName(GENERATOR.getAlgorithm());
+		switch (ApplicationModel.getInstance().getMode()) {
+			case GENERATION:
+				displayAlgoName(GENERATOR.getAlgorithm());
+				break;
+			case RESOLUTION:
+				displayAlgoName(SOLVER.getAlgorithm());
+				break;
+			default:
+				break;
+		}
 	}
 
 	@Override
