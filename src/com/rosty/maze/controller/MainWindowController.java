@@ -3,7 +3,6 @@ package com.rosty.maze.controller;
 import java.time.Duration;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.labels.LocaleManager;
@@ -30,7 +29,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -69,17 +67,11 @@ public class MainWindowController implements Observer {
 	private VBox generationButtons;
 
 	@FXML
-	private TextField test;
-
-	@FXML
 	private ToggleButton runButton;
 	@FXML
 	private Button stepButton;
 	@FXML
 	private Label elapsedTime;
-
-	@FXML
-	Label justTheResult;
 
 	@FXML
 	public MazePanel mazePanel;
@@ -217,79 +209,6 @@ public class MainWindowController implements Observer {
 		} catch (Exception e) {
 			Mazette.LOGGER.error(e.getMessage(), e);
 		}
-	}
-
-	@FXML
-	private void justATest() {
-		int r = ApplicationModel.getInstance().getMaze().getNbRows();
-		int c = ApplicationModel.getInstance().getMaze().getNbColumns();
-
-		int xa, ya, xb, yb;
-
-		xa = (new Random()).nextInt(r);
-		ya = (new Random()).nextInt(c);
-
-		do {
-			xb = (new Random()).nextInt(r);
-			yb = (new Random()).nextInt(c);
-		} while (xa == xb && ya == yb);
-
-		MazeRoute route = new MazeRoute();
-		route.setStart(xa, ya);
-		route.setEnd(xb, yb);
-
-		justTheResult.setText(String.format("(%s,%s) -> (%s,%s)", xa, ya, xb, yb));
-
-		int acc = 0, i = ya, j = xa, lastOne = -1;
-		do {
-			route.getPath().add(new int[] { i, j });
-
-			int current = -1;
-			boolean outOfBounds = false;
-			do {
-				current = (int) (2 * Math.sqrt((new Random()).nextInt(4)));
-
-				switch (current) {
-					case 0:
-						outOfBounds = (i + 1 >= r);
-						break;
-					case 1:
-						outOfBounds = (j + 1 >= c);
-						break;
-					case 2:
-						outOfBounds = (i - 1 < 0);
-						break;
-					case 3:
-						outOfBounds = (j - 1 < 0);
-						break;
-					default:
-						break;
-				}
-			} while (current == lastOne || outOfBounds);
-
-			lastOne = current;
-
-			System.out.println(current);
-
-			switch (current) {
-				case 0:
-					i++;
-					break;
-				case 1:
-					j++;
-					break;
-				case 2:
-					i--;
-					break;
-				case 3:
-					j--;
-					break;
-				default:
-					break;
-			}
-		} while (acc++ < 10);
-
-		mazePanel.setRoute(route);
 	}
 
 	@FXML
