@@ -51,7 +51,6 @@
 			<GMenuItem text="%main.menu.help.language.spanish" icon="@pictures/spanish.png" onAction="#switchToSpanish" />
 		</Menu>
 
-		<MenuItem text="%main.menu.help.colors" onAction="#changeColors" />
 		<CheckMenuItem text="%main.menu.help.fullscreen" accelerator="F11" onAction="#changeFullScreen" />
 		<SeparatorMenuItem />
 		<MenuItem text="%main.menu.help.preferences" onAction="#preferences" />

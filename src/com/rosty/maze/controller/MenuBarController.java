@@ -159,11 +159,6 @@ public class MenuBarController {
 	}
 
 	@FXML
-	private void changeColors() {
-		;
-	}
-
-	@FXML
 	private void changeFullScreen() {
 		AppLauncher.getPrimaryStage().setFullScreen(!AppLauncher.getPrimaryStage().isFullScreen());
 	}
