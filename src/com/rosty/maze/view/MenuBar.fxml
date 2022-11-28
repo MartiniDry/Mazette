@@ -40,7 +40,7 @@
 
 	<Menu text="%main.menu.resolution">
 		<MenuItem text="%main.menu.resolution.wall_following" onAction="#solveWallFollowing" />
-		<MenuItem text="%main.menu.resolution" onAction="#solveAStar" />
+		<MenuItem text="%main.menu.resolution.a_star" onAction="#solveAStar" />
 	</Menu>
 
 	<Menu text="%main.menu.help">
