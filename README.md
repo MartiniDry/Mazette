@@ -49,6 +49,8 @@ The list can be modified, as it simply comes from the [Wikipedia page](https://e
 
 - [ ] A* (or A-star)
 - [X] Wall following
+- [ ] Dijkstra
+- [ ] Prim
 - [ ] Breadth-first search
 - [ ] Pledge
 - [ ] Trémeaux
