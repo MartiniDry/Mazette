@@ -40,9 +40,16 @@ import com.rosty.maze.widgets.MazePanel;
  * @version 1.0
  */
 public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
-	private int cur_i, cur_j; // Current position
+	/** Position actuelle dans la grille. */
+	private int cur_i /* ligne */, cur_j /* colonne */;
+	/** Dernière direction empruntée par le chemin. */
 	private Side lastDirection = null;
 
+	/**
+	 * Constructeur de la classe {@link WallFollowingAlgorithm}.
+	 * 
+	 * @param panel Composant graphique du labyrinthe.
+	 */
 	public WallFollowingAlgorithm(MazePanel panel) {
 		super(panel);
 	}
@@ -87,10 +94,18 @@ public class WallFollowingAlgorithm extends MazeSolvingAlgorithm {
 		} else
 			mazePanel.getPath().add(new int[] { cur_i, cur_j });
 
+		// Marquage de la cellule explorée
 		if (mazePanel.getCell(cur_i, cur_j) != 1)
 			mazePanel.setCell(cur_i, cur_j, 1);
 	}
 
+	/**
+	 * Sélectionne la direction la plus à droite que l'on peut emprunter en se
+	 * basant sur la direction précédemment utilisée. Cette direction permet de
+	 * "suivre le mur du labyrinthe à sa droite".
+	 * 
+	 * @return Instance {@link Side} indiquant la direction à emprunter.
+	 */
 	private Side rightestWall() {
 		ArrayList<Side> sides = getSides(cur_i, cur_j);
 
