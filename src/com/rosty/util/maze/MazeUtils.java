@@ -65,6 +65,60 @@ public class MazeUtils {
 	}
 
 	/**
+	 * Version améliorée de la fonction {@link MazeUtils#enclosures(Maze)} qui
+	 * mémorise les données de l'algorithme dans un buffer de la taille d'une ligne.
+	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec ua même
+	 * complexité temporelle.
+	 */
+	public static int enclosures_light(Maze maze) {
+		int[] buffer = new int[maze.getNbColumns()];
+		int cursor = 0;
+		int addedTokens = 0, deletedTokens = 0;
+
+		for (int i = 0, lenI = maze.getNbRows(); i < lenI; i++) {
+			for (int j = 0, lenJ = maze.getNbColumns(); j < lenJ; j++) {
+				int up = maze.getWall(i, j, Side.UP);
+				int left = maze.getWall(i, j, Side.LEFT);
+
+				if (i == 0 && j == 0) {
+					cursor = ++addedTokens;
+				} else if (i == 0) {
+					if (left == 1)
+						cursor = ++addedTokens;
+					else
+						cursor = buffer[j - 1];
+				} else if (j == 0) {
+					if (up == 1)
+						cursor = ++addedTokens;
+					else
+						cursor = buffer[j];
+				} else {
+					int upCell = buffer[j];
+					int leftCell = buffer[j - 1];
+
+					if (up != 1 && left != 1 && upCell != leftCell) {
+						cursor = upCell;
+						for (int k = 0; k < j; k++)
+							if (buffer[k] == leftCell)
+								buffer[k] = upCell;
+
+						deletedTokens++;
+					} else if (up != 1)
+						cursor = upCell;
+					else if (left != 1)
+						cursor = leftCell;
+					else
+						cursor = ++addedTokens;
+				}
+
+				buffer[j] = cursor;
+			}
+		}
+
+		return addedTokens - deletedTokens;
+	}
+
+	/**
 	 * Détermine le nombre d'ilôts dans le labyrinthe spécifié.
 	 * <p>
 	 * <h2>Définition</h2> Un <b>ilôt</b> est un ensemble de murs et de jonctions de
