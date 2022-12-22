@@ -32,9 +32,10 @@ public class Maze {
 		this.nbRow = old.nbRow;
 		this.nbCol = old.nbCol;
 
-		this.table = new int[2 * nbRow + 1][2 * nbCol + 1];
-		for (int i = 0; i < 2 * nbRow + 1; i++)
-			for (int j = 0; j < 2 * nbCol + 1; j++)
+		int r = 2 * nbRow + 1, c = 2 * nbCol + 1;
+		this.table = new int[r][c];
+		for (int i = 0; i < r; i++)
+			for (int j = 0; j < c; j++)
 				this.table[i][j] = old.table[i][j];
 	}
 
