@@ -35,7 +35,7 @@ public class ApplicationModel implements Observer {
 	/**
 	 * Mode d'exécution de l'application (résolution ou génération de labyrinthe).
 	 */
-	private Mode mode = null;
+	private Mode mode = Mode.GENERATION;
 
 	/** Instance unique de la classe. */
 	private static ApplicationModel INSTANCE = null;
