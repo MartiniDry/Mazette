@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Separator?>
 
 <Scene stylesheets="@../../view/css/application.css" xmlns:fx="http://javafx.com/fxml/1">
 	<TabPane styleClass="preferences-dialog">
@@ -33,6 +34,20 @@
 
 				<Label GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="Couleur de la grille :" />
 				<ColorPicker fx:id="gridColor" GridPane.rowIndex="4" GridPane.columnIndex="1" editable="true"
+					promptText="Sélectionnez..." />
+
+				<Separator GridPane.rowIndex="5" GridPane.columnSpan="2" />
+
+				<Label GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="Couleur du point de départ :" />
+				<ColorPicker fx:id="startColor" GridPane.rowIndex="6" GridPane.columnIndex="1" editable="true"
+					promptText="Sélectionnez..." />
+
+				<Label GridPane.rowIndex="7" GridPane.halignment="RIGHT" text="Couleur du point d'arrivée :" />
+				<ColorPicker fx:id="endColor" GridPane.rowIndex="7" GridPane.columnIndex="1" editable="true"
+					promptText="Sélectionnez..." />
+
+				<Label GridPane.rowIndex="8" GridPane.halignment="RIGHT" text="Couleur du chemin :" />
+				<ColorPicker fx:id="pathColor" GridPane.rowIndex="8" GridPane.columnIndex="1" editable="true"
 					promptText="Sélectionnez..." />
 			</GridPane>
 		</Tab>

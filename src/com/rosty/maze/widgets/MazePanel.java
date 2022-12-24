@@ -197,6 +197,60 @@ public class MazePanel extends Pane {
 		update();
 	}
 
+	private final ObjectProperty<Color> startColorProperty = new SimpleObjectProperty<>(Color.FORESTGREEN);
+
+	/** Propriété définissant la couleur du point de départ du labyrinthe. */
+	public final ObjectProperty<Color> startColorProperty() {
+		return startColorProperty;
+	}
+
+	/** Fournit la couleur du point de départ du labyrinthe. */
+	public final Color getStartColor() {
+		return startColorProperty.get();
+	}
+
+	/** Définit la couleur du point de départ du labyrinthe. */
+	public final void setStartColor(Color value) {
+		startColorProperty.set(value);
+		update();
+	}
+
+	private final ObjectProperty<Color> endColorProperty = new SimpleObjectProperty<>(Color.RED);
+
+	/** Propriété définissant la couleur du point d'arrivée du labyrinthe. */
+	public final ObjectProperty<Color> endColorProperty() {
+		return endColorProperty;
+	}
+
+	/** Fournit la couleur du point d'arrivée du labyrinthe. */
+	public final Color getEndColor() {
+		return endColorProperty.get();
+	}
+
+	/** Définit la couleur du point d'arrivée du labyrinthe. */
+	public final void setEndColor(Color value) {
+		endColorProperty.set(value);
+		update();
+	}
+
+	private final ObjectProperty<Color> pathColorProperty = new SimpleObjectProperty<>(Color.ORANGERED);
+
+	/** Propriété définissant la couleur du chemin du labyrinthe. */
+	public final ObjectProperty<Color> pathColorProperty() {
+		return pathColorProperty;
+	}
+
+	/** Fournit la couleur du chemin du labyrinthe. */
+	public final Color getPathColor() {
+		return pathColorProperty.get();
+	}
+
+	/** Définit la couleur du chemin du labyrinthe. */
+	public final void setPathColor(Color value) {
+		pathColorProperty.set(value);
+		update();
+	}
+
 	/* VARIABLES */
 
 	private Rectangle[][] blocks; // Cases du labyrinthe
@@ -416,7 +470,7 @@ public class MazePanel extends Pane {
 
 	/** Génère le point de départ du labyrinthe dans la grille. */
 	protected void displayStart() {
-		start = new Circle(2 * THICK, Color.FORESTGREEN);
+		start = new Circle(2 * THICK, getStartColor());
 		int is = getRoute().getStart()[0], js = getRoute().getStart()[1];
 		start.setCenterX(deltaX + H * (js + 0.5) / getMaze().getNbRows());
 		start.setCenterY(deltaY + W * (is + 0.5) / getMaze().getNbColumns());
@@ -425,7 +479,7 @@ public class MazePanel extends Pane {
 
 	/** Génère le point d'arrivée du labyrinthe dans la grille. */
 	protected void displayEnd() {
-		end = new Circle(2 * THICK, Color.RED);
+		end = new Circle(2 * THICK, getEndColor());
 		int ie = getRoute().getEnd()[0], je = getRoute().getEnd()[1];
 		end.setCenterX(deltaX + H * (je + 0.5) / getMaze().getNbRows());
 		end.setCenterY(deltaY + W * (ie + 0.5) / getMaze().getNbColumns());
@@ -435,7 +489,7 @@ public class MazePanel extends Pane {
 	/** Génère une ligne brisée représentant le chemin dans le labyrinthe. */
 	protected void displayPath() {
 		path = new Polyline();
-		path.setStroke(Color.ORANGERED);
+		path.setStroke(getPathColor());
 		path.setStrokeWidth(1.5 * THICK);
 		path.setStrokeLineJoin(StrokeLineJoin.ROUND);
 

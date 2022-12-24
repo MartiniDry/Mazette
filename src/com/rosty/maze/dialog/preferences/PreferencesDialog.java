@@ -19,6 +19,9 @@ public class PreferencesDialog extends Stage {
 	@FXML
 	private ColorPicker wallColor, cellColor, borderColor, gridColor;
 
+	@FXML
+	private ColorPicker startColor, endColor, pathColor;
+
 	public PreferencesDialog() throws IOException {
 		// Chargement de la page FXML et intégration à la fenêtre
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PreferencesDialog.fxml"),
@@ -37,5 +40,9 @@ public class PreferencesDialog extends Stage {
 //		FxUtils.link(cellColor.valueProperty(), mainPanel::getCellColor, mainPanel::setCellColor);
 		FxUtils.link(borderColor.valueProperty(), mainPanel::getBorderColor, mainPanel::setBorderColor);
 		FxUtils.link(gridColor.valueProperty(), mainPanel::getGridColor, mainPanel::setGridColor);
+
+		FxUtils.link(startColor.valueProperty(), mainPanel::getStartColor, mainPanel::setStartColor);
+		FxUtils.link(endColor.valueProperty(), mainPanel::getEndColor, mainPanel::setEndColor);
+		FxUtils.link(pathColor.valueProperty(), mainPanel::getPathColor, mainPanel::setPathColor);
 	}
 }
