@@ -42,9 +42,11 @@ public class MenuBarController {
 		Mazette.LOGGER.info("Exportation des données");
 
 		FileChooser chooser = new FileChooser();
-		chooser.setTitle("Enregistrer le labyrinthe sous...");
-		chooser.getExtensionFilters().addAll(new ExtensionFilter("Images JPEG", "*.jpg *.jpeg"),
-				new ExtensionFilter("Images PNG", "*.png"), new ExtensionFilter("Images gif", "*.gif"));
+		chooser.setTitle(LocaleManager.getString("export.title"));
+		chooser.getExtensionFilters().addAll( //
+				new ExtensionFilter(LocaleManager.getString("export.jpg"), "*.jpg *.jpeg"),
+				new ExtensionFilter(LocaleManager.getString("export.png"), "*.png"),
+				new ExtensionFilter(LocaleManager.getString("export.gif"), "*.gif"));
 		chooser.setSelectedExtensionFilter(chooser.getExtensionFilters().get(1));
 
 		try {
@@ -54,6 +56,7 @@ public class MenuBarController {
 			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.export"));
 			box.setContentText(e.getLocalizedMessage());
 			box.show();
+			e.printStackTrace();
 		}
 	}
 

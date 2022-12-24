@@ -18,37 +18,41 @@
 					<ColumnConstraints halignment="LEFT" />
 				</columnConstraints>
 
-				<Label GridPane.rowIndex="0" GridPane.columnSpan="2" text="Labyrinthe" styleClass="grid-header" />
+				<Label GridPane.rowIndex="0" GridPane.columnSpan="2" text="%preferences.tab.colors.maze"
+					styleClass="grid-header" />
 
-				<Label GridPane.rowIndex="1" GridPane.halignment="RIGHT" text="Couleur des murs :" />
+				<Label GridPane.rowIndex="1" GridPane.halignment="RIGHT" text="%preferences.tab.colors.maze.wall" />
 				<ColorPicker fx:id="wallColor" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true"
-					promptText="Sélectionnez..." />
+					promptText="%preferences.prompt.select" />
 
-				<Label GridPane.rowIndex="2" GridPane.halignment="RIGHT" text="Couleur des cases :" />
+				<Label GridPane.rowIndex="2" GridPane.halignment="RIGHT" text="%preferences.tab.colors.maze.cell" />
 				<ColorPicker fx:id="cellColor" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true"
-					promptText="Sélectionnez..." />
+					promptText="%preferences.prompt.select" />
 
-				<Label GridPane.rowIndex="3" GridPane.halignment="RIGHT" text="Couleur de la bordure :" />
+				<Label GridPane.rowIndex="3" GridPane.halignment="RIGHT" text="%preferences.tab.colors.maze.border" />
 				<ColorPicker fx:id="borderColor" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true"
-					promptText="Sélectionnez..." />
+					promptText="%preferences.prompt.select" />
 
-				<Label GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="Couleur de la grille :" />
+				<Label GridPane.rowIndex="4" GridPane.halignment="RIGHT" text="%preferences.tab.colors.maze.grid" />
 				<ColorPicker fx:id="gridColor" GridPane.rowIndex="4" GridPane.columnIndex="1" editable="true"
-					promptText="Sélectionnez..." />
+					promptText="%preferences.prompt.select" />
 
 				<Separator GridPane.rowIndex="5" GridPane.columnSpan="2" />
 
-				<Label GridPane.rowIndex="6" GridPane.halignment="RIGHT" text="Couleur du point de départ :" />
-				<ColorPicker fx:id="startColor" GridPane.rowIndex="6" GridPane.columnIndex="1" editable="true"
-					promptText="Sélectionnez..." />
+				<Label GridPane.rowIndex="6" GridPane.columnSpan="2" text="%preferences.tab.colors.route"
+					styleClass="grid-header" />
 
-				<Label GridPane.rowIndex="7" GridPane.halignment="RIGHT" text="Couleur du point d'arrivée :" />
-				<ColorPicker fx:id="endColor" GridPane.rowIndex="7" GridPane.columnIndex="1" editable="true"
-					promptText="Sélectionnez..." />
+				<Label GridPane.rowIndex="7" GridPane.halignment="RIGHT" text="%preferences.tab.colors.route.start" />
+				<ColorPicker fx:id="startColor" GridPane.rowIndex="7" GridPane.columnIndex="1" editable="true"
+					promptText="%preferences.prompt.select" />
 
-				<Label GridPane.rowIndex="8" GridPane.halignment="RIGHT" text="Couleur du chemin :" />
-				<ColorPicker fx:id="pathColor" GridPane.rowIndex="8" GridPane.columnIndex="1" editable="true"
-					promptText="Sélectionnez..." />
+				<Label GridPane.rowIndex="8" GridPane.halignment="RIGHT" text="%preferences.tab.colors.route.end" />
+				<ColorPicker fx:id="endColor" GridPane.rowIndex="8" GridPane.columnIndex="1" editable="true"
+					promptText="%preferences.prompt.select" />
+
+				<Label GridPane.rowIndex="9" GridPane.halignment="RIGHT" text="%preferences.tab.colors.route.path" />
+				<ColorPicker fx:id="pathColor" GridPane.rowIndex="9" GridPane.columnIndex="1" editable="true"
+					promptText="%preferences.prompt.select" />
 			</GridPane>
 		</Tab>
 	</TabPane>
