@@ -228,47 +228,44 @@ public class MazeUtils {
 	public static int enclosures_lightest(Maze maze) {
 		int[] buffer = new int[maze.getNbColumns()];
 		int addedTokens = 0, deletedTokens = 0;
-	
+
 		// Step 1: treating first cell
 		buffer[0] = ++addedTokens;
-	
+
 		// Step 2: treating the rest of the first line
 		for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++)
 			buffer[j] = (maze.getWall(0, j, Side.LEFT) == 1) ? ++addedTokens : buffer[j - 1];
-	
+
 		// Step 3: repeating the process for other lines
 		for (int i = 1, lenI = maze.getNbRows(); i < lenI; i++) {
 			// Step 3.1: treating the left cell
 			if (maze.getWall(i, 0, Side.UP) == 1)
 				buffer[0] = ++addedTokens;
-	
+
 			// Step 3.2: treating the rest of the line
 			for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++) {
 				int up = maze.getWall(i, j, Side.UP);
 				int left = maze.getWall(i, j, Side.LEFT);
-				
-				if (up == 1) {
-					if (left == 1)
-						buffer[j] = ++addedTokens;
-					else
-						buffer[j] = buffer[j - 1];
-				} else {
+
+				if (up == 1)
+					buffer[j] = (left == 1) ? ++addedTokens : buffer[j - 1];
+				else {
 					int upCell = buffer[j];
 					int leftCell = buffer[j - 1];
-					
+
 					if (left == 1 || upCell == leftCell)
 						buffer[j] = upCell;
 					else {
 						for (int k = 0; k < j; k++)
 							if (buffer[k] == leftCell)
 								buffer[k] = upCell;
-		
+
 						deletedTokens++;
 					}
 				}
 			}
 		}
-	
+
 		return addedTokens - deletedTokens;
 	}
 
