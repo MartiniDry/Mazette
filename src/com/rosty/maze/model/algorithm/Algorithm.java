@@ -1,5 +1,7 @@
 package com.rosty.maze.model.algorithm;
 
+import com.rosty.maze.Mazette;
+
 /**
  * Classe définissant l'implémentation d'un <b>algorithme</b> i.e. une suite
  * d'opérations finies.
@@ -9,13 +11,17 @@ package com.rosty.maze.model.algorithm;
  * <li><u>l'amorce :</u> l'algorithme est initialisé pour préparer son
  * lancement</li>
  * <li><u>la récurrence :</u> l'algorithme enchaîne une succession d'étapes</li>
- * <li><u>la terminaison :</u> l'algorithme ne s'arrête que lorsqu'il respecte
+ * <li><u>la terminaison :</u> l'algorithme ne prend fin que lorsqu'il respecte
  * un critère d'arrêt spécifique.</li>
  * </ul>
+ * 
+ * Dans certains cas, une dernière étape peut être ajoutée : <u>la finition</u>
+ * peut être utilisée pour afficher les résultats de l'algorithme après
+ * exécution.
  * </p>
  * 
  * @author Martin Rostagnat
- * @version 1.0
+ * @version 1.1
  */
 public abstract class Algorithm {
 	/**
@@ -43,4 +49,12 @@ public abstract class Algorithm {
 
 	/** Exécute l'étape suivante de l'algorithme. */
 	public abstract void step();
+
+	/**
+	 * Lance la dernière action de l'algorithme, une fois le critère d'arrêt
+	 * atteint. Cette fonction peut être surchargée.
+	 */
+	public void finish() {
+		Mazette.LOGGER.info(getLabel() + " - end of execution");
+	}
 }
