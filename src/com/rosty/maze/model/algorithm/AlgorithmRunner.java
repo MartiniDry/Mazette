@@ -48,9 +48,10 @@ public class AlgorithmRunner extends Observable implements Observer {
 			while (!algorithm.isComplete())
 				nextStep();
 
+			algorithm.finish();
 			timer.stop();
 			double elapsedTime = timer.getTime().getSeconds() + timer.getTime().getNano() / 1e9D;
-			Mazette.LOGGER.info("Fini ! Temps écoulé : " + elapsedTime + " secondes");
+			Mazette.LOGGER.info("Temps écoulé : " + elapsedTime + " secondes");
 		} catch (InterruptedException e) {
 			// Ne rien faire
 		}
