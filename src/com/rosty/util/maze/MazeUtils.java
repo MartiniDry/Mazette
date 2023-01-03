@@ -69,7 +69,7 @@ public class MazeUtils {
 	/**
 	 * Version améliorée de la fonction {@link MazeUtils#enclosures(Maze)} qui
 	 * mémorise les données de l'algorithme dans un buffer de la taille d'une ligne.
-	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec ua même
+	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec la même
 	 * complexité temporelle.
 	 */
 	public static int enclosures_light(Maze maze) {
@@ -99,7 +99,7 @@ public class MazeUtils {
 					int leftCell = buffer[j - 1];
 
 					if (up != 1 && left != 1 && upCell != leftCell) {
-						// cursor = upCell; // Useless to do in this case
+						// cursor = upCell; // Inutile dans ce cas
 						for (int k = 0; k < j; k++)
 							if (buffer[k] == leftCell)
 								buffer[k] = upCell;
@@ -123,27 +123,27 @@ public class MazeUtils {
 	/**
 	 * Version améliorée de la fonction {@link MazeUtils#enclosures(Maze)} qui
 	 * mémorise les données de l'algorithme dans un buffer de la taille d'une ligne.
-	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec ua même
+	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec la même
 	 * complexité temporelle.
 	 */
 	public static int enclosures_lighter(Maze maze) {
 		int[] buffer = new int[maze.getNbColumns()];
 		int addedTokens = 0, deletedTokens = 0;
 
-		// Step 1: treating first cell
+		// Etape 1: traitement de la 1ère cellule
 		buffer[0] = ++addedTokens;
 
-		// Step 2: treating the rest of the first line
+		// Etape 2: traitement du reste de la 1ère ligne
 		for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++)
 			buffer[j] = (maze.getWall(0, j, Side.LEFT) == 1) ? ++addedTokens : buffer[j - 1];
 
-		// Step 3: repeating the process for other lines
+		// Etape 3: réitération pour les lignes suivantes
 		for (int i = 1, lenI = maze.getNbRows(); i < lenI; i++) {
-			// Step 3.1: treating the left cell
+			// Etape 3.1: traitement de la 1ère cellule
 			if (maze.getWall(i, 0, Side.UP) == 1)
 				buffer[0] = ++addedTokens;
 
-			// Step 3.2: treating the rest of the line
+			// Etape 3.2: traitement du reste de la ligne
 			for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++) {
 				int upCell = buffer[j];
 				int leftCell = buffer[j - 1];
@@ -171,7 +171,7 @@ public class MazeUtils {
 	/**
 	 * Version améliorée de la fonction {@link MazeUtils#enclosures(Maze)} qui
 	 * mémorise les données de l'algorithme dans un buffer de la taille d'une ligne.
-	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec ua même
+	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec la même
 	 * complexité temporelle.
 	 */
 	public static int enclosures_alternative_lighter(Maze maze) {
@@ -181,20 +181,20 @@ public class MazeUtils {
 
 		int addedTokens = 0, deletedTokens = 0;
 
-		// Step 1: treating first cell
+		// Etape 1: traitement de la 1ère cellule
 		buffer.set(0, ++addedTokens);
 
-		// Step 2: treating the rest of the first line
+		// Etape 2: traitement du reste de la 1ère ligne
 		for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++)
 			buffer.set(j, (maze.getWall(0, j, Side.LEFT) == 1) ? ++addedTokens : buffer.get(j - 1));
 
-		// Step 3: repeating the process for other lines
+		// Etape 3: réitération pour les lignes suivantes
 		for (int i = 1, lenI = maze.getNbRows(); i < lenI; i++) {
-			// Step 3.1: treating the left cell
+			// Etape 3.1: traitement de la 1ère cellule
 			if (maze.getWall(i, 0, Side.UP) == 1)
 				buffer.set(0, ++addedTokens);
 
-			// Step 3.2: treating the rest of the line
+			// Etape 3.2: traitement du reste de la ligne
 			for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++) {
 				int upCell = buffer.get(j);
 				int leftCell = buffer.get(j - 1);
@@ -222,27 +222,27 @@ public class MazeUtils {
 	/**
 	 * Version améliorée de la fonction {@link MazeUtils#enclosures(Maze)} qui
 	 * mémorise les données de l'algorithme dans un buffer de la taille d'une ligne.
-	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec ua même
+	 * On passe ainsi d'une complexité mémoire de O(N²) à O(N), avec la même
 	 * complexité temporelle.
 	 */
 	public static int enclosures_lightest(Maze maze) {
 		int[] buffer = new int[maze.getNbColumns()];
 		int addedTokens = 0, deletedTokens = 0;
 
-		// Step 1: treating first cell
+		// Etape 1: traitement de la 1ère cellule
 		buffer[0] = ++addedTokens;
 
-		// Step 2: treating the rest of the first line
+		// Etape 2: traitement du reste de la 1ère ligne
 		for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++)
 			buffer[j] = (maze.getWall(0, j, Side.LEFT) == 1) ? ++addedTokens : buffer[j - 1];
 
-		// Step 3: repeating the process for other lines
+		// Etape 3: réitération pour les lignes suivantes
 		for (int i = 1, lenI = maze.getNbRows(); i < lenI; i++) {
-			// Step 3.1: treating the left cell
+			// Etape 3.1: traitement de la 1ère cellule
 			if (maze.getWall(i, 0, Side.UP) == 1)
 				buffer[0] = ++addedTokens;
 
-			// Step 3.2: treating the rest of the line
+			// Etape 3.2: traitement du reste de la ligne
 			for (int j = 1, lenJ = maze.getNbColumns(); j < lenJ; j++) {
 				int up = maze.getWall(i, j, Side.UP);
 				int left = maze.getWall(i, j, Side.LEFT);
