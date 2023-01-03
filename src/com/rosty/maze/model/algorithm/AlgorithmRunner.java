@@ -160,7 +160,7 @@ public class AlgorithmRunner extends Observable implements Observer {
 		if (algorithm != null) {
 			nextStep();
 			if (algorithm.isComplete())
-				Mazette.LOGGER.error("Fini !");
+				algorithm.finish();
 		}
 	}
 
