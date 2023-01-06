@@ -1,7 +1,6 @@
 package com.rosty.maze.model.algorithm.solving;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,6 +11,59 @@ import com.rosty.maze.model.Maze.WallCoord;
 import com.rosty.maze.model.algorithm.MazeSolvingAlgorithm;
 import com.rosty.maze.widgets.MazePanel;
 
+/**
+ * <h1>Algorithme A-étoile (A*)</h1>
+ * 
+ * <p>
+ * <h2>Principe</h2> L'algorithme parcourt l'ensemble des chemins possibles à
+ * partir du point de départ, jusqu'à atteindre le point d'arrivée ; ces chemins
+ * sont enregistrés dans un arbre de données (cf. {@link HeurTree}). Un coût est
+ * peu-à-peu calculé pour chaque chemin ; celui avec le coûe le plus faible sera
+ * exploré en priorité.
+ * </p>
+ * 
+ * <p>
+ * <h2>Dans le détail :</h2> L'heuristique définit la façon d'augmenter le coût
+ * à mesure que l'on explore un chemin dans le labyrinthe. Dans cet algorithme,
+ * le calcul est donné par la formule :
+ * 
+ * <pre>
+ * C(n2) = C(n1) + d(n1, n2) + W(n2)
+ * </pre>
+ * 
+ * , où :
+ * <ul>
+ * <li>C est la fonction de coût,</li>
+ * <li>d est la distance entre deux cellules du labyrinthe,</li>
+ * <li>W est la fonction de poids i.e. le coût que représente la visite d'une
+ * cellule du labyrinthe ; par convention, W est constante ici.</li>
+ * </ul>
+ * 
+ * Il ne s'agit pas d'un algorithme de recherche globale. A* n'explore pas la
+ * totalité des chemins disponibles, mais ne s'intéresse qu'à celui qui minimise
+ * le coût ; de fait, l'algorithme ne garantit pas de trouver le chemin le plus
+ * court entre le départ et l'arrivée mais fournit une solution très
+ * satisfaisante en un temps raisonnable.
+ * </p>
+ * 
+ * <p>
+ * <h2>Complexité</h2> L'arbre de données de l'algorithme se construit étape par
+ * étape et peut potentiellement enregistrer toutes les cases du labyrinthe,
+ * d'où une complexité temps et mémoire en O(M*N) dans le pire des cas.
+ * </p>
+ * 
+ * <p>
+ * A titre d'information, un algorithme de recherche globale a une complexité
+ * temporelle exponentielle :
+ * <code>O(2<sup>a</sup>.3<sup>b</sup>.4<sup>c</sup>)</code>, où <code>a</code>,
+ * <code>b</code> et <code>c</code> sont le nombre de cases par lesquelles on
+ * peut sortir dans resp. 2, 3 ou 4 directions. Plus il y a de chemins possibles
+ * pour atteindre l'arrivée et plus ces nombres sont grands.
+ * </p>
+ * 
+ * @author Martin Rostagnat
+ * @version 1.0
+ */
 public class AStarAlgorithm extends MazeSolvingAlgorithm {
 	/** Valeur des cellules pour le calcul de l'heuristique. */
 	private static final int WEIGHT = 1;
@@ -32,34 +84,6 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 	 */
 	public AStarAlgorithm(MazePanel panel) {
 		super(panel);
-
-		// TOERASE
-		HeurTree a = new HeurTree(0, 0, 2);
-		a.add(new HeurTree(2, 1, 14));
-		a.add(new HeurTree(5, 6, 5));
-		a.children.get(0).add(new HeurTree(78, 4, 23));
-		HeurTree ch = a.children.get(1);
-		ch.add(new HeurTree(4, 4, 4));
-		ch.add(new HeurTree(5, 5, 5));
-
-		System.out.println("Arbre : " + a);
-
-		ArrayList<HeurTree> b = a.children.get(0).children.get(0).getAscendance();
-		for (HeurTree c : b)
-			System.out.println("." + c.i + " " + c.j + ".");
-
-		System.out.println("Nouvel arbre : " + a);
-
-		System.out.println("Calcul heuristique : " + a.children.get(0).children.get(0).heuristic());
-
-		System.out.println("---");
-		ArrayList<HeurTree> d = a.getLeafs();
-		System.out.println("size: " + d.size());
-		System.out.println(Arrays.toString(d.toArray()));
-
-		System.out.println("AAA: " + a);
-		a.delete(ch);
-		System.out.println("ZZZ: " + a);
 	}
 
 	@Override
@@ -77,19 +101,18 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 		/* Etape 2 : lancement de l'heuristique. */
 		int[] start = mazePanel.getStart();
 		cellTree = new HeurTree(start[0], start[1], WEIGHT);
-		mazePanel.setCell(start[0], start[1], WEIGHT);
 
 		freeLeafs.add(cellTree);
+		mazePanel.setCell(start[0], start[1], WEIGHT);
 	}
 
 	@Override
 	public boolean isComplete() {
-		int[] end = mazePanel.getEnd();
-		List<HeurTree> candidates = freeLeafs.stream() //
-				.filter(node -> node.i == end[0] && node.j == end[1]) //
+		List<HeurTree> endings = freeLeafs.stream() //
+				.filter(node -> node.isAt(mazePanel.getEnd())) //
 				.collect(Collectors.toList());
 
-		return !candidates.isEmpty();
+		return !endings.isEmpty();
 	}
 
 	@Override
@@ -100,33 +123,27 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 				.orElseThrow(NoSuchElementException::new);
 
 		// Etape 2 : répérage des chemins possibles autour de la cellule courante
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.UP)) {
-			HeurTree upCell = new HeurTree(nodeToSee.i - 1, nodeToSee.j, WEIGHT);
-			nodeToSee.add(upCell);
-			mazePanel.setCell(upCell.i, upCell.j, (int) upCell.heuristic());
-		}
+		ArrayList<HeurTree> nextNodes = new ArrayList<>();
+		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.UP))
+			nextNodes.add(new HeurTree(nodeToSee.i - 1, nodeToSee.j, WEIGHT));
 
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.DOWN)) {
-			HeurTree downCell = new HeurTree(nodeToSee.i + 1, nodeToSee.j, WEIGHT);
-			nodeToSee.add(downCell);
-			mazePanel.setCell(downCell.i, downCell.j, (int) downCell.heuristic());
-		}
+		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.DOWN))
+			nextNodes.add(new HeurTree(nodeToSee.i + 1, nodeToSee.j, WEIGHT));
 
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.LEFT)) {
-			HeurTree leftCell = new HeurTree(nodeToSee.i, nodeToSee.j - 1, WEIGHT);
-			nodeToSee.add(leftCell);
-			mazePanel.setCell(leftCell.i, leftCell.j, (int) leftCell.heuristic());
-		}
+		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.LEFT))
+			nextNodes.add(new HeurTree(nodeToSee.i, nodeToSee.j - 1, WEIGHT));
 
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.RIGHT)) {
-			HeurTree rightCell = new HeurTree(nodeToSee.i, nodeToSee.j + 1, WEIGHT);
-			nodeToSee.add(rightCell);
-			mazePanel.setCell(rightCell.i, rightCell.j, (int) rightCell.heuristic());
+		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.RIGHT))
+			nextNodes.add(new HeurTree(nodeToSee.i, nodeToSee.j + 1, WEIGHT));
+
+		for (HeurTree node : nextNodes) {
+			nodeToSee.add(node);
+			mazePanel.setCell(node.i, node.j, (int) node.heuristic());
 		}
 
 		// Etape 3 : mise à jour de la liste 'freeLeafs'
 		freeLeafs = cellTree.getLeafs().stream() //
-				.filter(node -> !isBlocked(node.i, node.j) || isTheEnd(node.i, node.j)) //
+				.filter(node -> !isBlocked(node) || node.isAt(mazePanel.getEnd())) //
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
@@ -136,14 +153,20 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 
 		int[] end = mazePanel.getEnd();
 		ArrayList<HeurTree> endings = find(cellTree, end[0], end[1]); // Noeud d'arrivée
-		System.out.println("ending: " + endings);
-		if (!endings.isEmpty()) {
-			HeurTree endNode = endings.get(0);
-			for (HeurTree node : endNode.getAscendance())
+		if (!endings.isEmpty()) // Si un chemin est terminé, la 1ère arrivée est choisie
+			for (HeurTree node : endings.get(0).getAscendance())
 				mazePanel.getRoute().getPath().add(new int[] { node.i, node.j });
-		}
 	}
 
+	/**
+	 * Recherche tous les noeuds d'un arbre donné, dont les coordonnées
+	 * correspondent aux nombres spécifiés.
+	 * 
+	 * @param node Arbre quelconque du labyrinthe.
+	 * @param i    Numéro de ligne de la cellule du labyrinthe.
+	 * @param j    Numéro de colonne.
+	 * @return Liste de tous les noeuds possédant les bonnes coordonnées.
+	 */
 	ArrayList<HeurTree> find(HeurTree node, int i, int j) {
 		ArrayList<HeurTree> arr = new ArrayList<>();
 		if (node.i == i && node.j == j)
@@ -156,6 +179,16 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 		return arr;
 	}
 
+	/**
+	 * Dans le cadre de cet algorithme, indique si le labyrinthe doit être exploré
+	 * dans une direction donnée pour une case donnée.
+	 * 
+	 * @param i    Numéro de ligne de la case.
+	 * @param j    Numéro de colonne de la case.
+	 * @param side Direction d'observation.
+	 * @return <code>true</code> si la case doit être visitée par l'algorithme A*,
+	 *         <code>false</code> sinon.
+	 */
 	boolean isToExplore(int i, int j, Side side) {
 		boolean withSides;
 		switch (side) {
@@ -180,21 +213,25 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 				&& mazePanel.getNeighbourCell(new WallCoord(i, j, side)) == 0;
 	}
 
-	boolean isBlocked(int i, int j) {
+	/**
+	 * Indique si l'on ne peut plus avancer dans le labyrinthe à partir du noeud
+	 * d'un arbre donné. La case correspondante représente alors une impasse et
+	 * l'algorithme ne s'intéressera plus à ce chemin.
+	 * 
+	 * @return <code>true</code> si l'algorithme "bloque" à cette case,
+	 *         <code>false</code> sinon.
+	 */
+	boolean isBlocked(HeurTree node) {
+		int i = node.i, j = node.j;
+		int numberOfWalls = 0;
+
 		// Le noeud est "bloqué" dans le labyrinthe si la case correspondante ne
 		// contient qu'un seul point d'accès (celui que l'on a emprunté pour entrer).
-		int numberOfWalls = 0;
 		for (Side side : Side.values())
 			if (mazePanel.getWall(i, j, side) != 0)
 				numberOfWalls++;
 
-		return numberOfWalls == (Side.values().length - 1);
-	}
-
-	boolean isTheEnd(int i, int j) {
-		int[] end = mazePanel.getEnd();
-
-		return i == end[0] && j == end[1];
+		return numberOfWalls + 1 == Side.values().length;
 	}
 
 	/**
@@ -240,11 +277,14 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 			return children.isEmpty();
 		}
 
+		/** Insère un noeud dans l'arbre. */
 		boolean add(HeurTree child) {
 			child.parent = this;
 			return children.add(child);
 		}
 
+		/** Retire un noeud de l'arbre ainsi que tous ses noeuds descendants. */
+		@SuppressWarnings("unused")
 		boolean delete(HeurTree child) {
 			if (children.isEmpty())
 				return false;
@@ -261,6 +301,10 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 			}
 		}
 
+		/**
+		 * Liste l'ensemble des noeuds de l'arbre précédant un noeud spécifique ; la
+		 * liste est classée dans l'ordre, du noeud courant jusqu'à la racine.
+		 */
 		ArrayList<HeurTree> getAscendance() {
 			ArrayList<HeurTree> arr = new ArrayList<>();
 			HeurTree node = this; // "Curseur" posé sur le noeud courant
@@ -272,6 +316,7 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 			return arr;
 		}
 
+		/** Liste toutes les feuilles de l'arbre. */
 		ArrayList<HeurTree> getLeafs() {
 			ArrayList<HeurTree> arr = new ArrayList<>();
 			if (isLeaf())
@@ -283,6 +328,15 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 			return arr;
 		}
 
+		/**
+		 * Indique si le noeud de l'arbre se situe à une position spécifique dans le
+		 * labyrinthe.
+		 */
+		boolean isAt(int[] cell) {
+			return i == cell[0] && j == cell[1];
+		}
+
+		/** Calcule le coût d'un noeud de l'arbre grâce à l'heuristique. */
 		double heuristic() {
 			double heur = weight;
 			for (HeurTree node = this; !node.isRoot(); node = node.parent) {
