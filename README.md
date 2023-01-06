@@ -47,7 +47,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 
 The list can be modified, as it simply comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Maze_solving_algorithm).
 
-- [ ] A* (or A-star)
+- [X] A* (or A-star)
 - [X] Wall following
 - [ ] Dijkstra
 - [ ] Prim
