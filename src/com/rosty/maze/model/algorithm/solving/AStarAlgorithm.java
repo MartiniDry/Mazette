@@ -142,9 +142,10 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 		}
 
 		// Etape 3 : mise à jour de la liste 'freeLeafs'
-		freeLeafs = cellTree.getLeafs().stream() //
-				.filter(node -> !isBlocked(node) || node.isAt(mazePanel.getEnd())) //
-				.collect(Collectors.toCollection(ArrayList::new));
+		freeLeafs.remove(nodeToSee);
+		for (HeurTree node : nextNodes)
+			if (!isBlocked(node) || node.isAt(mazePanel.getEnd()))
+				freeLeafs.add(node);
 	}
 
 	@Override
@@ -158,8 +159,8 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 	}
 
 	/**
-	 * Recherche tous les noeuds d'un arbre donné, dont les coordonnées
-	 * sont celles de la case spécifiée dans le labyrinthe.
+	 * Recherche tous les noeuds d'un arbre donné, dont les coordonnées sont celles
+	 * de la case spécifiée dans le labyrinthe.
 	 * 
 	 * @param node Arbre quelconque du labyrinthe.
 	 * @param cell Coordonnées de la cellule du labyrinthe.
@@ -239,6 +240,7 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 	 * @author Martin Rostagnat
 	 * @version 1.0
 	 */
+	@SuppressWarnings("unused")
 	private class HeurTree {
 		/** Adresse du noeud parent, nécessaire pour naviguer dans l'arbre. */
 		HeurTree parent;
@@ -282,7 +284,6 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 		}
 
 		/** Retire un noeud de l'arbre ainsi que tous ses noeuds descendants. */
-		@SuppressWarnings("unused")
 		boolean delete(HeurTree child) {
 			if (children.isEmpty())
 				return false;
