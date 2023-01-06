@@ -124,16 +124,16 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 
 		// Etape 2 : répérage des chemins possibles autour de la cellule courante
 		ArrayList<HeurTree> nextNodes = new ArrayList<>();
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.UP))
+		if (isToExplore(nodeToSee, Side.UP))
 			nextNodes.add(new HeurTree(nodeToSee.i - 1, nodeToSee.j, WEIGHT));
 
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.DOWN))
+		if (isToExplore(nodeToSee, Side.DOWN))
 			nextNodes.add(new HeurTree(nodeToSee.i + 1, nodeToSee.j, WEIGHT));
 
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.LEFT))
+		if (isToExplore(nodeToSee, Side.LEFT))
 			nextNodes.add(new HeurTree(nodeToSee.i, nodeToSee.j - 1, WEIGHT));
 
-		if (isToExplore(nodeToSee.i, nodeToSee.j, Side.RIGHT))
+		if (isToExplore(nodeToSee, Side.RIGHT))
 			nextNodes.add(new HeurTree(nodeToSee.i, nodeToSee.j + 1, WEIGHT));
 
 		for (HeurTree node : nextNodes) {
@@ -151,8 +151,7 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 	public void finish() {
 		super.finish();
 
-		int[] end = mazePanel.getEnd();
-		ArrayList<HeurTree> endings = find(cellTree, end[0], end[1]); // Noeud d'arrivée
+		ArrayList<HeurTree> endings = find(cellTree, mazePanel.getEnd()); // Noeud d'arrivée
 		if (!endings.isEmpty()) // Si un chemin est terminé, la 1ère arrivée est choisie
 			for (HeurTree node : endings.get(0).getAscendance())
 				mazePanel.getRoute().getPath().add(new int[] { node.i, node.j });
@@ -160,21 +159,20 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 
 	/**
 	 * Recherche tous les noeuds d'un arbre donné, dont les coordonnées
-	 * correspondent aux nombres spécifiés.
+	 * sont celles de la case spécifiée dans le labyrinthe.
 	 * 
 	 * @param node Arbre quelconque du labyrinthe.
-	 * @param i    Numéro de ligne de la cellule du labyrinthe.
-	 * @param j    Numéro de colonne.
+	 * @param cell Coordonnées de la cellule du labyrinthe.
 	 * @return Liste de tous les noeuds possédant les bonnes coordonnées.
 	 */
-	ArrayList<HeurTree> find(HeurTree node, int i, int j) {
+	ArrayList<HeurTree> find(HeurTree node, int[] cell) {
 		ArrayList<HeurTree> arr = new ArrayList<>();
-		if (node.i == i && node.j == j)
+		if (node.isAt(cell))
 			arr.add(node);
 
 		if (!node.isLeaf())
 			for (HeurTree child : node.children)
-				arr.addAll(find(child, i, j));
+				arr.addAll(find(child, cell));
 
 		return arr;
 	}
@@ -183,13 +181,13 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 	 * Dans le cadre de cet algorithme, indique si le labyrinthe doit être exploré
 	 * dans une direction donnée pour une case donnée.
 	 * 
-	 * @param i    Numéro de ligne de la case.
-	 * @param j    Numéro de colonne de la case.
+	 * @param node Noeud correspondant à une cellule dans la grille.
 	 * @param side Direction d'observation.
 	 * @return <code>true</code> si la case doit être visitée par l'algorithme A*,
 	 *         <code>false</code> sinon.
 	 */
-	boolean isToExplore(int i, int j, Side side) {
+	boolean isToExplore(HeurTree node, Side side) {
+		int i = node.i, j = node.j;
 		boolean withSides;
 		switch (side) {
 			case UP:
