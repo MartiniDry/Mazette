@@ -1,8 +1,10 @@
 package com.rosty.maze.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Locale;
 
@@ -11,6 +13,7 @@ import com.rosty.maze.application.AppLauncher;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.dialog.DialogUtility;
 import com.rosty.maze.model.ApplicationModel;
+import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
@@ -34,7 +37,37 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+/**
+ * Contrôleur de la barre de menu de l'application. Il contient notamment
+ * l'ensemble des actionneurs des algorithmes.
+ * 
+ * @author Martin Rostagnat
+ * @version 1.0
+ */
 public class MenuBarController {
+	@FXML
+	private void openData() {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle(LocaleManager.getString("open.title"));
+		chooser.getExtensionFilters().add(new ExtensionFilter(LocaleManager.getString("open.maz"), "*.maz"));
+		chooser.setSelectedExtensionFilter(chooser.getExtensionFilters().get(0));
+
+		File file = chooser.showOpenDialog(AppLauncher.getPrimaryStage().getOwner());
+		if (file != null) {
+			Mazette.LOGGER.info("Chargement du labyrinthe depuis le fichier : " + file.getPath());
+
+			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+				Maze inputMaze = (Maze) ois.readObject();
+				AppLauncher.getMainController().mazePanel.setMaze(inputMaze);
+			} catch (IOException | ClassNotFoundException e) {
+				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.open"));
+				box.setContentText(e.getLocalizedMessage());
+				box.show();
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@FXML
 	private void saveDataAs() {
 		FileChooser chooser = new FileChooser();
@@ -46,8 +79,9 @@ public class MenuBarController {
 		if (file != null) {
 			Mazette.LOGGER.info("Sauvegarde du labyrinthe dans le fichier : " + file.getPath());
 
-			try (ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(file))) {
-				ApplicationModel.getInstance().getMaze().writeObject(ois);
+			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+				Maze outputMaze = ApplicationModel.getInstance().getMaze();
+				oos.writeObject(outputMaze);
 			} catch (IOException e) {
 				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.save"));
 				box.setContentText(e.getLocalizedMessage());

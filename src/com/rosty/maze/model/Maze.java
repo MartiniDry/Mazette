@@ -221,15 +221,24 @@ public class Maze implements Serializable {
 	}
 
 	public void writeObject(ObjectOutputStream out) throws IOException {
-		out.writeInt(nbRow);
-		out.writeInt(nbCol);
-		for (int i = 0; i < nbRow; i++)
-			for (int j = 0; j < nbCol; j++)
-				out.writeInt(table[i][j]);
+		out.writeInt(this.nbRow);
+		out.writeInt(this.nbCol);
+
+		int r = 2 * nbRow + 1, c = 2 * nbCol + 1;
+		for (int i = 0; i < r; i++)
+			for (int j = 0; j < c; j++)
+				out.writeInt(this.table[i][j]);
 	}
 
 	public void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		// TODO
+		this.nbRow = in.readInt();
+		this.nbCol = in.readInt();
+
+		int r = 2 * nbRow + 1, c = 2 * nbCol + 1;
+		this.table = new int[r][c];
+		for (int i = 0; i < r; i++)
+			for (int j = 0; j < c; j++)
+				this.table[i][j] = in.readInt();
 	}
 
 	/**

@@ -10,7 +10,9 @@
 
 <MenuBar xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rosty.maze.controller.MenuBarController">
 	<Menu text="%main.menu.file">
+		<MenuItem text="%main.menu.file.open" accelerator="Ctrl+O" onAction="#openData" />
 		<MenuItem text="%main.menu.file.save_as" accelerator="Ctrl+S" onAction="#saveDataAs" />
+		<SeparatorMenuItem />
 		<MenuItem text="%main.menu.file.export" accelerator="Ctrl+E" onAction="#exportData" />
 		<SeparatorMenuItem />
 		<MenuItem text="%main.menu.file.exit" accelerator="Ctrl+Q" onAction="#quitApplication" />
