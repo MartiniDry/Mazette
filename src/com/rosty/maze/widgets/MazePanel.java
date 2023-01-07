@@ -686,7 +686,7 @@ public class MazePanel extends Pane {
 	 * @throws IOException En cas d'erreur lors de la création du fichier ou de la
 	 *                     génération de l'image.
 	 */
-	public final void save(File file) throws IOException, IllegalArgumentException {
+	public final void saveAsImage(File file) throws IOException, IllegalArgumentException {
 		NodeWriter.writeAsImage(this, file);
 	}
 }

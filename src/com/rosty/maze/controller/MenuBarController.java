@@ -1,13 +1,16 @@
 package com.rosty.maze.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Locale;
 
 import com.rosty.maze.Mazette;
 import com.rosty.maze.application.AppLauncher;
 import com.rosty.maze.application.labels.LocaleManager;
 import com.rosty.maze.dialog.DialogUtility;
+import com.rosty.maze.model.ApplicationModel;
 import com.rosty.maze.model.algorithm.generation.AldousBroderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.BinaryTreeAlgorithm;
 import com.rosty.maze.model.algorithm.generation.EllerAlgorithm;
@@ -34,13 +37,28 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class MenuBarController {
 	@FXML
 	private void saveDataAs() {
-		Mazette.LOGGER.info("Sauvegarde des données");
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle(LocaleManager.getString("save.title"));
+		chooser.getExtensionFilters().add(new ExtensionFilter(LocaleManager.getString("save.maz"), "*.maz"));
+		chooser.setSelectedExtensionFilter(chooser.getExtensionFilters().get(0));
+
+		File file = chooser.showSaveDialog(AppLauncher.getPrimaryStage().getOwner());
+		if (file != null) {
+			Mazette.LOGGER.info("Sauvegarde du labyrinthe dans le fichier : " + file.getPath());
+
+			try (ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(file))) {
+				ApplicationModel.getInstance().getMaze().writeObject(ois);
+			} catch (IOException e) {
+				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.save"));
+				box.setContentText(e.getLocalizedMessage());
+				box.show();
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@FXML
 	private void exportData() {
-		Mazette.LOGGER.info("Exportation des données");
-
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle(LocaleManager.getString("export.title"));
 		chooser.getExtensionFilters().addAll( //
@@ -49,14 +67,18 @@ public class MenuBarController {
 				new ExtensionFilter(LocaleManager.getString("export.gif"), "*.gif"));
 		chooser.setSelectedExtensionFilter(chooser.getExtensionFilters().get(1));
 
-		try {
-			File file = chooser.showSaveDialog(AppLauncher.getPrimaryStage().getOwner());
-			AppLauncher.getMainController().mazePanel.save(file);
-		} catch (IOException | IllegalArgumentException e) {
-			MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.export"));
-			box.setContentText(e.getLocalizedMessage());
-			box.show();
-			e.printStackTrace();
+		File file = chooser.showSaveDialog(AppLauncher.getPrimaryStage().getOwner());
+		if (file != null) {
+			Mazette.LOGGER.info("Exportation du labyrinthe dans le fichier : " + file.getPath());
+
+			try {
+				AppLauncher.getMainController().mazePanel.saveAsImage(file);
+			} catch (IOException | IllegalArgumentException e) {
+				MessageBox box = new MessageBox(AlertType.ERROR, LocaleManager.getString("error.export"));
+				box.setContentText(e.getLocalizedMessage());
+				box.show();
+				e.printStackTrace();
+			}
 		}
 	}
 
