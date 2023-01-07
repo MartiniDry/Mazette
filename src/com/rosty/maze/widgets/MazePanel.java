@@ -13,6 +13,7 @@ import com.rosty.maze.model.MazeRoute;
 import com.rosty.util.colormap.DiscreteColorMap;
 import com.rosty.util.javafx.NodeWriter;
 
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
@@ -455,14 +456,20 @@ public class MazePanel extends Pane {
 	/** Génère les labels affichant la valeur des cases du labyrinthe. */
 	protected void displayLabels() {
 		int X = 2 * getMaze().getNbRows() + 1;
-		for (int i = 1; i < X - 1; i += 2) {
+		for (int i = 0; 2 * i + 1 < X; i++) {
 			int Y = 2 * getMaze().getNbColumns() + 1;
-			for (int j = 1; j < Y - 1; j += 2) {
-				Label lbl = new Label("" + getMaze().getCell((i - 1) / 2, (j - 1) / 2));
-				lbl.setStyle("-fx-font-weight: bold");
-				lbl.setLayoutX(deltaX + (H * (j - 1)) / (X - 1) + 3);
-				lbl.setLayoutY(deltaY + (W * (i - 1)) / (Y - 1) + 3);
-				labels[(i - 1) / 2][(j - 1) / 2] = lbl;
+			for (int j = 0; 2 * j + 1 < Y; j++) {
+				double width = H / getMaze().getNbRows(), height = W / getMaze().getNbColumns();
+
+				Label lbl = new Label("" + getMaze().getCell(i, j));
+				lbl.setLayoutX(deltaX + j * width);
+				lbl.setLayoutY(deltaY + i * height);
+				lbl.setPrefSize(width, height);
+
+				lbl.getStyleClass().add("debug-label");
+				lbl.setStyle("-fx-font-size: " + (4 * THICK));
+
+				labels[i][j] = lbl;
 				getChildren().add(lbl);
 			}
 		}
@@ -538,7 +545,7 @@ public class MazePanel extends Pane {
 		blocks[row][col].setFill(blockColor == null ? Color.TRANSPARENT : blockColor);
 
 		if (Mazette.arg_fxDebug())
-			labels[row][col].setText("" + value);
+			Platform.runLater(() -> labels[row][col].setText("" + value));
 	}
 
 	/**

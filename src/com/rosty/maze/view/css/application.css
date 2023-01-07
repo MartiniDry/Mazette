@@ -224,3 +224,10 @@
 .debug {
 	-fx-background-color: #F004;
 }
+
+.debug-label {
+	-fx-padding: -10.0 0.0;
+	-fx-alignment: center;
+	-fx-font-family: cocogoose pro;
+	-fx-font-weight: bold;
+}
