@@ -119,7 +119,7 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 	public void step() {
 		// Etape 1 : détermination du noeud à étudier pour cette étape
 		HeurTree nodeToSee = freeLeafs.stream() //
-				.min(Comparator.comparing(HeurTree::heuristic)) //
+				.min(Comparator.comparing(node -> heuristic(node))) //
 				.orElseThrow(NoSuchElementException::new);
 
 		// Etape 2 : répérage des chemins possibles autour de la cellule courante
@@ -138,7 +138,7 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 
 		for (HeurTree node : nextNodes) {
 			nodeToSee.add(node);
-			mazePanel.setCell(node.i, node.j, (int) node.heuristic());
+			mazePanel.setCell(node.i, node.j, (int) heuristic(node));
 		}
 
 		// Etape 3 : mise à jour de la liste 'freeLeafs'
@@ -156,6 +156,33 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 		if (!endings.isEmpty()) // Si un chemin est terminé, la 1ère arrivée est choisie
 			for (HeurTree node : endings.get(0).getAscendance())
 				mazePanel.getRoute().getPath().add(new int[] { node.i, node.j });
+	}
+
+	/**
+	 * Calcule la distance euclidienne entre deux points de la grille.
+	 * 
+	 * @param i1 Ligne du premier point.
+	 * @param j1 Colonne du premier point.
+	 * @param i2 Ligne du second point.
+	 * @param j2 Colonne du second point.
+	 */
+	private double distance(int i1, int j1, int i2, int j2) {
+		double di = i2 - i1, dj = j2 - j1;
+
+		return Math.sqrt(di * di + dj * dj);
+	}
+
+	/** Calcule le coût d'un noeud de l'arbre grâce à l'heuristique. */
+	private double heuristic(HeurTree node) {
+		double heur = node.weight;
+
+		for (HeurTree nd = node; !nd.isRoot(); nd = nd.parent)
+			heur += (distance(nd.i, nd.j, nd.parent.i, nd.parent.j) + nd.parent.weight);
+
+		int[] end = mazePanel.getEnd();
+		heur += distance(node.i, node.j, end[0], end[1]);
+
+		return heur;
 	}
 
 	/**
@@ -333,18 +360,6 @@ public class AStarAlgorithm extends MazeSolvingAlgorithm {
 		 */
 		boolean isAt(int[] cell) {
 			return i == cell[0] && j == cell[1];
-		}
-
-		/** Calcule le coût d'un noeud de l'arbre grâce à l'heuristique. */
-		double heuristic() {
-			double heur = weight;
-			for (HeurTree node = this; !node.isRoot(); node = node.parent) {
-				double di = node.i - node.parent.i;
-				double dj = node.j - node.parent.j;
-				heur += (Math.sqrt(di * di + dj * dj) + node.parent.weight); // distance + weight
-			}
-
-			return heur;
 		}
 
 		@Override
