@@ -49,7 +49,7 @@ The list can be modified, as it simply comes from the [Wikipedia page](https://e
 
 - [X] A* (or A-star)
 - [X] Wall following
-- [ ] Dijkstra
+- [X] Dijkstra
 - [ ] Prim
 - [ ] Breadth-first search
 - [ ] Pledge
