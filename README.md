@@ -50,7 +50,7 @@ The list can be modified, as it simply comes from the [Wikipedia page](https://e
 - [X] A* (or A-star)
 - [X] Wall following
 - [X] Dijkstra
-- [ ] Prim
+- [X] Prim-Jarnik
 - [ ] Breadth-first search
 - [ ] Pledge
 - [ ] Trémeaux
