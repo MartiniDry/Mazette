@@ -44,6 +44,7 @@
 		<MenuItem text="%main.menu.resolution.wall_following" onAction="#solveWallFollowing" />
 		<MenuItem text="%main.menu.resolution.a_star" onAction="#solveAStar" />
 		<MenuItem text="%main.menu.resolution.dijkstra" onAction="#solveDijkstra" />
+		<MenuItem text="%main.menu.resolution.prim-jarnik" onAction="#solvePrimJarnik" />
 	</Menu>
 
 	<Menu text="%main.menu.help">
