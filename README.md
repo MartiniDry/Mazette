@@ -45,18 +45,21 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 
 ## Implemented solving algorithms
 
-The list can be modified, as it simply comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Maze_solving_algorithm).
+The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Maze_solving_algorithm). Interesting content have been found by [SanderJSA](https://github.com/SanderJSA) while looking for Lee's algorithm ([link below](https://slideplayer.com/slide/5086317/)). Basic implementations have been done for a grid maze but it will be enhanced in another version of the application.
 
 - [X] A* (or A-star)
 - [X] Wall following
 - [X] Dijkstra
 - [X] Prim-Jarnik
-- [ ] Breadth-first search
 - [ ] Pledge
 - [ ] Trémeaux
 - [ ] Dead-end filling
 - [ ] Maze-routing
-- [ ] Lee
+- [ ] Lee (Breadth-First Search)
+- [ ] Hadlock
+- [ ] Soukup
+- [ ] Mikami-Tabushi
+- [ ] Hightower
 
 ------
 
