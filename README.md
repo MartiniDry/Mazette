@@ -45,7 +45,7 @@ All those algorithms are based on the [excellent site from Jamis Buck](http://we
 
 ## Implemented solving algorithms
 
-The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Maze_solving_algorithm). Interesting content have been found by [SanderJSA](https://github.com/SanderJSA) while looking for Lee's algorithm ([link below](https://slideplayer.com/slide/5086317/)). Basic implementations have been done for a grid maze but it will be enhanced in another version of the application.
+The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Maze_solving_algorithm). Very interesting content has been found by [SanderJSA](https://github.com/SanderJSA) while looking for Lee's algorithm ([link below](http://cc.ee.ntu.edu.tw/~jhjiang/instruction/courses/spring11-eda/lec06-3_4p.pdf)). Basic implementations have been done for a grid maze but it will be enhanced in another version of the application.
 
 - [X] A* (or A-star)
 - [X] Wall following
@@ -54,12 +54,12 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
 - [ ] Pledge
 - [ ] Trémeaux
 - [ ] Dead-end filling
-- [ ] Maze-routing
 - [ ] Lee (Breadth-First Search)
 - [ ] Hadlock
 - [ ] Soukup
 - [ ] Mikami-Tabushi
 - [ ] Hightower
+- [ ] Random mouse
 
 ------
 
@@ -68,3 +68,7 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
  * Saving mazes as an image in many formats (PNG, JPEG, TIFF, SVG, PDF)
  * Color pickers for each maze part
  * Color map for pathfinding algorithms, which clarifies the target from start point to the finish.
+
+------
+
+Documentation from the [Astrolog website](https://astrolog.org/labyrnth/algrithm.htm) provides an interesting overview of the problem. The last solving algorithm comes from this link.
