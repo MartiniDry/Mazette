@@ -10,11 +10,11 @@ import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.widgets.MazePanel;
 
 /**
- * <h1>Algorithme de la souris perdue</h1>
+ * <h1>Algorithme de la souris égarée</h1>
  * 
  * <p>
  * <h2>Principe</h2> L'algorithme explore pas-à-pas les chemins devant lui, de
- * façon aléatoire sans jamais mémoriser son chemin. Le nom de l'algorithme
+ * façon aléatoire sans jamais mémoriser sa route. Le nom de l'algorithme
  * s'inspire des tests cognitifs en laboratoire, dans lesquels on demande à des
  * souris d'avancer dans un labyrinthe pour retrouver la source d'une odeur.
  * </p>
@@ -22,7 +22,7 @@ import com.rosty.maze.widgets.MazePanel;
  * <p>
  * <h2>Dans le détail :</h2> L'algorithme est l'équivalent "résolution" de
  * l'algorithme de Wilson, dans lequel on génère les chemins pas-à-pas en se
- * déplaçant de façon aléatoire (cf. {@link WilsonAlgorithm}).
+ * déplaçant de manière aléatoire (cf. {@link WilsonAlgorithm}).
  * </p>
  * 
  * <p>
