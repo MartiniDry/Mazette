@@ -59,7 +59,7 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
 - [ ] Soukup
 - [ ] Mikami-Tabushi
 - [ ] Hightower
-- [ ] Random mouse
+- [X] Random mouse
 
 ------
 
