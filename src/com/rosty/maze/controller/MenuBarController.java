@@ -30,6 +30,7 @@ import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.model.algorithm.solving.AStarAlgorithm;
 import com.rosty.maze.model.algorithm.solving.DijkstraAlgorithm;
+import com.rosty.maze.model.algorithm.solving.LeeAlgorithm;
 import com.rosty.maze.model.algorithm.solving.PrimJarnikAlgorithm;
 import com.rosty.maze.model.algorithm.solving.RandomMouseAlgorithm;
 import com.rosty.maze.model.algorithm.solving.WallFollowingAlgorithm;
@@ -230,6 +231,12 @@ public class MenuBarController {
 	private void solvePrimJarnik() {
 		MainWindowController controller = AppLauncher.getMainController();
 		controller.resetSolve(new PrimJarnikAlgorithm(controller.mazePanel));
+	}
+
+	@FXML
+	private void solveLee() {
+		MainWindowController controller = AppLauncher.getMainController();
+		controller.resetSolve(new LeeAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
