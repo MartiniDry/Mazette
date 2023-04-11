@@ -197,9 +197,11 @@ public class MainWindowController implements Observer {
 
 					break;
 				case RESOLUTION:
-					if (runButton.isSelected())
-						SOLVER.start();
-					else
+					if (runButton.isSelected()) {
+						// Le solveur n'est lancé que si aucune route n'est visible à l'écran.
+						if (mazePanel.getRoute().getPath().isEmpty())
+							SOLVER.start();
+					} else
 						SOLVER.stop();
 
 					break;
@@ -218,7 +220,10 @@ public class MainWindowController implements Observer {
 				GENERATOR.step();
 				break;
 			case RESOLUTION:
-				SOLVER.step();
+				// Le solveur n'est lancé que si aucune route n'est visible à l'écran.
+				if (mazePanel.getRoute().getPath().isEmpty())
+					SOLVER.step();
+
 				break;
 			default:
 				break;
