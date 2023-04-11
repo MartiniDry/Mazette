@@ -54,7 +54,7 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
 - [ ] Pledge
 - [ ] Trémeaux
 - [ ] Dead-end filling
-- [ ] Lee (Breadth-First Search)
+- [X] Lee (Breadth-First Search)
 - [ ] Hadlock
 - [ ] Soukup
 - [ ] Mikami-Tabushi
