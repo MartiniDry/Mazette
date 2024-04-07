@@ -51,7 +51,7 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
 - [X] Wall following
 - [X] Dijkstra
 - [X] Prim-Jarnik
-- [ ] Pledge
+- [X] Pledge
 - [ ] Trémeaux
 - [ ] Dead-end filling
 - [X] Lee (Breadth-First Search)
