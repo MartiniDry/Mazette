@@ -88,13 +88,6 @@ public class MainWindowController implements Observer {
 
 	@FXML
 	public void initialize() {
-		ArrayList<int[]> test1 = new ArrayList<>();
-		test1.add(new int[]{0, 0});
-		test1.add(new int[]{1, 0});
-		test1.add(new int[]{2, 0});
-		test1.add(new int[]{1, 0});
-		System.out.println(test1.indexOf(new int[] {1, 0}));
-		
 		mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		mazePanel.setRoute(ApplicationModel.getInstance().getRoute());
 
