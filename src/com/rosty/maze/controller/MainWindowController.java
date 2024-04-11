@@ -1,8 +1,6 @@
 package com.rosty.maze.controller;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
