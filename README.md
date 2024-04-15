@@ -52,7 +52,7 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
 - [X] Dijkstra
 - [X] Prim-Jarnik
 - [X] Pledge
-- [ ] Trémeaux
+- [X] Trémeaux
 - [ ] Dead-end filling
 - [X] Lee (Breadth-First Search)
 - [ ] Hadlock
