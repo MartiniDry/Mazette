@@ -42,7 +42,7 @@ import com.rosty.maze.widgets.MazePanel;
 public class PledgeAlgorithm extends MazeSolvingAlgorithm {
 	/** Coordonnées de l'explorateur dans la grille. */
 	private int[] explorer = new int[2];
-	/** Path saved for the algorithm. */
+	/** Chemin sauvegardé pour l'algorithme. */
 	ArrayList<int[]> path = new ArrayList<int[]>();
 	/** Direction vers laquelle débute l'explorateur. */
 	private Side orientation = Side.RIGHT;
