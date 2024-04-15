@@ -34,6 +34,7 @@ import com.rosty.maze.model.algorithm.solving.LeeAlgorithm;
 import com.rosty.maze.model.algorithm.solving.PledgeAlgorithm;
 import com.rosty.maze.model.algorithm.solving.PrimJarnikAlgorithm;
 import com.rosty.maze.model.algorithm.solving.RandomMouseAlgorithm;
+import com.rosty.maze.model.algorithm.solving.TremeauxAlgorithm;
 import com.rosty.maze.model.algorithm.solving.WallFollowingAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
 
@@ -244,6 +245,12 @@ public class MenuBarController {
 	private void solvePledge() {
 		MainWindowController controller = AppLauncher.getMainController();
 		controller.resetSolve(new PledgeAlgorithm(controller.mazePanel));
+	}
+
+	@FXML
+	private void solveTremeaux() {
+		MainWindowController controller = AppLauncher.getMainController();
+		controller.resetSolve(new TremeauxAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
