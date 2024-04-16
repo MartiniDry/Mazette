@@ -49,6 +49,9 @@
 		<MenuItem text="%main.menu.resolution.pledge" onAction="#solvePledge" />
 		<MenuItem text="%main.menu.resolution.tremeaux" onAction="#solveTremeaux" />
 		<MenuItem text="%main.menu.resolution.random-mouse" onAction="#solveRandomMouse" />
+		<Menu text="%main.menu.resolution.deadend-filling">
+			<MenuItem text="%main.menu.resolution.deadend-filling.scan" onAction="#solveDeadEndFillingByScan" />
+		</Menu>
 	</Menu>
 
 	<Menu text="%main.menu.help">

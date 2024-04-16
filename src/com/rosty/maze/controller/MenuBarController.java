@@ -29,6 +29,7 @@ import com.rosty.maze.model.algorithm.generation.ShuffledKruskalAlgorithm;
 import com.rosty.maze.model.algorithm.generation.SidewinderAlgorithm;
 import com.rosty.maze.model.algorithm.generation.WilsonAlgorithm;
 import com.rosty.maze.model.algorithm.solving.AStarAlgorithm;
+import com.rosty.maze.model.algorithm.solving.DeadEndFillingAlgorithm;
 import com.rosty.maze.model.algorithm.solving.DijkstraAlgorithm;
 import com.rosty.maze.model.algorithm.solving.LeeAlgorithm;
 import com.rosty.maze.model.algorithm.solving.PledgeAlgorithm;
@@ -257,6 +258,12 @@ public class MenuBarController {
 	private void solveRandomMouse() {
 		MainWindowController controller = AppLauncher.getMainController();
 		controller.resetSolve(new RandomMouseAlgorithm(controller.mazePanel));
+	}
+
+	@FXML
+	private void solveDeadEndFillingByScan() {
+		MainWindowController controller = AppLauncher.getMainController();
+		controller.resetSolve(new DeadEndFillingAlgorithm(controller.mazePanel));
 	}
 
 	@FXML
