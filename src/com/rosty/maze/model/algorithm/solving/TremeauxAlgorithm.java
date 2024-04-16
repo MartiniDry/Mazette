@@ -13,12 +13,12 @@ import com.rosty.maze.widgets.MazePanel;
  * <h1>Algorithme de Trémeaux</h1>
  * 
  * <p>
- * <h2>Principe</h2> L'algorithme est parmi l'un des plus pratiques à utiliser
- * dans la vraie vie : à la manière du petit Poucet, l'explorateur avance au
- * hasard dans le labyrinthe en déposant un "caillou" derrière lui. Dès que
- * l'explorateur est face à un mur ou à l'un de ses marqueurs, il revient en
- * arrière jusqu'à trouver un autre chemin à suivre. L'algorithme s'arrête en
- * atteignant l'arrivée (ou revient au départ s'il n'y en a pas).
+ * <h2>Principe</h2> L'algorithme est l'un des plus pratiques à utiliser dans la
+ * vraie vie : à la manière du petit Poucet, l'explorateur avance au hasard dans
+ * le labyrinthe en déposant un "caillou" derrière lui. Dès que l'explorateur
+ * est face à un mur ou à l'un de ses marqueurs, il revient en arrière jusqu'à
+ * trouver un autre chemin à suivre. L'algorithme s'arrête en atteignant
+ * l'arrivée (ou revient au départ s'il n'y en a pas).
  * </p>
  * 
  * <p>
