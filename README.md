@@ -53,7 +53,7 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
 - [X] Prim-Jarnik
 - [X] Pledge
 - [X] Trémeaux
-- [ ] Dead-end filling (grid scanning + optimized version by tracking dead-ends)
+- [X] Dead-end filling (grid scanning + optimized version by tracking dead-ends)
 - [X] Lee (Breadth-First Search)
 - [ ] Hadlock
 - [ ] Soukup
