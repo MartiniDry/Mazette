@@ -13,7 +13,7 @@ import com.rosty.maze.widgets.MazePanel;
  * <p>
  * <h2>Principe</h2> L'algorithme est basé sur une recherche globale et
  * itérative de toutes les impasses du labyrinthe ; puisque le trajet entre le
- * départ et l'arrivée ne passe jamais par une impasse, on peut tous les
+ * départ et l'arrivée ne passe jamais par une impasse, on peut toutes les
  * supprimer en partant du bout. Cette méthode garantit de ne garder que le (ou
  * les) chemin(s) utile(s) reliant l'entrée et la sortie du labyrinthe.
  * </p>
@@ -35,15 +35,14 @@ import com.rosty.maze.widgets.MazePanel;
  * <h2>Complexité</h2> L'algorithme peut être implémenté de deux façons
  * différentes :
  * <ul>
- * <li>Par balayage : on scanne la grille à chaque étape pour identifier les
- * impasses restantes. La méthode utilise très peu de mémoire (complexité en
+ * <li><u>Par balayage :</u> on scanne la grille à chaque étape pour identifier
+ * les impasses restantes. La méthode utilise très peu de mémoire (complexité en
  * O(1)) mais est coûteuse en temps de calcul : la complexité temporelle atteint
  * O(M²*N²) dans le pire des cas (labyrinthe en forme d'escargot).</li>
- * <li>Par suivi : on mémorise les impasses et on suit leur chemin. Cette
+ * <li><u>Par suivi :</u> on mémorise les impasses et on suit leur chemin. Cette
  * méthode optimise fortement le temps de calcul mais nécessite de sauvegarder
  * l'état d'exploration de chaque impasse. Les complexités en temps et en
- * mémoire sont en O(M*N) dans le pire des cas (labyrinthe en forme
- * d'escargot).</li>
+ * mémoire sont en O(M*N) dans le pire des cas.</li>
  * </ul>
  * </p>
  * 
