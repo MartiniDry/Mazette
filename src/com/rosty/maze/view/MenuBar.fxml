@@ -51,6 +51,7 @@
 		<MenuItem text="%main.menu.resolution.random-mouse" onAction="#solveRandomMouse" />
 		<Menu text="%main.menu.resolution.deadend-filling">
 			<MenuItem text="%main.menu.resolution.deadend-filling.scan" onAction="#solveDeadEndFillingByScan" />
+			<MenuItem text="%main.menu.resolution.deadend-filling.suivi" onAction="#solveDeadEndFillingBySuivi" />
 		</Menu>
 	</Menu>
 

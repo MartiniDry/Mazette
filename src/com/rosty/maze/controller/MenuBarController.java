@@ -35,6 +35,7 @@ import com.rosty.maze.model.algorithm.solving.LeeAlgorithm;
 import com.rosty.maze.model.algorithm.solving.PledgeAlgorithm;
 import com.rosty.maze.model.algorithm.solving.PrimJarnikAlgorithm;
 import com.rosty.maze.model.algorithm.solving.RandomMouseAlgorithm;
+import com.rosty.maze.model.algorithm.solving.SuiviDeadEndFillingAlgorithm;
 import com.rosty.maze.model.algorithm.solving.TremeauxAlgorithm;
 import com.rosty.maze.model.algorithm.solving.WallFollowingAlgorithm;
 import com.rosty.maze.view.box.MessageBox;
@@ -264,6 +265,12 @@ public class MenuBarController {
 	private void solveDeadEndFillingByScan() {
 		MainWindowController controller = AppLauncher.getMainController();
 		controller.resetSolve(new DeadEndFillingAlgorithm(controller.mazePanel));
+	}
+
+	@FXML
+	private void solveDeadEndFillingBySuivi() {
+		MainWindowController controller = AppLauncher.getMainController();
+		controller.resetSolve(new SuiviDeadEndFillingAlgorithm(controller.mazePanel));
 	}
 
 	@FXML

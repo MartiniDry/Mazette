@@ -1,5 +1,6 @@
 package com.rosty.maze.model.algorithm.solving;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.rosty.maze.model.Maze.Side;
@@ -8,92 +9,98 @@ import com.rosty.maze.model.algorithm.MazeSolvingAlgorithm;
 import com.rosty.maze.widgets.MazePanel;
 
 /**
- * <h1>Algorithme de colmatage par scan</h1>
+ * <h1>Algorithme de colmatage par suivi</h1>
  * 
  * <p>
- * <h2>Principe</h2> L'algorithme est basé sur une recherche globale et
- * itérative de toutes les impasses du labyrinthe ; puisque le trajet entre le
- * départ et l'arrivée ne passe jamais par une impasse, on peut toutes les
- * supprimer en partant du bout. Cette méthode garantit de ne garder que le (ou
- * les) chemin(s) utile(s) reliant l'entrée et la sortie du labyrinthe.
+ * <h2>Principe</h2> cf. {@link DeadEndFillingAlgorithm}.
  * </p>
  * 
  * <p>
  * <h2>Dans le détail :</h2> Pour commencer, l'algorithme détecte le bout de
- * toutes les impasses présentes dans la grille. A chaque étape, l'algorithme
- * avance d'un pas dans chaque impasse et marque la case comme "visitée" ; un
- * compteur indique le nombre d'impasses restantes. On estime que l'on peut
- * avancer dans l'impasse s'il n'y a qu'une seule direction qui peut être
- * empruntée (les autres présentent soit un mur, soit une impasse déjà visitée).
- * L'algorithme s'arrête lorsque le compteur des impasses atteint 0. Le résultat
- * de cet algorithme est l'ensemble des chemins possibles du départ vers
- * l'arrivée (un seul chemin si le labyrinthe est parfait). Un algorithme de
+ * toutes les impasses présentes dans la grille. L'exploration débute dans
+ * chaque impasse découverte ; une liste mémorise la position des explorateurs
+ * ainsi que la direction que chacun va emprunter pour avancer. A chaque étape,
+ * les explorateurs avancent d'un pas, marquent la case comme "visitée" et
+ * déterminent la nouvelle direction à emprunter. On estime qu'un explorateur
+ * peut avancer dans l'impasse s'il n'y a qu'une seule direction qui peut être
+ * empruntée (les autres présentent soit un mur, soit une impasse déjà visitée)
+ * ; si ce critère n'est plus respecté, alors l'impasse est retirée de la liste.
+ * L'algorithme s'arrête lorsque la liste des impasses est vide. Le résultat de
+ * cet algorithme est l'ensemble des chemins possibles du départ vers l'arrivée
+ * (un seul chemin si le labyrinthe est parfait). Un algorithme de
  * <i>backtracking</i> rudimentaire permet alors de tracer la solution.
  * </p>
  * 
  * <p>
- * <h2>Complexité</h2> L'algorithme par balayage scanne la grille à chaque étape
- * pour identifier les impasses restantes. La méthode utilise très peu de
- * mémoire (complexité en O(1)) mais est coûteuse en temps de calcul : la
- * complexité temporelle atteint O(M²N²) dans le pire des cas (labyrinthe en
- * forme d'escargot).
+ * <h2>Complexité</h2> L'algorithme par suivi trace le chemin de chaque impasse
+ * mémorisée. Cette méthode optimise le temps de calcul mais nécessite de
+ * sauvegarder l'état d'exploration de chaque impasse. Les complexités en temps
+ * et en mémoire sont en O(M*N) dans le pire des cas (labyrinthe en escargot
+ * pour la complexité temporelle, labyrinthe en forme de peignes empilés pour la
+ * complexité mémoire).
  * </p>
  * 
  * @author Martin Rostagnat
  * @version 1.0
  */
-public class DeadEndFillingAlgorithm extends MazeSolvingAlgorithm {
-	/** Compteur d'impasses à chaque étape de l'algorithme. */
-	int visibleDeadEnds = 0;
+public class SuiviDeadEndFillingAlgorithm extends MazeSolvingAlgorithm {
+	/** Liste des explorateurs d'impasses. */
+	ArrayList<WallCoord> deadEnds = new ArrayList<>();
 
 	/**
-	 * Constructeur de la classe {@link DeadEndFillingAlgorithm}.
+	 * Constructeur de la classe {@link SuiviDeadEndFillingAlgorithm}.
 	 * 
 	 * @param panel Composant graphique du labyrinthe.
 	 */
-	public DeadEndFillingAlgorithm(MazePanel panel) {
+	public SuiviDeadEndFillingAlgorithm(MazePanel panel) {
 		super(panel);
 	}
 
 	@Override
 	public String getLabel() {
-		return super.getLabel() + ".deadend-filling.scan";
+		return super.getLabel() + ".deadend-filling.suivi";
 	}
 
 	@Override
 	public void init() {
-		// Détection de toutes les impasses dans le labyrinthe
+		// Remise des cellules à 0
 		for (int i = 0; i < nbRow; i++)
 			for (int j = 0; j < nbCol; j++)
-				if (isDeadEnd(i, j)) {
+				mazePanel.setCell(i, j, 0);
+
+		// Détection de toutes les impasses pour démarrer l'algorithme
+		for (int i = 0; i < nbRow; i++)
+			for (int j = 0; j < nbCol; j++)
+				if (isDeadEnd(i, j)) { // La fin d'une impasse est mémorisée puis marquée dans la grille.
+					// Pour chaque impasse, on détermine la prochaine direction où aller.
+					deadEnds.add(new WallCoord(i, j, way(i, j)));
 					mazePanel.setCell(i, j, 1);
-					visibleDeadEnds++;
-				} else
-					mazePanel.setCell(i, j, 0);
+				}
 	}
 
 	@Override
 	public boolean isComplete() {
-		return visibleDeadEnds == 0;
+		return deadEnds.isEmpty();
 	}
 
 	@Override
 	public void step() {
-		visibleDeadEnds = 0;
+		for (int k = 0; k < deadEnds.size();) { // Pour chaque impasse à explorer, ...
+			// ...se déplacer d'une case dans la direction mémorisée.
+			WallCoord explorer = deadEnds.get(k);
+			int[] coord = move(explorer.x, explorer.y, explorer.side);
 
-		// Etape 1 : marquage des cases non-visitées filant vers des impasses
-		for (int i = 0; i < nbRow; i++)
-			for (int j = 0; j < nbCol; j++)
-				if (isFalseDeadEnd(i, j)) {
-					mazePanel.setCell(i, j, 2);
-					visibleDeadEnds++;
-				}
+			if (isFalseDeadEnd(coord[0], coord[1])) { // Si la nouvelle position est une "fausse impasse", ...
+				// ...alors mettre à jour l'exploration de l'impasse en notant la prochaine
+				// direction à prendre ...
+				deadEnds.set(k, new WallCoord(coord[0], coord[1], way(coord[0], coord[1])));
+				mazePanel.setCell(coord[0], coord[1], 1);
 
-		// Etape 2 : coloriage des cases détectées
-		for (int i = 0; i < nbRow; i++)
-			for (int j = 0; j < nbCol; j++)
-				if (mazePanel.getCell(i, j) == 2)
-					mazePanel.setCell(i, j, 1);
+				// ...et passer à la suite.
+				k++;
+			} else // Sinon, arrêter l'exploration de l'impasse.
+				deadEnds.remove(k);
+		}
 	}
 
 	@Override
@@ -107,7 +114,7 @@ public class DeadEndFillingAlgorithm extends MazeSolvingAlgorithm {
 		mazePanel.setCell(explorer[0], explorer[1], 2);
 
 		while (!Arrays.equals(explorer, mazePanel.getEnd())) {
-			Side direction = canMove(explorer[0], explorer[1]);
+			Side direction = way(explorer[0], explorer[1]);
 			if (direction != null) { // Le trajet de l'explorateur suit le premier chemin venu.
 				explorer = move(explorer[0], explorer[1], direction);
 				mazePanel.getPath().add(explorer);
@@ -170,7 +177,7 @@ public class DeadEndFillingAlgorithm extends MazeSolvingAlgorithm {
 	 * @param i Numéro de ligne.
 	 * @param j Numéro de colonne.
 	 */
-	private Side canMove(int i, int j) {
+	private Side way(int i, int j) {
 		for (Side s : Side.values())
 			if (mazePanel.getWall(i, j, s) != 1 && mazePanel.getNeighbourCell(new WallCoord(i, j, s)) == 0)
 				return s;
