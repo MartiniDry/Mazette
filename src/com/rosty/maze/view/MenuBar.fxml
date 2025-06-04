@@ -53,6 +53,7 @@
 			<MenuItem text="%main.menu.resolution.deadend-filling.scan" onAction="#solveDeadEndFillingByScan" />
 			<MenuItem text="%main.menu.resolution.deadend-filling.suivi" onAction="#solveDeadEndFillingBySuivi" />
 		</Menu>
+		<MenuItem text="%main.menu.resolution.soukup" onAction="#solveSoukup" />
 	</Menu>
 
 	<Menu text="%main.menu.help">
