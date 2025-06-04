@@ -17,9 +17,9 @@
 
 ------
 
-The aim is to display every known algorithm step by step for educational purposes. By the way, the source code aims to be as modular as possible to enlighten the code and re-use some of its components (cf. the abstract class Algorithm).
+This software displays every known algorithm step by step for educational purposes. The source code aims to be as clean and modular as possible to enlighten the code and re-use components (cf. the abstract class Algorithm).
 
-The software proposes several functionalities:
+Mazette provides several features:
  * Running algorithms via a command bar; those algorithms can be run **directly** or **step by step**.
  * Customising maze processing (size, duration between two steps, etc.)
 
@@ -27,7 +27,7 @@ The software proposes several functionalities:
 
 ## Implemented generation algorithms
 
-All those algorithms are based on the [excellent site from Jamis Buck](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap), doing a very complete state-of-the-art of the mathematical problem, except for the last two algorithms. The former goes around in my head since 2019 (some little ideas went in my head in 2009 when I began studying mazes but I began working seriously on it in 2020) and the latter came to my head in 2021 while studying line rasterization.
+All these algorithms except the last two, are based on the [excellent site from Jamis Buck](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap), doing a very complete state-of-the-art of the mathematical problem. The personal algorithm #1 goes around in my head since 2019 (some little ideas went in my head in 2009 when I began studying mazes but I began working seriously on it in 2020). The #2 popped into my head in 2021 while studying line rasterization.
 
 - [X] Kruskal (basic algorithm + alternative version with array sort)
 - [X] Recursive backtracking
@@ -63,7 +63,7 @@ The list mainly comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Ma
 
 ------
 
-## Features that need to be implemented in the future
+## Features to implement in the future
 
  * Saving mazes as an image in many formats (PNG, JPEG, TIFF, SVG, PDF)
  * Color pickers for each maze part
