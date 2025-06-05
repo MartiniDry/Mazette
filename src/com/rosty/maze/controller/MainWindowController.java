@@ -18,7 +18,7 @@ import com.rosty.maze.view.box.MessageBox;
 import com.rosty.maze.widgets.GIntegerField;
 import com.rosty.maze.widgets.GLongField;
 import com.rosty.maze.widgets.MazePanel;
-import com.rosty.util.colormap.DiscreteColorMap;
+import com.rosty.util.colormap.ContinuousColorMap;
 import com.rosty.util.maze.MazeUtils;
 
 import javafx.application.Platform;
@@ -89,10 +89,10 @@ public class MainWindowController implements Observer {
 		mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		mazePanel.setRoute(ApplicationModel.getInstance().getRoute());
 
-		DiscreteColorMap colorMap = new DiscreteColorMap();
-		colorMap.add(0, Color.TRANSPARENT);
-		colorMap.add(1, Color.web("#0F06"));
-		colorMap.add(2, Color.web("#00F6"));
+		ContinuousColorMap colorMap = new ContinuousColorMap();
+		colorMap.add(0D, Color.TRANSPARENT);
+		colorMap.add(1D, Color.web("#0F08"));
+		colorMap.add(200D, Color.web("#00F8"));
 //		DiscreteColorMap colorMap = DiscreteColorMap.fromString("[0; transparent] [1; #0F06] [2; #00F6]");
 
 		mazePanel.setBlockColorMap(colorMap);

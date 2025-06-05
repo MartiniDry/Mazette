@@ -48,6 +48,11 @@ public class DiscreteColorMap implements ColorMap<Integer> {
 	}
 
 	@Override
+	public Color getOrDefault(Integer position, Color defColor) {
+		return colorSet.getOrDefault(position, defColor);
+	}
+
+	@Override
 	public void clear() {
 		colorSet.clear();
 	}

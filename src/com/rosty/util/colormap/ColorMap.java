@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
  * @author Martin Rostagnat
  * @version 1.0
  */
-public interface ColorMap<T> {
+public interface ColorMap<T extends Number> {
 
 	/**
 	 * Insère une couleur à la position spécifiée.
@@ -29,9 +29,18 @@ public interface ColorMap<T> {
 	/**
 	 * Fournit, si elle existe, la couleur présente à la position indiquée.
 	 * 
-	 * @param position Position de la couleur par rapport à la carte.
+	 * @param position Position de la couleur dans la carte.
 	 */
 	public Color get(T position);
+
+	/**
+	 * Fournit la couleur présente à la position indiquée ou renvoie une couleur par
+	 * défaut si elle n'existe pas.
+	 * 
+	 * @param position Position de la couleur dans la carte.
+	 * @param defColor Couleur par défaut.
+	 */
+	public Color getOrDefault(T position, Color defColor);
 
 	/** Efface l'ensemble des couleurs de la carte. */
 	public void clear();

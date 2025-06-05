@@ -98,6 +98,13 @@ public class ContinuousColorMap implements ColorMap<Double> {
 	}
 
 	@Override
+	public Color getOrDefault(Double position, Color defColor) {
+		Color color = this.get(position);
+		
+		return (color == null) ? defColor : color;
+	}
+
+	@Override
 	public void clear() {
 		colorSet.clear();
 	}
