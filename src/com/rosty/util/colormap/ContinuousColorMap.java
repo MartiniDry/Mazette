@@ -131,14 +131,19 @@ public class ContinuousColorMap<T extends Number> implements ColorMap<T> {
 	public static final <T extends Number> ContinuousColorMap<T> fromString(String str, Class<T> type) {
 		ContinuousColorMap<T> map = new ContinuousColorMap<>();
 
-		String regex = "\\[[^\\]]*;[^\\[]*\\]"; // Extrait les chaînes de la forme "[xxx; xxx]"
-		Matcher match = Pattern.compile(regex).matcher(str);
+		String regItem = "\\[[^\\;]+;[^\\]]+\\]"; // Chaînes de la forme "[xxx; xxx]"
+
+		String regList = regItem + "((\\s?\\-\\s?" + regItem + ")*"; // Chaîne de la forme "[xxx; xxx] [yyy; yyy] ..."
+		if (!Pattern.matches(regList, str))
+			return null;
+
+		Matcher match = Pattern.compile(regItem).matcher(str);
 		while (match.find()) {
 			String item = match.group();
 			String inside = item.substring(1, item.length() - 1);
 			String[] keyAndValue = inside.split(";\\s*");
 
-			T key = parse(keyAndValue[0], type); // FIXME
+			T key = parse(keyAndValue[0], type);
 			Color value = Color.web(keyAndValue[1]);
 			map.add(key, value);
 		}
@@ -152,7 +157,7 @@ public class ContinuousColorMap<T extends Number> implements ColorMap<T> {
 		for (Entry<T, Color> k : colorSet.entrySet()) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
-			sb.append(k.getKey().toString()); // FIXED
+			sb.append(k.getKey().toString());
 			sb.append("; ");
 			sb.append(k.getValue().toString());
 			sb.append("]");
@@ -160,7 +165,7 @@ public class ContinuousColorMap<T extends Number> implements ColorMap<T> {
 			items.add(sb.toString());
 		}
 
-		return String.join(" ", items);
+		return String.join(" - ", items);
 	}
 
 	/**

@@ -79,14 +79,19 @@ public class DiscreteColorMap<T extends Number> implements ColorMap<T> {
 	public static final <T extends Number> DiscreteColorMap<T> fromString(String str, Class<T> type) {
 		DiscreteColorMap<T> map = new DiscreteColorMap<>();
 
-		String regex = "\\[[^\\]]*;[^\\[]*\\]"; // Extrait les chaînes de la forme "[xxx; xxx]"
-		Matcher match = Pattern.compile(regex).matcher(str);
+		String regItem = "\\[[^\\;]+;[^\\]]+\\]"; // Chaîne de la forme "[xxx; xxx]"
+
+		String regList = regItem + "(\\s" + regItem + ")*"; // Chaîne de la forme "[xxx; xxx] [yyy; yyy] ..."
+		if (!Pattern.matches(regList, str))
+			return null;
+
+		Matcher match = Pattern.compile(regItem).matcher(str);
 		while (match.find()) {
 			String item = match.group();
 			String inside = item.substring(1, item.length() - 1);
 			String[] keyAndValue = inside.split(";\\s*");
 
-			T key = parse(keyAndValue[0], type); // Integer.parseInt(keyAndValue[0]); // FIXME
+			T key = parse(keyAndValue[0], type);
 			Color value = Color.web(keyAndValue[1]);
 			map.add(key, value);
 		}
@@ -100,7 +105,7 @@ public class DiscreteColorMap<T extends Number> implements ColorMap<T> {
 		for (Entry<T, Color> k : colorSet.entrySet()) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
-			sb.append(k.getKey().toString()); // FIXME
+			sb.append(k.getKey().toString());
 			sb.append("; ");
 			sb.append(k.getValue().toString());
 			sb.append("]");
