@@ -2,6 +2,7 @@ package com.rosty.util.colormap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -28,27 +29,27 @@ import javafx.scene.paint.Color;
  * @author Martin Rostagnat
  * @version 1.0
  */
-public class DiscreteColorMap implements ColorMap<Integer> {
+public class DiscreteColorMap<T extends Number> implements ColorMap<T> {
 	/** Plage des couleurs triée par ordre croissant des indices. */
-	private final SortedMap<Integer, Color> colorSet = new TreeMap<>();
+	private final SortedMap<T, Color> colorSet = new TreeMap<>();
 
 	@Override
-	public void add(Integer key, Color value) {
+	public void add(T key, Color value) {
 		colorSet.put(key, value);
 	}
 
 	@Override
-	public void delete(Integer key) {
+	public void delete(T key) {
 		colorSet.remove(key);
 	}
 
 	@Override
-	public Color get(Integer position) {
+	public Color get(T position) {
 		return colorSet.get(position);
 	}
 
 	@Override
-	public Color getOrDefault(Integer position, Color defColor) {
+	public Color getOrDefault(T position, Color defColor) {
 		return colorSet.getOrDefault(position, defColor);
 	}
 
@@ -75,8 +76,8 @@ public class DiscreteColorMap implements ColorMap<Integer> {
 	 * @param str Chaîne de caractères représentant une instance
 	 *            {@link DiscreteColorMap}.
 	 */
-	public static final DiscreteColorMap fromString(String str) {
-		DiscreteColorMap map = new DiscreteColorMap();
+	public static final <T extends Number> DiscreteColorMap<T> fromString(String str, Class<T> type) {
+		DiscreteColorMap<T> map = new DiscreteColorMap<>();
 
 		String regex = "\\[[^\\]]*;[^\\[]*\\]"; // Extrait les chaînes de la forme "[xxx; xxx]"
 		Matcher match = Pattern.compile(regex).matcher(str);
@@ -85,7 +86,7 @@ public class DiscreteColorMap implements ColorMap<Integer> {
 			String inside = item.substring(1, item.length() - 1);
 			String[] keyAndValue = inside.split(";\\s*");
 
-			int key = Integer.parseInt(keyAndValue[0]);
+			T key = parse(keyAndValue[0], type); // Integer.parseInt(keyAndValue[0]); // FIXME
 			Color value = Color.web(keyAndValue[1]);
 			map.add(key, value);
 		}
@@ -96,17 +97,39 @@ public class DiscreteColorMap implements ColorMap<Integer> {
 	@Override
 	public final String toString() {
 		List<String> items = new ArrayList<>();
-		for (Integer k : colorSet.keySet()) {
+		for (Entry<T, Color> k : colorSet.entrySet()) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
-			sb.append(k.intValue());
+			sb.append(k.getKey().toString()); // FIXME
 			sb.append("; ");
-			sb.append(colorSet.get(k).toString());
+			sb.append(k.getValue().toString());
 			sb.append("]");
 
 			items.add(sb.toString());
 		}
 
 		return String.join(" ", items);
+	}
+
+	/**
+	 * Décode le nombre affiché dans la chaîne de caractères selon le type spécifié.
+	 * 
+	 * @param s    Chaîne de caractères représentant le nombre.
+	 * @param type Classe de destination, héritée de {@link java.lang.Number}.
+	 * @return Instance T du nombre.
+	 * @throws NumberFormatException Lorsque la lecture du nombre est impossible.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends Number> T parse(String s, Class<T> type) throws NumberFormatException {
+		if (type == Integer.class)
+			return (T) new Integer(Integer.parseInt(s));
+		else if (type == Short.class)
+			return (T) new Short(Short.parseShort(s));
+		else if (type == Long.class)
+			return (T) new Long(Long.parseLong(s));
+		else if (type == Double.class)
+			return (T) new Double(Double.parseDouble(s));
+		else
+			throw new NumberFormatException("Cannot parse '" + s + "' to any number.");
 	}
 }

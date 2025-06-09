@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
  * @version 1.0
  */
 public interface ColorMap<T extends Number> {
-
+	
 	/**
 	 * Insère une couleur à la position spécifiée.
 	 * 

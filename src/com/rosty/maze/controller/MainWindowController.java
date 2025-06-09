@@ -89,11 +89,11 @@ public class MainWindowController implements Observer {
 		mazePanel.setMaze(ApplicationModel.getInstance().getMaze());
 		mazePanel.setRoute(ApplicationModel.getInstance().getRoute());
 
-		ContinuousColorMap colorMap = new ContinuousColorMap();
-		colorMap.add(0D, Color.TRANSPARENT);
-		colorMap.add(1D, Color.web("#0F08"));
-		colorMap.add(200D, Color.web("#00F8"));
-//		DiscreteColorMap colorMap = DiscreteColorMap.fromString("[0; transparent] [1; #0F06] [2; #00F6]");
+		ContinuousColorMap<Integer> colorMap = new ContinuousColorMap<>();
+		colorMap.add(0, Color.TRANSPARENT);
+		colorMap.add(1, Color.web("#0F08"));
+		colorMap.add(200, Color.web("#00F8"));
+//		DiscreteColorMap colorMap = DiscreteColorMap.fromString("[0; transparent] [1; #0F06] [2; #00F6]", Integer.class);
 
 		mazePanel.setBlockColorMap(colorMap);
 
