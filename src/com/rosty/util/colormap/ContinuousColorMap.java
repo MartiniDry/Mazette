@@ -3,6 +3,7 @@ package com.rosty.util.colormap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -45,56 +46,63 @@ import javafx.scene.paint.Color;
  * @version 1.0
  * @see {@link ColorUtils}
  */
-public class ContinuousColorMap implements ColorMap<Double> {
+public class ContinuousColorMap<T extends Number> implements ColorMap<T> {
 	/** Plage des couleurs triée par ordre croissant des indices. */
-	private final SortedMap<Double, Color> colorSet = new TreeMap<>();
+	private final SortedMap<T, Color> colorSet = new TreeMap<>();
 
 	@Override
-	public void add(Double key, Color value) {
+	public void add(T key, Color value) {
 		colorSet.put(key, value);
 	}
 
 	@Override
-	public void delete(Double key) {
+	public void delete(T key) {
 		colorSet.remove(key);
 	}
 
 	@Override
-	public Color get(Double position) {
+	public Color get(T position) {
 		if (colorSet.isEmpty())
 			return null;
 
-		if (position < colorSet.firstKey())
+		if (position.intValue() < colorSet.firstKey().intValue())
 			return colorSet.get(colorSet.firstKey());
 
-		if (position > colorSet.lastKey())
+		if (position.intValue() > colorSet.lastKey().intValue())
 			return colorSet.get(colorSet.lastKey());
 
 		if (colorSet.containsKey(position))
 			return colorSet.get(position);
 
-		List<Double> keys = new ArrayList<>(colorSet.keySet());
+		List<T> keys = new ArrayList<>(colorSet.keySet());
 
-		double a = 0; // a est la clé de la couleur au-dessus de celle demandée (After).
-		for (double k : keys)
-			if (k > position) {
-				a = k;
+		int a = 0; // a est la clé de la couleur au-dessus de celle demandée (After).
+		for (T k : keys)
+			if (k.intValue() > position.intValue()) {
+				a = k.intValue();
 				break;
 			}
 
 		Collections.reverse(keys);
 
-		double b = colorSet.size() - 1; // b est pour la couleur d'en dessous (Before).
-		for (double k : keys)
-			if (k < position) {
-				b = k;
+		int b = colorSet.size() - 1; // b est pour la couleur d'en dessous (Before).
+		for (T k : keys)
+			if (k.intValue() < position.intValue()) {
+				b = k.intValue();
 				break;
 			}
 
 		Color before = colorSet.get(b), after = colorSet.get(a);
-		double ratio = (position - b) / (a - b);
+		double ratio = 1.0 * (position.intValue() - b) / (a - b);
 
 		return ColorUtils.middleColor(before, after, ratio);
+	}
+
+	@Override
+	public Color getOrDefault(T position, Color defColor) {
+		Color color = this.get(position);
+
+		return (color == null) ? defColor : color;
 	}
 
 	@Override
@@ -120,17 +128,22 @@ public class ContinuousColorMap implements ColorMap<Double> {
 	 * @param str Chaîne de caractères représentant une instance
 	 *            {@link ContinuousColorMap}.
 	 */
-	public static final ContinuousColorMap fromString(String str) {
-		ContinuousColorMap map = new ContinuousColorMap();
+	public static final <T extends Number> ContinuousColorMap<T> fromString(String str, Class<T> type) {
+		ContinuousColorMap<T> map = new ContinuousColorMap<>();
 
-		String regex = "\\[[^\\]]*;[^\\[]*\\]"; // Extrait les chaînes de la forme "[xxx; xxx]"
-		Matcher match = Pattern.compile(regex).matcher(str);
+		String regItem = "\\[[^\\;]+;[^\\]]+\\]"; // Chaînes de la forme "[xxx; xxx]"
+
+		String regList = regItem + "((\\s?\\-\\s?" + regItem + ")*"; // Chaîne de la forme "[xxx; xxx] [yyy; yyy] ..."
+		if (!Pattern.matches(regList, str))
+			return null;
+
+		Matcher match = Pattern.compile(regItem).matcher(str);
 		while (match.find()) {
 			String item = match.group();
 			String inside = item.substring(1, item.length() - 1);
 			String[] keyAndValue = inside.split(";\\s*");
 
-			double key = Double.parseDouble(keyAndValue[0]);
+			T key = parse(keyAndValue[0], type);
 			Color value = Color.web(keyAndValue[1]);
 			map.add(key, value);
 		}
@@ -141,17 +154,39 @@ public class ContinuousColorMap implements ColorMap<Double> {
 	@Override
 	public final String toString() {
 		List<String> items = new ArrayList<>();
-		for (double k : colorSet.keySet()) {
+		for (Entry<T, Color> k : colorSet.entrySet()) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
-			sb.append(k);
+			sb.append(k.getKey().toString());
 			sb.append("; ");
-			sb.append(colorSet.get(k).toString());
+			sb.append(k.getValue().toString());
 			sb.append("]");
 
 			items.add(sb.toString());
 		}
 
-		return String.join(" ", items);
+		return String.join(" - ", items);
+	}
+
+	/**
+	 * Décode le nombre affiché dans la chaîne de caractères selon le type spécifié.
+	 * 
+	 * @param s    Chaîne de caractères représentant le nombre.
+	 * @param type Classe de destination, héritée de {@link java.lang.Number}.
+	 * @return Instance T du nombre.
+	 * @throws NumberFormatException Lorsque la lecture du nombre est impossible.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends Number> T parse(String s, Class<T> type) throws NumberFormatException {
+		if (type == Integer.class)
+			return (T) new Integer(Integer.parseInt(s));
+		else if (type == Short.class)
+			return (T) new Short(Short.parseShort(s));
+		else if (type == Long.class)
+			return (T) new Long(Long.parseLong(s));
+		else if (type == Double.class)
+			return (T) new Double(Double.parseDouble(s));
+		else
+			throw new NumberFormatException("Cannot parse '" + s + "' to any number.");
 	}
 }

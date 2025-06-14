@@ -10,6 +10,7 @@ import com.rosty.maze.model.Maze;
 import com.rosty.maze.model.Maze.Side;
 import com.rosty.maze.model.Maze.WallCoord;
 import com.rosty.maze.model.MazeRoute;
+import com.rosty.util.colormap.ColorMap;
 import com.rosty.util.colormap.DiscreteColorMap;
 import com.rosty.util.javafx.NodeWriter;
 
@@ -179,21 +180,21 @@ public class MazePanel extends Pane {
 		update();
 	}
 
-	private final ObjectProperty<DiscreteColorMap> blockColorMapProperty = new SimpleObjectProperty<>(
-			new DiscreteColorMap());
+	private final ObjectProperty<ColorMap<Integer>> blockColorMapProperty = new SimpleObjectProperty<ColorMap<Integer>>(
+			new DiscreteColorMap<>());
 
 	/** Propriété définissant la plage de couleurs des cases du labyrinthe. */
-	public final ObjectProperty<DiscreteColorMap> blockColorMapProperty() {
+	public final ObjectProperty<ColorMap<Integer>> blockColorMapProperty() {
 		return blockColorMapProperty;
 	}
 
 	/** Fournit la plage de couleurs des cases du labyrinthe. */
-	public final DiscreteColorMap getBlockColorMap() {
+	public final ColorMap<Integer> getBlockColorMap() {
 		return blockColorMapProperty.get();
 	}
 
 	/** Définit la plage de couleurs des cases du labyrinthe. */
-	public final void setBlockColorMap(DiscreteColorMap value) {
+	public final void setBlockColorMap(ColorMap<Integer> value) {
 		blockColorMapProperty.set(value);
 		update();
 	}
@@ -436,19 +437,13 @@ public class MazePanel extends Pane {
 		for (int i = 1; i < X - 1; i += 2) {
 			int Y = 2 * getMaze().getNbColumns() + 1;
 			for (int j = 1; j < Y - 1; j += 2) {
-				if (getMaze().get(i, j) == 1) {
-					Rectangle block = new Rectangle(deltaX + (H * (j - 1)) / (X - 1), deltaY + (W * (i - 1)) / (Y - 1),
-							(2 * H) / (X - 1), (2 * W) / (Y - 1));
-					block.setFill(getBlockColorMap().get(1));
-					blocks[(i - 1) / 2][(j - 1) / 2] = block;
-					getChildren().add(block);
-				} else {
-					Rectangle block = new Rectangle(deltaX + (H * (j - 1)) / (X - 1), deltaY + (W * (i - 1)) / (Y - 1),
-							(2 * H) / (X - 1), (2 * W) / (Y - 1));
-					block.setFill(Color.TRANSPARENT);
-					blocks[(i - 1) / 2][(j - 1) / 2] = block;
-					getChildren().add(block);
-				}
+				Rectangle block = new Rectangle(deltaX + (H * (j - 1)) / (X - 1), deltaY + (W * (i - 1)) / (Y - 1),
+						(2 * H) / (X - 1), (2 * W) / (Y - 1));
+				Color blockColor = getBlockColorMap().getOrDefault(getMaze().get(i, j), Color.TRANSPARENT);
+				block.setFill(blockColor);
+
+				blocks[(i - 1) / 2][(j - 1) / 2] = block;
+				getChildren().add(block);
 			}
 		}
 	}
@@ -540,9 +535,8 @@ public class MazePanel extends Pane {
 	 */
 	public void setCell(int row, int col, int value) {
 		getMaze().setCell(row, col, value);
-//		blocks[row][col].setFill((value == 1) ? getBlockColor() : Color.TRANSPARENT);
-		Color blockColor = getBlockColorMap().get(value);
-		blocks[row][col].setFill(blockColor == null ? Color.TRANSPARENT : blockColor);
+		Color blockColor = getBlockColorMap().getOrDefault(value, Color.TRANSPARENT);
+		blocks[row][col].setFill(blockColor);
 
 		if (Mazette.arg_fxDebug())
 			Platform.runLater(() -> labels[row][col].setText("" + value));
