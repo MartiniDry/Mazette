@@ -535,8 +535,8 @@ public class MazePanel extends Pane {
 	 */
 	public void setCell(int row, int col, int value) {
 		getMaze().setCell(row, col, value);
-		Color blockColor = getBlockColorMap().get(value);
-		blocks[row][col].setFill(blockColor == null ? Color.TRANSPARENT : blockColor);
+		Color blockColor = getBlockColorMap().getOrDefault(value, Color.TRANSPARENT);
+		blocks[row][col].setFill(blockColor);
 
 		if (Mazette.arg_fxDebug())
 			Platform.runLater(() -> labels[row][col].setText("" + value));
